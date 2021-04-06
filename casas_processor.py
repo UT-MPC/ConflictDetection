@@ -4,7 +4,7 @@ from datetime import datetime
 
 DATETIME_TEMP = "%Y-%m-%d %H:%M:%S.%f"
 ACT_IDX = 4
-def split_line(line_str: str):
+def parse_line(line_str: str):
     segs = line_str.split()
     # The first and second segments in the line is date time
     # Some time does not have millisecond
@@ -21,11 +21,15 @@ def split_line(line_str: str):
     return time, device_evt, act
 
     
-def preprocess(filename: str):
+def match_device():
+
+def match_ctx():
+
+def process(filename: str, device_set = None: ,ctx_set = None):
     with open(filename) as f:
         line_str = f.readline()
         while line_str:
-            time, d_evt, act = split_line(line_str)
+            time, d_evt, act = parse_line(line_str)
             line_str = f.readline()
             
 
