@@ -1,5 +1,7 @@
+from datetime import datetime
 import os
 import pandas as pd
+from typing import List, Dict
 
 class UmassProccessor():
     datetime_temp = "%Y-%m-%d %H:%M:%S"
@@ -11,8 +13,29 @@ class UmassProccessor():
         self.device_list = device_list
         self.output_file = output_file
 
-    def filter_device_evt(self, device_data: pd.DataFrame):
-        print(device_data.head)        
+    def device_evt_gen(self, device_data: pd.DataFrame, devices: List[Dict]):
+        device_evt = {d: [] for d in devices.keys()}
+        for index, row in device_data.iterrows():
+            time = datetime.strptime(row[self.datetime_col], self.datetime_temp)
+            for name, d in devices.items():
+                state = "on" if row[d["name"]] > d["onThreshold"] else "off"
+                if (len(device_evt[name]) == 0) or (state != device_evt[name][-1][0]):
+                    # only append new state if it is different from previous or it is the first one
+                    device_evt[name].append((state, time))
+        print({x: len(device_evt[x]) for x in device_evt})
+        evt_filtered = {}
+        for d, states in device_evt.items():
+            evt_filtered[d] = []
+            previous_state = states[0]
+            for state in states[1:]:
+                if state[1] - previous_state[1] >= devices[d]["minStateTime"]:
+                    if len(evt_filtered[d]) == 0 or previous_state[0] != evt_filtered[d][-1][0]:
+                        evt_filtered[d].append(previous_state)
+                previous_state = state
+            if len(evt_filtered[d]) == 0 or previous_state[0] != evt_filtered[d][-1][0]:
+                        evt_filtered[d].append(previous_state)
+        print({x: len(evt_filtered[x]) for x in evt_filtered})
+        return evt_filtered
 
     def search_device(self, raw_data:dict):
         for filename, devices in self.device_list.items():
@@ -21,18 +44,20 @@ class UmassProccessor():
                 print("File {} not found!!".format(filename))
                 continue
             cols = [self.datetime_col]
+            chosen_devices = {}
             for d in devices:
-                if d not in raw_data[filename].columns:
+                if d["name"] not in raw_data[filename].columns:
                     # No device found
                     print("The device({}) is not a column in file({})!!".format(d, filename))
                 else: 
-                    cols.append(d)
+                    cols.append(d["name"])
+                    chosen_devices[d["name"]] = d
 
             # No device columns found in this table
             if len(cols) < 2:
                 continue
             data = raw_data[filename].loc[:, cols]
-            self.filter_device_evt(data)
+            self.device_evt_gen(data, chosen_devices)
 
 
 

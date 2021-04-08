@@ -22,10 +22,11 @@ def parse_line(line_str: str):
 
     
 def match_device():
-
+    pass
 def match_ctx():
+    pass
 
-def process(filename: str, device_set = None: ,ctx_set = None):
+def process(filename: str, device_set = None, ctx_set = None):
     with open(filename) as f:
         line_str = f.readline()
         while line_str:
