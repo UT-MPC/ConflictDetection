@@ -129,7 +129,7 @@ class UmassProccessor():
             for c in ctxs:
                 if c["name"] not in raw_data[filename].columns:
                     # No device found
-                    logging.error("The device({}) is not a column in file({})!!".format(d, filename))
+                    logging.error("The device({}) is not a column in file({})!!".format(c, filename))
                 else: 
                     cols.append(c["name"])
                     chosen_ctx[c["name"]] = c
@@ -148,7 +148,7 @@ class UmassProccessor():
                 raw_data[f] = pd.read_csv(os.path.join(self.project_folder, f))
                 logging.info("Load UMass data file: " + os.path.join(f))
         
-        # device_evt = self.search_device(raw_data)   
+        device_evt = self.search_device(raw_data)   
         ctx_evt = self.get_context(raw_data)
 
 
