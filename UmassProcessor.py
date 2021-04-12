@@ -1,12 +1,15 @@
 from datetime import datetime
 from datetime import timedelta
+import json
 import logging
 import os
 import pandas as pd
+from pytz import timezone
 from typing import List, Dict, Tuple
 
 class UmassProccessor():
     datetime_temp = "%Y-%m-%d %H:%M:%S"
+    weather_timezone = timezone("US/Eastern")
     datetime_col = "Date & Time"
     weather_time_col = "time"
     minimal_evt_duration_default = timedelta(minutes=10)
@@ -30,11 +33,10 @@ class UmassProccessor():
             'Partly Cloudy': 'Cloundy',}
     }
 
-    def __init__(self, project_folder:str, context_list: Dict, device_list: Dict, output_file: str = "processed"):
+    def __init__(self, project_folder:str, context_list: Dict, device_list: Dict):
         self.project_folder = project_folder
         self.ctx_list = context_list
         self.device_list = device_list
-        self.output_file = output_file
 
     def evt_time_filter(self, evts: Dict[str, List], 
                         filter_dur: Dict[str, timedelta]) -> Dict[str, List[Tuple[str, datetime]]]:
@@ -97,7 +99,11 @@ class UmassProccessor():
                         contexts: Dict) -> Dict[str, List[Tuple[str, datetime]]]:
         ctx_evts = {c: [] for c in contexts.keys()}
         for index, row in ctx_data.iterrows():
-            time = datetime.fromtimestamp(row[self.weather_time_col])
+            time = datetime.fromtimestamp(row[self.weather_time_col], self.weather_timezone).replace(tzinfo=None)
+            if row.isnull().values.any():
+                # Skip this row if some values are Null. In the weather dataset, sometimes there are error in the data
+                logging.warning("Empty cell in weather dataset at timestamp {}".format(row[self.weather_time_col]))
+                continue
             for name, d in contexts.items():
                 state = row[d["name"]]
                 # If this is a categorical context, we might need to convert it
@@ -106,14 +112,14 @@ class UmassProccessor():
                 if (len(ctx_evts[name]) == 0) or (state != ctx_evts[name][-1][0]):
                     # only append new state if it is different from previous or it is the first one
                     ctx_evts[name].append((state, time))
-        logging.debug("The number of device events before filter: {}".format(
+        logging.debug("The number of context events before filter: {}".format(
             {x: len(ctx_evts[x]) for x in ctx_evts}))
 
         evt_filtered = self.evt_time_filter(ctx_evts, 
                 {c: contexts[c].get("minStateTime", self.minimal_evt_duration_default) for c in contexts})
         
-        logging.debug("The number of device events after filter: {}".format(
-            {x: len(evt_filtered[x]) for x in ctx_evts}))
+        logging.debug("The number of context events after filter: {}".format(
+            {x: len(evt_filtered[x]) for x in evt_filtered}))
         return evt_filtered
 
 
@@ -139,8 +145,11 @@ class UmassProccessor():
             data = raw_data[filename].loc[:, cols]
             ctx_evts.update(self.context_evt_gen(data, chosen_ctx))
         return ctx_evts
+        
 
-    def preprocess(self):
+    # Generate the device interaction event and the context changing 
+    # events from the data set and output it to a file for future usage.
+    def preprocess(self, output_file: str = "processed") -> Tuple[Dict[str, List], Dict[str, List]]:
         raw_data = {}
         all_csv = [f for f in os.listdir(self.project_folder) if f.endswith(".csv") and (f in self.device_list or f in self.ctx_list)]
         for f in all_csv:
@@ -150,7 +159,9 @@ class UmassProccessor():
         
         device_evt = self.search_device(raw_data)   
         ctx_evt = self.get_context(raw_data)
-
+        with open(os.path.join(self.project_folder, output_file), 'w') as f:
+            f.write(json.dumps((ctx_evt, device_evt), default=str))
+        return (ctx_evt, device_evt)
 
 
 

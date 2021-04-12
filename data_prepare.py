@@ -2,15 +2,14 @@ from datetime import timedelta
 import logging
 import os
 
+from config import *
 from UmassProcessor import UmassProccessor
 
-data_root = "data"
-umass_root = "UMass"
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=PROJ_LOGGING_LEVEL)
 
 def prepare_data():
     test_project = "HomeD/2016"
-    project_path = os.path.join(data_root, umass_root, test_project)
+    project_path = os.path.join(DATA_ROOT, UMASS_ROOT, test_project)
     """
         The device dictionary consists of the informaiton of the deivces that will be used in this experiment. 
         For each table of UMass dataset, we have a list of device consisting of the name of the column in the table, the threshold 
@@ -29,7 +28,9 @@ def prepare_data():
         ]
     }
     umass_processor = UmassProccessor(project_path, context_list, device_list)
-    umass_processor.preprocess()
+    ctx_evts, device_evts = umass_processor.preprocess(output_file=PROCESSED_FILENAME)
+
+
 
 if __name__ == "__main__":
     prepare_data()
