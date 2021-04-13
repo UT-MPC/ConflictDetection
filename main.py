@@ -7,6 +7,7 @@ from casas_processor import *
 from config import *
 from utils import *
 from UmassProcessor import UmassProccessor
+from PatternBuilder import PatternBuilder
 
 logging.basicConfig(level=PROJ_LOGGING_LEVEL)
 
@@ -30,6 +31,9 @@ def test_umass():
         {x: len(device_evts[x]) for x in device_evts}))
     logging.debug("The number of context events from processed file: {}".format(
             {x: len(ctx_evts[x]) for x in ctx_evts}))
+    
+    p_builder = PatternBuilder()
+    p_builder.mine_patterns(ctx_evts, device_evts)
 
 def main():
     test_umass()

@@ -24,3 +24,7 @@ def json_datetime_hook(obj):
     elif isinstance(obj, list):
         obj = [datetime_parser(x) for x in obj]
     return obj
+
+def datetime_to_seconds(dt: datetime) -> int:
+    t = dt.time()
+    return (t.hour * 60 + t.minute) * 60 + t.second

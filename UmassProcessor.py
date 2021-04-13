@@ -7,6 +7,8 @@ import pandas as pd
 from pytz import timezone
 from typing import List, Dict, Tuple
 
+from config import *
+
 class UmassProccessor():
     datetime_temp = "%Y-%m-%d %H:%M:%S"
     weather_timezone = timezone("US/Eastern")
@@ -146,6 +148,13 @@ class UmassProccessor():
             ctx_evts.update(self.context_evt_gen(data, chosen_ctx))
         return ctx_evts
         
+    # Maybe change this function to merge sort
+    def merge_ctx_evts(self, ctx_evts):
+        all_evts = []
+        for c, evts in ctx_evts:
+            all_evts.extend([(c, x[0], x[1]) for x in evts])
+        # Sort the events based on time
+        return sorted(all_evts, key = lambda x : x[2])
 
     # Generate the device interaction event and the context changing 
     # events from the data set and output it to a file for future usage.
@@ -159,6 +168,10 @@ class UmassProccessor():
         
         device_evt = self.search_device(raw_data)   
         ctx_evt = self.get_context(raw_data)
+
+        # Add context type to name
+        ctx_evt = { k + (CATEGORICAL_CTX_SUFFIX if k in self.ctx_category_translate else NUMERIC_CTX_SUFFIX) : v for k,v in ctx_evt.items()}
+
         with open(os.path.join(self.project_folder, output_file), 'w') as f:
             f.write(json.dumps((ctx_evt, device_evt), default=str))
         return (ctx_evt, device_evt)
