@@ -17,6 +17,7 @@ def prepare_data():
     """
     device_list = {"HomeD-meter1_2016.csv": [
                         {"name": "Microwave [kW]", "onThreshold": 0.01, "minStateTime": timedelta(minutes= 2)},
+                        {"name": "WashingMachine [kW]", "onThreshold": 0.01, "minStateTime": timedelta(minutes= 10)},
                     ]
     }
 

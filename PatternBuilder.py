@@ -30,8 +30,10 @@ class PatternBuilder():
                 }
                 for a in act
             }
+            # Add additional contextes
             for a in act:
                 device_evts_c[d][a][TIME_CTX] = []
+                device_evts_c[d][a][WEEKDAY_CTX] = []
 
         ctx_evts = self.preprocess_ctx(ctx_evts)
 
@@ -53,6 +55,7 @@ class PatternBuilder():
         for d, d_evts in device_evts.items():
             for d_evt in d_evts:
                 device_evts_c[d][d_evt[0]][TIME_CTX].append(datetime_to_seconds(d_evt[1]))
+                device_evts_c[d][d_evt[0]][WEEKDAY_CTX].append(d_evt[1].date().weekday())
 
         return device_evts_c
 
@@ -65,5 +68,5 @@ class PatternBuilder():
                 lengths = set([len(e) for c, e in c_evts.items()])
                 if len(lengths) != 1:
                     logging.error("Miss match in the length of events for device {}, action {}!!!".format(d, a))
-        
+        return device_evts_c
                 

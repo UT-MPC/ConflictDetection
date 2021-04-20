@@ -33,7 +33,8 @@ def test_umass():
             {x: len(ctx_evts[x]) for x in ctx_evts}))
     
     p_builder = PatternBuilder()
-    p_builder.mine_patterns(ctx_evts, device_evts)
+    return p_builder.mine_patterns(ctx_evts, device_evts)
+
 
 def main():
     test_umass()
