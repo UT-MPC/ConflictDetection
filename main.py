@@ -21,7 +21,7 @@ def compile_casas_device():
         val[0] = re.compile(val[0])
 
 def test_umass():
-    test_project = "HomeD/2016"
+    test_project = "HomeF/2016"
     project_path = os.path.join(DATA_ROOT, UMASS_ROOT, test_project)
     input_file = os.path.join(project_path, PROCESSED_FILENAME)
     with open(input_file) as f:

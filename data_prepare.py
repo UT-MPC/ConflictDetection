@@ -8,21 +8,21 @@ from UmassProcessor import UmassProccessor
 logging.basicConfig(level=PROJ_LOGGING_LEVEL)
 
 def prepare_data():
-    test_project = "HomeD/2016"
+    test_project = "HomeF/2016"
     project_path = os.path.join(DATA_ROOT, UMASS_ROOT, test_project)
     """
         The device dictionary consists of the informaiton of the deivces that will be used in this experiment. 
         For each table of UMass dataset, we have a list of device consisting of the name of the column in the table, the threshold 
         in kW to indicate that the device is turned on, and the minimal time that we use to remove noise. 
     """
-    device_list = {"HomeD-meter1_2016.csv": [
-                        {"name": "Microwave [kW]", "onThreshold": 0.01, "minStateTime": timedelta(minutes= 2)},
-                        {"name": "WashingMachine [kW]", "onThreshold": 0.01, "minStateTime": timedelta(minutes= 10)},
+    device_list = {"HomeF-meter2_2016.csv": [
+                        {"name": "Microwave [kW]", "onThreshold": 0.01, "minStateTime": timedelta(minutes= 0)},
+                        {"name": "Washing_Machine [kW]", "onThreshold": 0.01, "minStateTime": timedelta(minutes= 10)},
                     ]
     }
 
     context_list = {
-        "weather-homeD2016.csv": [
+        "weather-homeF2016.csv": [
             {"name": "apparentTemperature"},
             {"name": "humidity"},
             {"name": "summary"},
