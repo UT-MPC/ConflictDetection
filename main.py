@@ -2,12 +2,14 @@ import json
 import logging
 import re
 import os
+from datetime import timedelta
 
 from casas_processor import *
 from config import *
 from utils import *
 from UmassProcessor import UmassProccessor
-from PatternBuilder import PatternBuilder
+from GridPatternBuilder import GridPatternBuilder
+from ContextAccessor import ContextAccessor
 
 logging.basicConfig(level=PROJ_LOGGING_LEVEL)
 
@@ -32,7 +34,22 @@ def test_umass():
     logging.debug("The number of context events from processed file: {}".format(
             {x: len(ctx_evts[x]) for x in ctx_evts}))
     
-    p_builder = PatternBuilder()
+    
+    grid_pattern_cfg = {
+        "time_delta" : timedelta(minutes=10),
+        "context_info" : ContextAccessor({
+            "min_of_day#NUM" : {
+                "range" : (0, 24*60),
+                "interval" : 20,
+            },
+            "humidity#NUM" : {
+                "range" : (0., 1.0),
+                "interval" : 0.1,
+            }
+        }),
+        "min_obs" : 10,
+    }
+    p_builder = GridPatternBuilder(grid_pattern_cfg)
     return p_builder.mine_patterns(ctx_evts, device_evts)
 
 
