@@ -22,8 +22,7 @@ def compile_casas_device():
         # Compile the regex for future use
         val[0] = re.compile(val[0])
 
-def test_umass():
-    test_project = "HomeF/2016"
+def test_umass(test_project="HomeF/2016"):
     project_path = os.path.join(DATA_ROOT, UMASS_ROOT, test_project)
     input_file = os.path.join(project_path, PROCESSED_FILENAME)
     with open(input_file) as f:
@@ -45,7 +44,11 @@ def test_umass():
             "humidity#NUM" : {
                 "range" : (0., 1.0),
                 "interval" : 0.1,
-            }
+            },
+            "day_of_week#CAT" : {
+                ""
+            },
+
         }),
         "min_obs" : 10,
     }

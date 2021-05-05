@@ -56,7 +56,7 @@ class UmassProccessor():
         return evt_filtered
 
     def device_evt_gen(self, device_data: pd.DataFrame, 
-                        devices: List[Dict]) -> Dict[str, List[Tuple[str, datetime]]]:
+                        devices: Dict) -> Dict[str, List[Tuple[str, datetime]]]:
         device_evts = {d: [] for d in devices.keys()}
         for index, row in device_data.iterrows():
             time = datetime.strptime(row[self.datetime_col], self.datetime_temp)
@@ -71,6 +71,10 @@ class UmassProccessor():
                 {d: devices[d].get("minStateTime", self.minimal_evt_duration_default) for d in devices})
         logging.debug("The number of device events after filter: {}".format(
             {x: len(evt_filtered[x]) for x in evt_filtered}))
+        evt_filtered = {
+            devices[d].get("deviceName", d) : evt_filtered[d]
+            for d in devices
+        }
         return evt_filtered
 
     def search_device(self, raw_data:Dict) -> Dict[str, List[Tuple[str, datetime]]]:

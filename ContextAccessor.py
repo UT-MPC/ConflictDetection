@@ -40,3 +40,11 @@ class ContextAccessor():
     def get_ctx_idx(self, ctx_name, ctx_val) -> int:
         r = self.get_ctx_range(ctx_name)
         return int((ctx_val - r[0]) / self. get_ctx_interval(ctx_name))
+
+    def get_coor_by_ctx(self, ctx_val: Dict) -> Tuple[int]:
+        cell_idx = tuple([
+            self.get_ctx_idx(k, ctx_val[k])
+            for k in ctx_val
+        ])
+        return cell_idx
+

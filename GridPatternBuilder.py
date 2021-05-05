@@ -41,10 +41,7 @@ class GridPatternBuilder():
                 self.device_state_mapping[d][i] = s
 
     def process_snapshot(self, space_mat, cur_time, ctx_snapshot, d_state : int):
-        cell_idx = tuple([
-            self.ctx_accessor.get_ctx_idx(k, ctx_snapshot[k])
-            for k in self.ctx_accessor.get_all_ctx_ordered()
-        ])
+        cell_idx = self.ctx_accessor.get_coor_by_ctx(ctx_snapshot)
         space_mat[cell_idx][d_state] += 1
 
         # If this cell has enough observations, we want to add it to the watch list
