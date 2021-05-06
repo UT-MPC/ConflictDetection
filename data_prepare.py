@@ -8,7 +8,7 @@ from UmassProcessor import UmassProccessor
 logging.basicConfig(level=PROJ_LOGGING_LEVEL)
 
 def prepare_data():
-    test_project = "HomeF/2016"
+    test_project = "HomeG/2016"
     project_path = os.path.join(DATA_ROOT, UMASS_ROOT, test_project)
     """
         The device dictionary consists of the informaiton of the deivces that will be used in this experiment. 
@@ -16,7 +16,13 @@ def prepare_data():
         in kW to indicate that the device is turned on, and the minimal time that we use to remove noise. 
     """
 
-    # device_list = {"HomeA-meter4_2016.csv": [
+    # device_list = {"HomeA-meter3_2016.csv": [
+    #                     {"name": "ElectricRange [kW]", 
+    #                     "onThreshold": 0.05, 
+    #                     "minStateTime": timedelta(minutes= 1),
+    #                     "deviceName": "Range"},
+    #                 ],
+    #                 "HomeA-meter4_2016.csv": [
     #                     {"name": "Microwave [kW]", 
     #                     "onThreshold": 0.1, 
     #                     "minStateTime": timedelta(minutes= 0),
@@ -73,22 +79,51 @@ def prepare_data():
     #                     "onThreshold": 0.01, 
     #                     "minStateTime": timedelta(minutes= 2), 
     #                     "deviceName": "WashingMachine"},
+    #                 ],
+    #                 "HomeD-meter2_2016.csv": [
+    #                     {"name": "Range [kW]", 
+    #                     "onThreshold": 0.01, 
+    #                     "minStateTime": timedelta(minutes= 2), 
+    #                     "deviceName": "Range"},
+    #                 ],
+    # }
+
+    # device_list = {"HomeF-meter2_2016.csv": [
+    #                     {"name": "Microwave [kW]", 
+    #                     "onThreshold": 0.01, 
+    #                     "minStateTime": timedelta(minutes= 1),
+    #                     "deviceName": "Microwave"},
+    #                     {"name": "Washing_Machine [kW]", 
+    #                     "onThreshold": 0.01, 
+    #                     "minStateTime": timedelta(minutes= 10),
+    #                     "deviceName": "WashingMachine"},
     #                 ]
     # }
 
-    device_list = {"HomeF-meter2_2016.csv": [
-                        {"name": "Microwave [kW]", 
+    device_list = {"HomeG-meter2_2016.csv": [
+                        {"name": "Dining + foyer lights [kW]", 
+                        "onThreshold": 0.02, 
+                        "minStateTime": timedelta(minutes= 2),
+                        "deviceName": "LivingLights"},
+                        {"name": "Office + sewing lights [kW]", 
+                        "onThreshold": 0.04, 
+                        "minStateTime": timedelta(minutes= 2),
+                        "deviceName": "HomeOffice"},
+                    ],
+                    "HomeG-meter4_2016.csv": [
+                        {"name": "Range oven [kW]", 
+                        "onThreshold": 0.03, 
+                        "minStateTime": timedelta(minutes= 2),
+                        "deviceName": "Range"},
+                        {"name": "Kitchen microwave [kW]", 
                         "onThreshold": 0.01, 
                         "minStateTime": timedelta(minutes= 1),
                         "deviceName": "Microwave"},
-                        {"name": "Washing_Machine [kW]", 
-                        "onThreshold": 0.01, 
-                        "minStateTime": timedelta(minutes= 10),
-                        "deviceName": "WashingMachine"},
                     ]
     }
+
     context_list = {
-        "weather-homeF2016.csv": [
+        "weather-homeG2016.csv": [
             {"name": "apparentTemperature"},
             {"name": "temperature"},
             {"name": "humidity"},

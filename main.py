@@ -37,18 +37,18 @@ def test_umass(test_project="HomeF/2016"):
     grid_pattern_cfg = {
         "time_delta" : timedelta(minutes=10),
         "context_info" : ContextAccessor({
-            "min_of_day#NUM" : {
+            TIME_CTX: {
                 "range" : (0, 24*60),
                 "interval" : 20,
             },
-            "humidity#NUM" : {
-                "range" : (0., 1.0),
-                "interval" : 0.1,
+            # "humidity#NUM" : {
+            #     "range" : (0., 1.0),
+            #     "interval" : 0.1,
+            # },
+            WEEKDAY_CTX: {
+                "range": (0, 6.1),
+                "interval": 1,
             },
-            "day_of_week#CAT" : {
-                ""
-            },
-
         }),
         "min_obs" : 10,
     }

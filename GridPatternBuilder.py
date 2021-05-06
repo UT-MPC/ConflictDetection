@@ -34,7 +34,12 @@ class GridPatternBuilder():
         }
         for d, d_evts in device_evts.items():
             act = set([x[0] for x in d_evts])
-            states = list(act)
+            if "off" in act:
+                act.remove("off")
+                states = ["off"]
+            else:
+                states = []
+            states.extend(list(act))
             for i, s in enumerate(states):
                 # Create a bidirectional mapping of the index of the state and the string of the state
                 self.device_state_mapping[d][s] = i
