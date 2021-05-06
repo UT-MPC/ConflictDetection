@@ -32,3 +32,13 @@ def datetime_to_seconds(dt: datetime) -> int:
 def datetime_to_mins(dt: datetime) -> int:
     t = dt.time()
     return t.hour * 60 + t.minute
+
+def bounding_box(points):
+    coordinates = list(zip(*points))
+    return [[min(coors) for coors in coordinates], [max(coors) for coors in coordinates]]
+
+def check_in_box(box, point):
+    for i, v in enumerate(point):
+        if v < box[0][i] or v > box[1][i]:
+            return False
+    return True

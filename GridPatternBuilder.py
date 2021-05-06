@@ -3,6 +3,7 @@ from datetime import timedelta
 import numpy as np
 import math
 from typing import Dict, List, Tuple
+from sklearn.tree import DecisionTreeRegressor
 
 from config import *
 from utils import *
@@ -104,8 +105,60 @@ class GridPatternBuilder():
                 )
         return device_patterns
 
+    def build_habit_groups(self, deivce_patterns: List) -> Dict[str, List]:
+        habit_group = {}
+        for device, data in deivce_patterns.items():
+            reg_x = []
+            reg_y = []
+            weight = []
+            for dis in data:
+                # Weigh the samples based on the number of occurance in this unit
+                cnt = sum(dis["distribution"])
+                weight.append(cnt)
+                reg_x.append(dis["coor"])
+                # The data that we want to learn by Decision Tree is the prob. distribution of the states
+                reg_y.append([
+                    x / cnt
+                    for x in dis["distribution"][1:]
+                ])
+
+            # TODO: we need to find a better value for ccp_alpha
+            regressor = DecisionTreeRegressor(ccp_alpha=20e-6)
+
+            # Train the Decision Tree Regressor model
+            regressor.fit(reg_x, reg_y, sample_weight=weight)
+
+            # Find the No. of leaf for each input
+            leaves = regressor.apply(reg_x)
+
+            groups = {}
+            boxes = []
+
+            # Group the input points based on the trained tree model
+            for i,l in enumerate(leaves):
+                if l not in groups:
+                    groups[l] = {"coors": [reg_x[i]], "tot_dis": np.array(reg_y[i]), "cnt": 1}
+                else:
+                    groups[l]["coors"].append(reg_x[i])
+                    groups[l]["tot_dis"] += reg_y[i]
+                    groups[l]["cnt"] += 1
+            
+            # Compute the bounding box of the found groups of points with its prob. distribution
+            for g, points in groups.items():
+                boxes.append({})
+                boxes[-1]["box"] = bounding_box(points["coors"])
+                boxes[-1]["dis"] = points["tot_dis"] / points["cnt"] 
+            
+            # These habit boxes are the mined habit pattern for each users
+            habit_group[device] = boxes
+        return habit_group
+
+
     def mine_patterns(self, ctx_evts: Dict, device_evts: Dict):
         self.preprocess(ctx_evts, device_evts)
         device_patterns = self.build_device_pattern_mat(ctx_evts, device_evts)
-        return device_patterns
+        
+        habit_groups =  self.build_habit_groups(device_patterns)
+
+        return habit_groups
 
