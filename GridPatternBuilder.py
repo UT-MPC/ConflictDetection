@@ -160,5 +160,5 @@ class GridPatternBuilder():
         
         habit_groups =  self.build_habit_groups(device_patterns)
 
-        return habit_groups
+        return habit_groups, device_patterns
 
