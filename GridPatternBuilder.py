@@ -23,28 +23,30 @@ class GridPatternBuilder():
         self.pattern_space = None
         self.pattern_sparse = []
         self.unit_indices = []
+        self.device_state_mapping = self.cfg.get("device_state_map", device_state_map)
 
     def time_delta(self)-> timedelta:
         return self.cfg.get("time_delta", self.default_time_delta)
 
     def preprocess(self, ctx_evts: Dict, device_evts:Dict):
         # Change device state string to a number and create a map to record it. 
-        self.device_state_mapping = {
-            d : {}
-            for d in device_evts
-        }
-        for d, d_evts in device_evts.items():
-            act = set([x[0] for x in d_evts])
-            if "off" in act:
-                act.remove("off")
-                states = ["off"]
-            else:
-                states = []
-            states.extend(list(act))
-            for i, s in enumerate(states):
-                # Create a bidirectional mapping of the index of the state and the string of the state
-                self.device_state_mapping[d][s] = i
-                self.device_state_mapping[d][i] = s
+        pass
+        # self.device_state_mapping = {
+        #     d : {}
+        #     for d in device_evts
+        # }
+        # for d, d_evts in device_evts.items():
+        #     act = set([x[0] for x in d_evts])
+        #     if "off" in act:
+        #         act.remove("off")
+        #         states = ["off"]
+        #     else:
+        #         states = []
+        #     states.extend(list(act))
+        #     for i, s in enumerate(states):
+        #         # Create a bidirectional mapping of the index of the state and the string of the state
+        #         self.device_state_mapping[d][s] = i
+        #         self.device_state_mapping[d][i] = s
 
     def process_snapshot(self, space_mat, cur_time, ctx_snapshot, d_state : int):
         cell_idx = self.ctx_accessor.get_coor_by_ctx(ctx_snapshot)
@@ -82,10 +84,8 @@ class GridPatternBuilder():
                         ctx_snapshot[c] = c_evts[c_evt_idx[c]][0]
                         c_evt_idx[c] += 1
                 # Add additional contextes
-                if self.ctx_accessor.have_ctx(TIME_CTX):
-                    ctx_snapshot[TIME_CTX] = datetime_to_mins(cur_time)
-                if self.ctx_accessor.have_ctx(WEEKDAY_CTX):
-                    ctx_snapshot[WEEKDAY_CTX] = cur_time.date().weekday()  
+                self.ctx_accessor.update_time_ctx(ctx_snapshot, cur_time)
+
                 cell = self.process_snapshot(space_mat, 
                             cur_time, ctx_snapshot, 
                             self.device_state_mapping[d][d_state])  

@@ -1,6 +1,10 @@
+from datetime import datetime
 import math
 from typing import List, Dict, Tuple
 
+
+from config import TIME_CTX, WEEKDAY_CTX
+from utils import datetime_to_mins
 all_ctx = {
     "weather" : {
 
@@ -47,6 +51,11 @@ class ContextAccessor():
             for k in ctx_val
         ])
         return cell_idx
-
+    
+    def update_time_ctx(self, ctx_snapshot: Dict, cur_time: datetime):
+        if self.have_ctx(TIME_CTX):
+            ctx_snapshot[TIME_CTX] = datetime_to_mins(cur_time)
+        if self.have_ctx(WEEKDAY_CTX):
+            ctx_snapshot[WEEKDAY_CTX] = cur_time.date().weekday() 
 
 
