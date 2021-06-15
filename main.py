@@ -30,16 +30,15 @@ def load_processed(project):
         (ctx_evts, device_evts) = json.loads(json_str, object_hook=json_datetime_hook)
     return ctx_evts, device_evts
 
-def test_umass(test_project="HomeF/2016"):
+def test_umass(test_project="HomeF/2016", ctx_info=None):
     ctx_evts, device_evts = load_processed(test_project)
     logging.debug("The number of device events from processed file: {}".format(
         {x: len(device_evts[x]) for x in device_evts}))
     logging.debug("The number of context events from processed file: {}".format(
             {x: len(ctx_evts[x]) for x in ctx_evts}))
     
-    grid_pattern_cfg = {
-        "time_delta" : timedelta(minutes=10),
-        "context_info" : ContextAccessor({
+    if ctx_info is None:
+        ctx_info = ContextAccessor({
             TIME_CTX: {
                 "range" : (0, 24*60),
                 "interval" : 20,
@@ -52,7 +51,10 @@ def test_umass(test_project="HomeF/2016"):
                 "range": (0, 6.1),
                 "interval": 1,
             },
-        }),
+        })
+    grid_pattern_cfg = {
+        "time_delta" : timedelta(minutes=10),
+        "context_info" : ctx_info,
         "min_obs" : 10,
     }
     p_builder = GridPatternBuilder(grid_pattern_cfg)

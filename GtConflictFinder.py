@@ -1,3 +1,4 @@
+import copy
 from datetime import datetime
 from datetime import timedelta
 import numpy as np
@@ -39,7 +40,7 @@ class GtConflictFinder():
             self.conflicts.append({
                 "type": "state_diff",
                 "device_states": copy.deepcopy(device_states),
-                "ctx": ctx_snapshot,
+                "ctx": copy.deepcopy(ctx_snapshot),
                 "cur_time": cur_time,
                 "device": device,
             })
@@ -51,7 +52,7 @@ class GtConflictFinder():
             self.conflicts.append({
                 "type": "capacity",
                 "device_states": copy.deepcopy(device_states),
-                "ctx": ctx_snapshot,
+                "ctx": copy.deepcopy(ctx_snapshot),
                 "cur_time": cur_time,
                 "device": device,
             })
