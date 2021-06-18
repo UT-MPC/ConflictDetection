@@ -13,7 +13,7 @@ class GtConflictFinder():
     # Find GroundTruth conflicts from the original data sequence
 
     # The default step size to sample the event sequence
-    default_time_delta = timedelta(minutes=10)
+    default_time_delta = timedelta(minutes=DEFAULT_TIME_INTERVAL_MIN)
 
     # To avoid runtime error, we have a default context interval of 1
     default_ctx_interval = 1
@@ -24,6 +24,9 @@ class GtConflictFinder():
         self.ctx_accessor = self.cfg["context_info"]
         self.capacity = self.cfg["capacity"]
         self.conflicts = []
+
+    def time_delta(self):
+        return self.cfg.get("time_delta", self.default_time_delta)
     
 
     def find_conflict(self, ctx_snapshot, device_states, capacity, cur_time, device):
@@ -102,9 +105,12 @@ class GtConflictFinder():
                 if min_evt_u == 0:
                     break
                 else:
-                    cur_time = min_evt_t
-                    d_evt_idx_per_u[min_evt_u] += 1
-                    device_states[min_evt_u] = device_evts[min_evt_u][d][d_evt_idx_per_u[min_evt_u]][0]
+                    if min_evt_t <= cur_time + self.time_delta():
+                        cur_time = min_evt_t
+                        d_evt_idx_per_u[min_evt_u] += 1
+                        device_states[min_evt_u] = device_evts[min_evt_u][d][d_evt_idx_per_u[min_evt_u]][0]
+                    else:
+                        cur_time += self.time_delta()
         return self.conflicts
 
 

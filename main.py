@@ -30,8 +30,24 @@ def load_processed(project):
         (ctx_evts, device_evts) = json.loads(json_str, object_hook=json_datetime_hook)
     return ctx_evts, device_evts
 
-def test_umass(test_project="HomeF/2016", ctx_info=None):
+def extract_train_data(ctx_evts, device_evts, train_ratio):
+    start_time = min([ctx_evts[x][0][1] for x in ctx_evts])
+    end_time = max([ctx_evts[x][-1][1] for x in ctx_evts])
+    total_time_range = end_time - start_time
+    train_end = start_time + total_time_range * train_ratio
+    ctx_evts = {
+        x: [evt for evt in ctx_evts[x] if evt[1] <= train_end]
+        for x in ctx_evts
+    }
+    device_evts = {
+        x: [evt for evt in device_evts[x] if evt[1] <= train_end]
+        for x in device_evts
+    }
+    return ctx_evts, device_evts
+
+def test_umass(test_project="HomeF/2016", ctx_info=None, train_ratio=0.7):
     ctx_evts, device_evts = load_processed(test_project)
+    ctx_evts, device_evts = extract_train_data(ctx_evts, device_evts, train_ratio)
     logging.debug("The number of device events from processed file: {}".format(
         {x: len(device_evts[x]) for x in device_evts}))
     logging.debug("The number of context events from processed file: {}".format(

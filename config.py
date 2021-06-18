@@ -14,6 +14,9 @@ NUMERIC_CTX_SUFFIX = "#NUM"
 
 TIME_CTX = "min_of_day" + NUMERIC_CTX_SUFFIX
 WEEKDAY_CTX = "day_of_week" + "#CAT"
+TEST_RATIO = 0.3
+DEFAULT_TIME_INTERVAL_MIN = 10
+
 
 on_off_states = {
     "off"   : 0,
