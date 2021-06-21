@@ -37,8 +37,31 @@ def bounding_box(points):
     coordinates = list(zip(*points))
     return [[min(coors) for coors in coordinates], [max(coors) for coors in coordinates]]
 
-def check_in_box(box, point):
-    for i, v in enumerate(point):
-        if v < box[0][i] or v > box[1][i]:
+
+
+def get_bound(box):
+    mid = len(box) // 2
+    return box[:mid], box[mid:]
+
+def compute_intersection_area(box_i, box_j):
+    # This method assume the input boxes does intersect
+    mins_i, maxs_i = get_bound(box_i)
+    mins_j, maxs_j = get_bound(box_j)
+    mins = [max(i,j) for i,j in zip(mins_i, mins_j)]
+    maxs = [min(i,j) for i,j in zip(maxs_i, maxs_j)]
+    return mins+maxs
+
+def does_contain(box_i, box_j):
+    mins_i, maxs_i = get_bound(box_i)
+    mins_j, maxs_j = get_bound(box_j)
+    for i in range(len(mins_i)):
+        if mins_i[i] < mins_j[i]  or maxs_i[i] > maxs_j[i]:
+            return False
+    return True
+
+def does_contain_point(box, point):
+    mins_i, maxs_i = get_bound(box)
+    for i in range(len(mins_i)):
+        if point[i] < mins_i[i] or point[i] > maxs_i[i]:
             return False
     return True
