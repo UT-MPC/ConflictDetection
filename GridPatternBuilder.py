@@ -29,8 +29,9 @@ class GridPatternBuilder():
         return self.cfg.get("time_delta", self.default_time_delta)
 
     def preprocess(self, ctx_evts: Dict, device_evts:Dict):
-        # Change device state string to a number and create a map to record it. 
         pass
+
+        # Change device state string to a number and create a map to record it. 
         # self.device_state_mapping = {
         #     d : {}
         #     for d in device_evts

@@ -21,8 +21,12 @@ class UmassProccessor():
     ctx_category_translate = {
         "summary": {'Breezy and Mostly Cloudy': 'Breezy',
             'Breezy and Partly Cloudy': 'Breezy',
-            'Drizzle': 'rain',
-            'Drizzle and Breezy': 'rain',
+            'Breezy and Overcast': 'Breezy',
+            'Light Rain and Breezy': 'Rain',
+            'Rain and Breezy': 'Rain',
+            'Humid and Partly Cloudy': 'Cloudy',
+            'Drizzle': 'Rain',
+            'Drizzle and Breezy': 'Rain',
             'Dry': 'Clear',
             'Flurries': 'Snow',
             'Flurries and Breezy': 'Snow',
@@ -30,9 +34,9 @@ class UmassProccessor():
             'Heavy Snow': 'Snow',
             'Light Rain': 'Rain',
             'Light Snow': 'Snow',
-            'Mostly Cloudy': 'Cloundy',
-            'Overcast': 'Cloundy',
-            'Partly Cloudy': 'Cloundy',}
+            'Mostly Cloudy': 'Cloudy',
+            'Overcast': 'Cloudy',
+            'Partly Cloudy': 'Cloudy',}
     }
 
     def __init__(self, project_folder:str, context_list: Dict, device_list: Dict):

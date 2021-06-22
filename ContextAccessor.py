@@ -3,18 +3,15 @@ import math
 from typing import List, Dict, Tuple
 
 
-from config import TIME_CTX, WEEKDAY_CTX
+from config import TIME_CTX, WEEKDAY_CTX, CATEGORICAL_CTX_SUFFIX
 from utils import datetime_to_mins
 all_ctx = {
-    "weather" : {
-
-    },
-    "temperature" : {
-
-    },
-    "humidity" : {
-        
-    }
+    "weather" : {},
+    "temperature" : {},
+    "humidity" : {}
+}
+CAT_CTX_ORDER = {
+    "summary#CAT": ["Breezy", "Rain", "Clear", "Snow", "Cloudy", "Foggy"]
 }
 
 class ContextAccessor():
@@ -23,9 +20,13 @@ class ContextAccessor():
         self.ctx_info = ctx_info
 
     def get_ctx_interval(self, ctx_name:str):
+        if CATEGORICAL_CTX_SUFFIX in ctx_name:
+            return 1
         return self.ctx_info[ctx_name]["interval"]
 
     def get_ctx_range(self, ctx_name:str):
+        if CATEGORICAL_CTX_SUFFIX in ctx_name:
+            return [0, len(CAT_CTX_ORDER[ctx_name])]
         return self.ctx_info[ctx_name]["range"]
 
     def get_all_ctx_ordered(self) -> List[str]:
@@ -38,10 +39,12 @@ class ContextAccessor():
         space_shape = []
         for k in self.ctx_info:
             r = self.get_ctx_range(k)
-            space_shape.append(math.ceil((r[1] - r[0]) / self.get_ctx_interval(k)))
+            space_shape.append(1+math.ceil((r[1] - r[0]) / self.get_ctx_interval(k)))
         return tuple(space_shape)
 
     def get_ctx_idx(self, ctx_name, ctx_val) -> int:
+        if CATEGORICAL_CTX_SUFFIX in ctx_name:
+            return CAT_CTX_ORDER[ctx_name].index(ctx_val)
         r = self.get_ctx_range(ctx_name)
         return int((ctx_val - r[0]) / self. get_ctx_interval(ctx_name))
 
