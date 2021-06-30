@@ -124,7 +124,7 @@ class GridPatternBuilder():
                 ])
 
             # TODO: we need to find a better value for ccp_alpha
-            regressor = DecisionTreeRegressor(ccp_alpha=20e-6)
+            regressor = DecisionTreeRegressor(ccp_alpha=self.cfg.get("alpha",DEFAULT_ALPHA))
 
             # Train the Decision Tree Regressor model
             regressor.fit(reg_x, reg_y, sample_weight=weight)

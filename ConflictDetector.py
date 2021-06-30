@@ -21,7 +21,17 @@ def device_capacity_conflict(dis, capacity):
         for c in cbs:
             pp = 1
             for i, p in enumerate(probs):
-                pp *= p if i in c else (1-p)
+                # Multiply the probability of off for non-selected devices
+                if i not in c:
+                    pp *= (1-p)
+            sel_prob = 0
+            for idx in range(len(dis[0])):
+                sel_pp = 1
+                for i in c:
+                    # Multiply the probability of staying in one state
+                    sel_pp *= dis[i][idx]
+                sel_prob += sel_pp
+            pp *= sel_prob
             prob -= pp
     return prob
 
@@ -88,17 +98,23 @@ class ConflictDetector:
                             cap_ints = list(capacity_conflict_tree[device].intersection(cap_box, objects=True))
                             box_to_insert = ints.bbox
                             obj_to_insert = ints.object
+                            is_included = False
                             for inter_box in cap_ints:
-                                if does_contain(cap_box, inter_box.bbox):
+                                if (not is_included) and does_contain(cap_box, inter_box.bbox):
                                     capacity_conflict_tree[device].delete(inter_box.id, inter_box.bbox)
                                     dis_union = inter_box.object.union(ints.object)
                                     box_to_insert = inter_box.bbox
                                     obj_to_insert = dis_union
+                                    is_included = True
                                 if does_contain(inter_box.bbox, cap_box):
                                     capacity_conflict_tree[device].delete(inter_box.id, inter_box.bbox)
                                     dis_union = inter_box.object.union(ints.object)
                                     box_to_insert = cap_box
                                     obj_to_insert = dis_union
+                                # capacity_conflict_tree[device].delete(inter_box.id, inter_box.bbox)
+                                # dis_union = inter_box.object.union(ints)
+                                # box_to_insert = compute_union_area(inter_box.bbox, cap_box)
+                                # obj_to_insert = dis_union
 
                             capacity_conflict_tree[device].insert(
                                 id=capacity_conflict_id[device],

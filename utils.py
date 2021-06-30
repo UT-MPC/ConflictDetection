@@ -51,6 +51,13 @@ def compute_intersection_area(box_i, box_j):
     maxs = [min(i,j) for i,j in zip(maxs_i, maxs_j)]
     return mins+maxs
 
+def compute_union_area(box_i, box_j):
+    mins_i, maxs_i = get_bound(box_i)
+    mins_j, maxs_j = get_bound(box_j)
+    mins = [min(i,j) for i,j in zip(mins_i, mins_j)]
+    maxs = [max(i,j) for i,j in zip(maxs_i, maxs_j)]
+    return mins+maxs
+
 def does_contain(box_i, box_j):
     mins_i, maxs_i = get_bound(box_i)
     mins_j, maxs_j = get_bound(box_j)
@@ -65,3 +72,11 @@ def does_contain_point(box, point):
         if point[i] < mins_i[i] or point[i] > maxs_i[i]:
             return False
     return True
+
+def compute_area(box):
+    mins, maxs = get_bound(box)
+    area = 1
+    for i, low in enumerate(mins):
+        if maxs[i] - low != 0:
+            area *= (maxs[i] - low)
+    return area

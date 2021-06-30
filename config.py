@@ -17,6 +17,8 @@ WEEKDAY_CTX = "day_of_week" + NUMERIC_CTX_SUFFIX
 TEST_RATIO = 0.3
 DEFAULT_TIME_INTERVAL_MIN = 10
 
+DEFAULT_ALPHA = 20e-6
+
 
 on_off_states = {
     "off"   : 0,

@@ -11,7 +11,6 @@ from UmassProcessor import UmassProccessor
 from GridPatternBuilder import GridPatternBuilder
 from ContextAccessor import ContextAccessor
 
-logging.basicConfig(level=PROJ_LOGGING_LEVEL)
 
 # Device Type -> Regex to match for the device, the corresponding operations
 device_set = {
@@ -45,7 +44,7 @@ def extract_train_data(ctx_evts, device_evts, train_ratio):
     }
     return ctx_evts, device_evts
 
-def test_umass(test_project="HomeF/2016", ctx_info=None, train_ratio=0.7):
+def test_umass(test_project="HomeF/2016", ctx_info=None, train_ratio=0.7, ccp_alpha=DEFAULT_ALPHA):
     ctx_evts, device_evts = load_processed(test_project)
     ctx_evts, device_evts = extract_train_data(ctx_evts, device_evts, train_ratio)
     logging.debug("The number of device events from processed file: {}".format(
@@ -72,12 +71,15 @@ def test_umass(test_project="HomeF/2016", ctx_info=None, train_ratio=0.7):
         "time_delta" : timedelta(minutes=10),
         "context_info" : ctx_info,
         "min_obs" : 10,
+        "alpha": ccp_alpha,
     }
     p_builder = GridPatternBuilder(grid_pattern_cfg)
     return p_builder.mine_patterns(ctx_evts, device_evts)
 
 
 def main():
+    logging.basicConfig(level=PROJ_LOGGING_LEVEL)
+
     test_umass()
 
 if __name__ == "__main__":

@@ -61,4 +61,11 @@ class ContextAccessor():
         if self.have_ctx(WEEKDAY_CTX):
             ctx_snapshot[WEEKDAY_CTX] = cur_time.date().weekday() 
 
+    def get_space_area(self):
+        shape = self.get_ctx_space_shape()
+        area = 1
+        for s in shape:
+            area *= (s-1)
+        return area
+
 
