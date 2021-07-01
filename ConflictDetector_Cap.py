@@ -5,11 +5,8 @@ from itertools import combinations
 from ContextAccessor import ContextAccessor
 from utils import *
 
-def device_state_conflict(dis_i, dis_j, shareable_flag = True):
+def device_state_conflict(dis_i, dis_j):
     total_j = sum(dis_j)
-    total_i = sum(dis_i)
-    if not shareable_flag:
-        return total_i * total_j
     prob = 0
     for idx, p in enumerate(dis_i):
         prob += p * (total_j -  dis_j[idx])
@@ -88,9 +85,6 @@ class ConflictDetector:
                                 for x in ints.object
                             ]
                             prob = device_state_conflict(dis[0], dis[1])
-                            if self.capacity[device] == 1:
-                                prob = device_state_conflict(dis[0], dis[1], False)
-                            
                             if prob > min_conflict_prob:
                                 final_conflicts[device].append({
                                     "users": ints.object,

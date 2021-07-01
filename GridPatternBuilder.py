@@ -24,6 +24,7 @@ class GridPatternBuilder():
         self.pattern_sparse = []
         self.unit_indices = []
         self.device_state_mapping = self.cfg.get("device_state_map", device_state_map)
+        self.test_dates = self.cfg["test_dates"]
 
     def time_delta(self)-> timedelta:
         return self.cfg.get("time_delta", self.default_time_delta)
@@ -58,6 +59,9 @@ class GridPatternBuilder():
             return cell_idx
         return None
 
+    def verify_train(self, cur_time):
+        return not (cur_time.date() in self.test_dates)
+
     def build_device_pattern_mat(self, ctx_evts:Dict, device_evts:Dict):
         device_patterns = {
             d : []
@@ -78,21 +82,26 @@ class GridPatternBuilder():
             space_mat= np.zeros(tmp)
             cell_to_process = []
             while cur_time < end_time:
-                for c, c_evts in ctx_evts.items():
-                    if not self.ctx_accessor.have_ctx(c):
-                        continue
-                    while c_evt_idx[c] < len(c_evts) and c_evts[c_evt_idx[c]][1] <= cur_time:
-                        ctx_snapshot[c] = c_evts[c_evt_idx[c]][0]
-                        c_evt_idx[c] += 1
-                # Add additional contextes
-                self.ctx_accessor.update_time_ctx(ctx_snapshot, cur_time)
-
-                cell = self.process_snapshot(space_mat, 
-                            cur_time, ctx_snapshot, 
-                            self.device_state_mapping[d][d_state])  
-                if cell:
-                    cell_to_process.append(cell)
-
+                if self.verify_train(cur_time):
+                    # We randomly select some dates as test dates that we need to exclude 
+                    # from the training process
+                    for c, c_evts in ctx_evts.items():
+                        if not self.ctx_accessor.have_ctx(c):
+                            continue
+                        while c_evt_idx[c] < len(c_evts) and c_evts[c_evt_idx[c]][1] <= cur_time:
+                            ctx_snapshot[c] = c_evts[c_evt_idx[c]][0]
+                            c_evt_idx[c] += 1
+                    # Add additional contextes
+                    self.ctx_accessor.update_time_ctx(ctx_snapshot, cur_time)
+                    cell = self.process_snapshot(space_mat, 
+                                cur_time, ctx_snapshot, 
+                                self.device_state_mapping[d][d_state])  
+                    if cell:
+                        cell_to_process.append(cell)
+                else:
+                    skipped_dates.add(cur_time.date())
+                
+                # Proceed to the next timestamp
                 if d_evts[cur_evt_idx + 1][1] <= cur_time + self.time_delta():
                     cur_time = d_evts[cur_evt_idx + 1][1]
                     cur_evt_idx += 1
@@ -158,7 +167,6 @@ class GridPatternBuilder():
     def mine_patterns(self, ctx_evts: Dict, device_evts: Dict):
         self.preprocess(ctx_evts, device_evts)
         device_patterns = self.build_device_pattern_mat(ctx_evts, device_evts)
-        
         habit_groups =  self.build_habit_groups(device_patterns)
 
         return habit_groups, device_patterns

@@ -19,6 +19,8 @@ DEFAULT_TIME_INTERVAL_MIN = 10
 
 DEFAULT_ALPHA = 20e-6
 
+EXP_RANDOM_SEED = 42
+
 
 on_off_states = {
     "off"   : 0,

@@ -1,6 +1,7 @@
 import json
 import logging
 import re
+import random
 import os
 from datetime import timedelta
 
@@ -10,6 +11,7 @@ from utils import *
 from UmassProcessor import UmassProccessor
 from GridPatternBuilder import GridPatternBuilder
 from ContextAccessor import ContextAccessor
+
 
 
 # Device Type -> Regex to match for the device, the corresponding operations
@@ -44,9 +46,27 @@ def extract_train_data(ctx_evts, device_evts, train_ratio):
     }
     return ctx_evts, device_evts
 
-def test_umass(test_project="HomeF/2016", ctx_info=None, train_ratio=0.7, ccp_alpha=DEFAULT_ALPHA):
+def generate_test_date(test_projects, test_ratio = TEST_RATIO, true_random = True):
+    start_time = []
+    end_time = []
+    for project in test_projects:
+        ctx_evts, device_evts = load_processed(project)
+        start_time.append(min([ctx_evts[x][0][1] for x in ctx_evts]))
+        end_time.append(max([ctx_evts[x][-1][1] for x in ctx_evts]))
+    s = min(start_time)
+    e = max(end_time)
+    total_time_range = e - s
+    days = int(total_time_range.days)
+    if not true_random:
+        random.seed(EXP_RANDOM_SEED)
+    sel = random.sample(range(days), int(days*test_ratio))
+    return set([(s + timedelta(days=x)).date() for x in sel])
+
+def test_umass(test_project="HomeF/2016", ctx_info=None, train_ratio=1-TEST_RATIO, 
+                ccp_alpha=DEFAULT_ALPHA, test_dates=set()):
     ctx_evts, device_evts = load_processed(test_project)
-    ctx_evts, device_evts = extract_train_data(ctx_evts, device_evts, train_ratio)
+    if len(test_dates) == 0:
+        ctx_evts, device_evts = extract_train_data(ctx_evts, device_evts, train_ratio)
     logging.debug("The number of device events from processed file: {}".format(
         {x: len(device_evts[x]) for x in device_evts}))
     logging.debug("The number of context events from processed file: {}".format(
@@ -72,6 +92,7 @@ def test_umass(test_project="HomeF/2016", ctx_info=None, train_ratio=0.7, ccp_al
         "context_info" : ctx_info,
         "min_obs" : 10,
         "alpha": ccp_alpha,
+        "test_dates": test_dates
     }
     p_builder = GridPatternBuilder(grid_pattern_cfg)
     return p_builder.mine_patterns(ctx_evts, device_evts)

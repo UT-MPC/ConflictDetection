@@ -25,7 +25,7 @@ test_projects = [
 ]
 
 capacity = {
-    "Range" : 2,
+    "Range" : 1,
     "Microwave": 1,
     "LivingLights": 0,
     "HomeOffice": 1,
