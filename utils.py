@@ -35,13 +35,21 @@ def datetime_to_mins(dt: datetime) -> int:
 
 def bounding_box(points):
     coordinates = list(zip(*points))
-    return [[min(coors) for coors in coordinates], [max(coors) for coors in coordinates]]
+    return [[min(coors) for coors in coordinates], [max(coors)+1 for coors in coordinates]]
 
 
 
 def get_bound(box):
     mid = len(box) // 2
     return box[:mid], box[mid:]
+
+def does_intersect(box_i, box_j):
+    mins_i, maxs_i = get_bound(box_i)
+    mins_j, maxs_j = get_bound(box_j)
+    for idx in range(len(mins_i)):
+        if maxs_j[idx] <= mins_i[idx] or maxs_i[idx] <= mins_j[idx]:
+            return False
+    return True
 
 def compute_intersection_area(box_i, box_j):
     # This method assume the input boxes does intersect
@@ -69,7 +77,7 @@ def does_contain(box_i, box_j):
 def does_contain_point(box, point):
     mins_i, maxs_i = get_bound(box)
     for i in range(len(mins_i)):
-        if point[i] < mins_i[i] or point[i] > maxs_i[i]:
+        if point[i] < mins_i[i] or point[i] >= maxs_i[i]:
             return False
     return True
 
@@ -77,6 +85,8 @@ def compute_area(box):
     mins, maxs = get_bound(box)
     area = 1
     for i, low in enumerate(mins):
-        if maxs[i] - low != 0:
             area *= (maxs[i] - low)
     return area
+
+def match_user_groups(user_group_1, user_group_2):
+    return set(user_group_1) == set(user_group_2)

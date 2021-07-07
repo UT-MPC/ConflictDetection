@@ -90,7 +90,6 @@ def test_umass(test_project="HomeF/2016", ctx_info=None, train_ratio=1-TEST_RATI
     grid_pattern_cfg = {
         "time_delta" : timedelta(minutes=10),
         "context_info" : ctx_info,
-        "min_obs" : 10,
         "alpha": ccp_alpha,
         "test_dates": test_dates
     }

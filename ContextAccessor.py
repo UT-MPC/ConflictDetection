@@ -65,7 +65,7 @@ class ContextAccessor():
         shape = self.get_ctx_space_shape()
         area = 1
         for s in shape:
-            area *= (s-1)
+            area *= s
         return area
 
 

@@ -55,7 +55,7 @@ class GridPatternBuilder():
         space_mat[cell_idx][d_state] += 1
 
         # If this cell has enough observations, we want to add it to the watch list
-        if sum(space_mat[cell_idx]) == self.cfg.get("min_obs", 10):
+        if sum(space_mat[cell_idx]) == self.cfg.get("min_obs", MIN_OBS_GRID):
             return cell_idx
         return None
 
@@ -98,8 +98,6 @@ class GridPatternBuilder():
                                 self.device_state_mapping[d][d_state])  
                     if cell:
                         cell_to_process.append(cell)
-                else:
-                    skipped_dates.add(cur_time.date())
                 
                 # Proceed to the next timestamp
                 if d_evts[cur_evt_idx + 1][1] <= cur_time + self.time_delta():

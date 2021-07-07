@@ -38,6 +38,36 @@ def device_capacity_conflict(dis, capacity):
             prob -= pp
     return prob
 
+def get_true_intersection(rTree, box, isObjects=True):
+    # Since our right edge is not included in the range, 
+    # the intersection in RTree is different from ours. We need to recheck the intersection
+    intersects = rTree.intersection(box, objects=isObjects)
+    return [ints for ints in intersects if does_intersect(ints.bbox, box)]
+
+class ConflictPredicator:
+    def __init__(self, ctx_info: ContextAccessor, all_conflicts):
+        super().__init__()
+        self.ctx_info = ctx_info
+        self.r_tree = {}
+        p = index.Property()
+        p.dimension = len(self.ctx_info.get_all_ctx_ordered())
+        for d in all_conflicts:
+            self.r_tree[d] = index.Index(properties = p)
+            for i, c in enumerate(all_conflicts[d]):
+                self.r_tree[d].insert(id=i, coordinates=c["box"], obj=c)
+
+    def get_prob_conflict(self, ctx, user_pair, device):
+        upper = tuple([x + 1 for x in ctx])
+        ctx = ctx + upper
+        ints = get_true_intersection(self.r_tree[device], ctx)
+        for intersection in ints:
+            con = intersection.object
+            if match_user_groups(user_pair, [x[0] for x in con["users"]]):
+                return con["prob"]
+        # if none of the conflict contains the context, then we return 0
+        return 0.
+
+
 class ConflictDetector:
     def __init__(self, ctx_info: ContextAccessor, device_capacity: Dict):
         super().__init__()
@@ -58,7 +88,7 @@ class ConflictDetector:
                 r_tree = index.Index(properties=p)
                 for i in range(len(groups)):
                     bound = groups[i]["box"][0] + groups[i]["box"][1] 
-                    r_tree.insert(id=i, coordinates=bound, obj={(user_i, i)})
+                    r_tree.insert(id=i, coordinates=bound, obj={(users[user_i], i)})
                 tree_id = len(groups)
                 for user_j in range(user_i+1, len(users)):
                     if device not in habit_groups[users[user_j]]:
@@ -67,16 +97,16 @@ class ConflictDetector:
                     j_groups = habit_groups[users[user_j]][device]
                     for j, g in enumerate(j_groups):
                         bbox = g["box"][0] + g["box"][1]
-                        intersects = list(r_tree.intersection(bbox, objects=True))
+                        intersects = get_true_intersection(r_tree, bbox)
                         for intersect in intersects:
                             intersect_box = compute_intersection_area(intersect.bbox, bbox)
-                            dis = intersect.object.union({(user_j, j)})
+                            dis = intersect.object.union({(users[user_j], j)})
                             r_tree.insert(id=tree_id, coordinates=intersect_box, obj=dis)
                             tree_id += 1
                 # Use the original box to intersect all
                 for i in range(len(groups)):
                     bound = groups[i]["box"][0] + groups[i]["box"][1] 
-                    intersects = list(r_tree.intersection(bound, objects=True))
+                    intersects = get_true_intersection(r_tree, bound)
                     # intersects = sorted(intersects, key = lambda x: len(x.object))
 
                     # First we calculate conflicts between two users
@@ -84,7 +114,7 @@ class ConflictDetector:
                         if len(ints.object) == 2:
                             # compute conflict between two users
                             dis = [
-                                habit_groups[users[x[0]]][device][x[1]]["dis"]
+                                habit_groups[x[0]][device][x[1]]["dis"]
                                 for x in ints.object
                             ]
                             prob = device_state_conflict(dis[0], dis[1])
@@ -98,10 +128,11 @@ class ConflictDetector:
                                     "prob": prob,
                                     "type": "DiffState",
                                 })
-                        if len(ints.object) > self.capacity[device] and self.capacity[device] != 0:
+                            continue
+                        if len(ints.object) > self.capacity[device] and self.capacity[device] != 0 and self.capacity[device] != 1:
                             # Put capacity conflicts into a R-tree for further analysis
                             cap_box = ints.bbox
-                            cap_ints = list(capacity_conflict_tree[device].intersection(cap_box, objects=True))
+                            cap_ints = get_true_intersection(capacity_conflict_tree[device], cap_box)
                             box_to_insert = ints.bbox
                             obj_to_insert = ints.object
                             is_included = False
@@ -135,10 +166,10 @@ class ConflictDetector:
             for x in self.ctx_info.get_ctx_space_shape()
         ]
         for d, tree in capacity_conflict_tree.items():
-            conflicts = list(tree.intersection(max_box, objects=True))
+            conflicts = get_true_intersection(tree, max_box)
             for c in conflicts:
                 dis = [ 
-                    habit_groups[users[x[0]]][d][x[1]]["dis"]
+                    habit_groups[x[0]][d][x[1]]["dis"]
                     for x in c.object
                 ]
                 prob = device_capacity_conflict(dis, self.capacity[d])
