@@ -143,6 +143,7 @@ class GridPatternBuilder():
             boxes = []
 
             # Group the input points based on the trained tree model
+            weather = set()
             for i,l in enumerate(leaves):
                 if l not in groups:
                     groups[l] = {"coors": [reg_x[i]], "tot_dis": np.array(reg_y[i]), "cnt": 1}
@@ -150,7 +151,7 @@ class GridPatternBuilder():
                     groups[l]["coors"].append(reg_x[i])
                     groups[l]["tot_dis"] += reg_y[i]
                     groups[l]["cnt"] += 1
-            
+            print(weather)
             # Compute the bounding box of the found groups of points with its prob. distribution
             for g, points in groups.items():
                 boxes.append({})

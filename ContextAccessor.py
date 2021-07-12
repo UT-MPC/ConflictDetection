@@ -11,14 +11,14 @@ all_ctx = {
     "humidity" : {}
 }
 CAT_CTX_ORDER = {
-    "summary#CAT": ["Breezy", "Rain", "Clear", "Snow", "Cloudy", "Foggy"]
+    "summary#CAT": ["Clear", "Breezy", "Cloudy", "Rain", "Snow", "Foggy"]
 }
 
 class ContextAccessor():
     def __init__(self, ctx_info = all_ctx):
         super().__init__()
         self.ctx_info = ctx_info
-
+        
     def get_ctx_interval(self, ctx_name:str):
         if CATEGORICAL_CTX_SUFFIX in ctx_name:
             return 1
@@ -68,4 +68,18 @@ class ContextAccessor():
             area *= s
         return area
 
-
+    def translate_ctx_box(self, box):
+        box_str = {}
+        ctx_len = len(self.get_all_ctx_ordered())
+        # box should follow the format of [min, min,..., max, max]
+        for idx, ctx in enumerate(self.get_all_ctx_ordered()):
+            r = self.get_ctx_range(ctx)
+            interval = self.get_ctx_interval(ctx)
+            if  ctx in CAT_CTX_ORDER:
+                box_str[ctx] = {
+                    CAT_CTX_ORDER[ctx][x]
+                    for x in range(box[idx], box[ctx_len + idx])
+                }
+            else:
+                box_str[ctx] = [r[0] + box[idx] * interval, r[0] + box[ctx_len + idx] * interval]
+        return box_str
