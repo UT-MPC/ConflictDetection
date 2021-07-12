@@ -131,17 +131,21 @@ def generate_sim_data(ctx_evts, ctx_accessor, target_folder, device_info):
             if state != device_state[d]:
                 device_evts[d].append([state, cur_time])
             device_state[d] = state
+        
         next_t = datetime.max
-        next_c = ""
+        next_c = []
         for c in ctx_evts:
-            if ctx_idx[c] + 1 < len(ctx_evts[c]) and \
-                ctx_evts[c][ctx_idx[c] + 1][1] < next_t:
-                next_t = ctx_evts[c][ctx_idx[c] + 1][1]
-                next_c = c
-        if next_t < cur_time + sim_time_min_delta:
+            if ctx_idx[c] + 1 < len(ctx_evts[c]):
+                if ctx_evts[c][ctx_idx[c] + 1][1] < next_t:
+                    next_c = [c]
+                    next_t = ctx_evts[c][ctx_idx[c] + 1][1]
+                elif ctx_evts[c][ctx_idx[c] + 1][1] == next_t:
+                    next_c.append(c)
+        if next_t <= cur_time + sim_time_min_delta:
             cur_time = next_t
-            ctx_idx[next_c] += 1
-            ctx_snapshot[next_c] = ctx_evts[next_c][ctx_idx[next_c]][0]
+            for c in next_c:
+                ctx_idx[c] += 1
+                ctx_snapshot[c] = ctx_evts[c][ctx_idx[c]][0]
         else:
             cur_time += sim_time_min_delta
     with open(os.path.join(target_folder, SIM_FILENAME), 'w') as f:

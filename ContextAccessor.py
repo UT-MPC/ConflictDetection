@@ -68,6 +68,17 @@ class ContextAccessor():
             area *= s
         return area
 
+    def translate_ctx_point(self, point):
+        p_str = {}
+        for idx, ctx in enumerate(self.get_all_ctx_ordered()):
+            r = self.get_ctx_range(ctx)
+            interval = self.get_ctx_interval(ctx)
+            if  ctx in CAT_CTX_ORDER:
+                p_str[ctx] = CAT_CTX_ORDER[ctx][point[idx]]
+            else:
+                p_str[ctx] = r[0] + point[idx] * interval
+        return p_str
+
     def translate_ctx_box(self, box):
         box_str = {}
         ctx_len = len(self.get_all_ctx_ordered())
@@ -78,7 +89,7 @@ class ContextAccessor():
             if  ctx in CAT_CTX_ORDER:
                 box_str[ctx] = {
                     CAT_CTX_ORDER[ctx][x]
-                    for x in range(box[idx], box[ctx_len + idx])
+                    for x in range(int(box[idx]), int(box[ctx_len + idx]))
                 }
             else:
                 box_str[ctx] = [r[0] + box[idx] * interval, r[0] + box[ctx_len + idx] * interval]

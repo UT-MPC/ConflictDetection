@@ -126,22 +126,26 @@ class GtConflictFinder():
                     coor = self.ctx_accessor.get_coor_by_ctx(ctx_snapshot)
                     state_cnt[coor] += 1
                     self.find_conflict_pairwise(ctx_snapshot, device_states, cap, cur_time, d)
-
                 # Find the next device state change event
                 min_evt_t = datetime.max
-                min_evt_u = 0
+                min_evt_u = []
                 for u in d_evt_idx_per_u:
                     evt_lst = device_evts[u][d]
-                    if d_evt_idx_per_u[u] + 1 < len(evt_lst) and evt_lst[d_evt_idx_per_u[u] + 1][1] < min_evt_t:
-                        min_evt_t = evt_lst[d_evt_idx_per_u[u] + 1][1]
-                        min_evt_u = u
+                    if d_evt_idx_per_u[u] + 1 < len(evt_lst):
+                        if evt_lst[d_evt_idx_per_u[u] + 1][1] < min_evt_t:
+                            min_evt_t = evt_lst[d_evt_idx_per_u[u] + 1][1]
+                            min_evt_u = [u]
+                        elif evt_lst[d_evt_idx_per_u[u] + 1][1] == min_evt_t:
+                            min_evt_u.append(u)
+
                 if min_evt_u == 0:
                     break
                 else:
                     if min_evt_t <= cur_time + self.time_delta():
                         cur_time = min_evt_t
-                        d_evt_idx_per_u[min_evt_u] += 1
-                        device_states[min_evt_u] = device_evts[min_evt_u][d][d_evt_idx_per_u[min_evt_u]][0]
+                        for u in min_evt_u:
+                            d_evt_idx_per_u[u] += 1
+                            device_states[u] = device_evts[u][d][d_evt_idx_per_u[u]][0]
                     else:
                         cur_time += self.time_delta()
         return self.conflicts, state_cnt
