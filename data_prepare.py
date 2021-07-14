@@ -18,13 +18,13 @@ def prepare_data():
 
     # device_list = {"HomeA-meter3_2016.csv": [
     #                     {"name": "ElectricRange [kW]", 
-    #                     "onThreshold": 0.05, 
+    #                     "onThreshold": 1.0, 
     #                     "minStateTime": timedelta(minutes= 1),
     #                     "deviceName": "Range"},
     #                 ],
     #                 "HomeA-meter4_2016.csv": [
     #                     {"name": "Microwave [kW]", 
-    #                     "onThreshold": 0.1, 
+    #                     "onThreshold": 1.0, 
     #                     "minStateTime": timedelta(minutes= 0),
     #                     "deviceName": "Microwave"},
     #                     {"name": "KitchenDenLights [kW]", 
@@ -33,7 +33,7 @@ def prepare_data():
     #                     "deviceName": "LivingLights"},
     #                     {"name": "OfficeLights [kW]", 
     #                     "onThreshold": 0.15, 
-    #                     "minStateTime": timedelta(minutes= 2),
+    #                     "minStateTime": timedelta(minutes= 10),
     #                     "deviceName": "HomeOffice"},
     #                 ],
     # }
@@ -44,7 +44,7 @@ def prepare_data():
     #                     "minStateTime": timedelta(minutes= 2), 
     #                     "deviceName": "LivingLights"},
     #                     {"name": "Microwave [kW]", 
-    #                     "onThreshold": 0.02, 
+    #                     "onThreshold": 0.25, 
     #                     "minStateTime": timedelta(minutes= 1), 
     #                     "deviceName": "Microwave"},
     #                 ]
@@ -52,11 +52,11 @@ def prepare_data():
 
     # device_list = { "HomeC-meter1_2016.csv": [
     #                     {"name": "Home office [kW]", 
-    #                     "onThreshold": 0.2, 
-    #                     "minStateTime": timedelta(minutes= 2), 
+    #                     "onThreshold": 0.3, 
+    #                     "minStateTime": timedelta(minutes= 10), 
     #                     "deviceName": "HomeOffice"},
     #                     {"name": "Microwave [kW]", 
-    #                     "onThreshold": 0.1, 
+    #                     "onThreshold": 1.0, 
     #                     "minStateTime": timedelta(minutes= 1), 
     #                     "deviceName": "Microwave"},
     #                     {"name": "Living room [kW]", 
@@ -66,31 +66,31 @@ def prepare_data():
     #                 ]
     # }
 
-    # device_list = { "HomeD-meter1_2016.csv": [
-    #                     {"name": "Microwave [kW]", 
-    #                     "onThreshold": 0.1, 
-    #                     "minStateTime": timedelta(minutes= 1), 
-    #                     "deviceName": "Microwave"},
-    #                     {"name": "KitchenLighting [kW]", 
-    #                     "onThreshold": 0.01, 
-    #                     "minStateTime": timedelta(minutes= 1), 
-    #                     "deviceName": "LivingLights"},
-    #                     {"name": "WashingMachine [kW]", 
-    #                     "onThreshold": 0.01, 
-    #                     "minStateTime": timedelta(minutes= 2), 
-    #                     "deviceName": "WashingMachine"},
-    #                 ],
-    #                 "HomeD-meter2_2016.csv": [
-    #                     {"name": "Range [kW]", 
-    #                     "onThreshold": 0.01, 
-    #                     "minStateTime": timedelta(minutes= 2), 
-    #                     "deviceName": "Range"},
-    #                 ],
-    # }
+    device_list = { "HomeD-meter1_2016.csv": [
+                        {"name": "Microwave [kW]", 
+                        "onThreshold": 0.1, 
+                        "minStateTime": timedelta(minutes= 1), 
+                        "deviceName": "Microwave"},
+                        {"name": "KitchenLighting [kW]", 
+                        "onThreshold": 0.01, 
+                        "minStateTime": timedelta(minutes= 1), 
+                        "deviceName": "LivingLights"},
+                        {"name": "WashingMachine [kW]", 
+                        "onThreshold": 0.01, 
+                        "minStateTime": timedelta(minutes= 2), 
+                        "deviceName": "WashingMachine"},
+                    ],
+                    "HomeD-meter2_2016.csv": [
+                        {"name": "Range [kW]", 
+                        "onThreshold": 0.1, 
+                        "minStateTime": timedelta(minutes= 2), 
+                        "deviceName": "Range"},
+                    ],
+    }
 
     # device_list = {"HomeF-meter2_2016.csv": [
     #                     {"name": "Microwave [kW]", 
-    #                     "onThreshold": 0.01, 
+    #                     "onThreshold": 0.5, 
     #                     "minStateTime": timedelta(minutes= 1),
     #                     "deviceName": "Microwave"},
     #                     {"name": "Washing_Machine [kW]", 
@@ -100,23 +100,25 @@ def prepare_data():
     #                 ]
     # }
 
-    device_list = {"HomeG-meter2_2016.csv": [
+    device_list = { "HomeG-meter1_2016.csv": [
+                        {"name": "Wall oven [kW]", 
+                        "onThreshold": 0.5, 
+                        "minStateTime": timedelta(minutes= 2),
+                        "deviceName": "Range"},
+                    ],
+                    "HomeG-meter2_2016.csv": [
                         {"name": "Dining + foyer lights [kW]", 
                         "onThreshold": 0.02, 
                         "minStateTime": timedelta(minutes= 2),
                         "deviceName": "LivingLights"},
                         {"name": "Office + sewing lights [kW]", 
-                        "onThreshold": 0.04, 
+                        "onThreshold": 0.1, 
                         "minStateTime": timedelta(minutes= 2),
                         "deviceName": "HomeOffice"},
                     ],
                     "HomeG-meter4_2016.csv": [
-                        {"name": "Range oven [kW]", 
-                        "onThreshold": 0.03, 
-                        "minStateTime": timedelta(minutes= 2),
-                        "deviceName": "Range"},
                         {"name": "Kitchen microwave [kW]", 
-                        "onThreshold": 0.01, 
+                        "onThreshold": 0.2, 
                         "minStateTime": timedelta(minutes= 1),
                         "deviceName": "Microwave"},
                     ]
