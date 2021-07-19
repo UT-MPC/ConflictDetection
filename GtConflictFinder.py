@@ -68,6 +68,9 @@ class GtConflictFinder():
         for c in com:
             if device_states[c[1]] == "off" or device_states[c[0]] == "off":
                 continue
+
+            if device_states[c[1]] == DEVICE_SKIP_STATE or device_states[c[0]] == DEVICE_SKIP_STATE:
+                continue
             if device_states[c[0]] != device_states[c[1]]:
                 self.conflicts.append({
                     "type": "state_diff",

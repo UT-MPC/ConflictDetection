@@ -1,6 +1,7 @@
 from typing import Dict, List, Tuple
 from rtree import index
 from itertools import combinations
+import heapq
 
 from ContextAccessor import ContextAccessor
 from utils import *
@@ -51,21 +52,32 @@ class ConflictPredicator:
         self.r_tree = {}
         p = index.Property()
         p.dimension = len(self.ctx_info.get_all_ctx_ordered())
-        for d in all_conflicts:
-            self.r_tree[d] = index.Index(properties = p)
-            for i, c in enumerate(all_conflicts[d]):
-                self.r_tree[d].insert(id=i, coordinates=c["box"], obj=c)
+        if p.dimension == 1:
+            self.r_tree = all_conflicts
+        else:
+            for d in all_conflicts:
+                self.r_tree[d] = index.Index(properties = p)
+                for i, c in enumerate(all_conflicts[d]):
+                    self.r_tree[d].insert(id=i, coordinates=c["box"], obj=c)
 
     def get_prob_conflict(self, ctx, user_pair, device):
-        upper = tuple([x + 1 for x in ctx])
-        ctx = ctx + upper
-        ints = get_true_intersection(self.r_tree[device], ctx)
-        for intersection in ints:
-            con = intersection.object
-            if match_user_groups(user_pair, [x[0] for x in con["users"]]):
-                return con["prob"]
-        # if none of the conflict contains the context, then we return 0
-        return 0.
+        if len(self.ctx_info.get_all_ctx_ordered()) == 1:
+            for c in self.r_tree[device]:
+                if does_contain_point(c["box"], ctx):
+                    if match_user_groups(user_pair, [x[0] for x in c["users"]]):
+                        return c["prob"]
+            return 0.
+        else:
+            upper = tuple([x + 1 for x in ctx])
+            ctx = ctx + upper
+            ints = get_true_intersection(self.r_tree[device], ctx)
+            for intersection in ints:
+                con = intersection.object
+                if match_user_groups(user_pair, [x[0] for x in con["users"]]):
+                    return con["prob"]
+            # if none of the conflict contains the context, then we return 0
+            return 0.
+
 
 
 class ConflictDetector:
@@ -73,11 +85,42 @@ class ConflictDetector:
         super().__init__()
         self.ctx_info = ctx_info
         self.capacity = device_capacity
-
+                
+    def predict_conflict_1d(self, habit_groups):
+        final_conflicts = {x: [] for  x in self.capacity}
+        users = list(habit_groups.keys())
+        devices = list(self.capacity.keys())
+        min_conflict_prob = 0.0
+        for user_i in range(len(users)):
+            for user_j in range(user_i+1, len(users)):
+                for d, group_i in habit_groups[users[user_i]].items():
+                    if d not in habit_groups[users[user_j]]:
+                        continue
+                    group_j = habit_groups[users[user_j]][d]
+                    for ii, g_i in enumerate(group_i):
+                        for jj, g_j in enumerate(group_j):
+                            box_i = g_i["box"][0] + g_i["box"][1]
+                            box_j = g_j["box"][0] + g_j["box"][1]
+                            if does_intersect(box_i, box_j):
+                                dis = [g_i["dis"], g_j["dis"]]
+                                prob = device_state_conflict(dis[0], dis[1])
+                                if self.capacity[d] == 1:
+                                    prob = device_state_conflict(dis[0], dis[1], False)
+                                
+                                if prob > min_conflict_prob:
+                                    final_conflicts[d].append({
+                                        "users": {(users[user_i], ii),(users[user_j], jj)},
+                                        "box": compute_intersection_area(box_i, box_j),
+                                        "prob": prob,
+                                        "type": "DiffState",
+                                    })
+        return final_conflicts
     def predict_conflict_scenarios(self, habit_groups):
         users = list(habit_groups.keys())
         p = index.Property()
         p.dimension = len(self.ctx_info.get_all_ctx_ordered())
+        if p.dimension == 1:
+            return self.predict_conflict_1d(habit_groups)
         final_conflicts = {x:[] for x in self.capacity}
         capacity_conflict_tree = {x:index.Index(properties=p) for x in self.capacity}
         capacity_conflict_id = {x:0 for x in self.capacity}

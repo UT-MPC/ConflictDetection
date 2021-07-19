@@ -51,7 +51,7 @@ class ContextAccessor():
     def get_coor_by_ctx(self, ctx_val: Dict) -> Tuple[int]:
         cell_idx = tuple([
             self.get_ctx_idx(k, ctx_val[k])
-            for k in ctx_val
+            for k in self.ctx_info
         ])
         return cell_idx
     
@@ -68,7 +68,7 @@ class ContextAccessor():
             area *= s
         return area
 
-    def translate_ctx_point(self, point):
+    def coor_to_snapshot(self, point):
         p_str = {}
         for idx, ctx in enumerate(self.get_all_ctx_ordered()):
             r = self.get_ctx_range(ctx)
@@ -79,7 +79,7 @@ class ContextAccessor():
                 p_str[ctx] = r[0] + point[idx] * interval
         return p_str
 
-    def translate_ctx_box(self, box):
+    def coor_box_to_range(self, box):
         box_str = {}
         ctx_len = len(self.get_all_ctx_ordered())
         # box should follow the format of [min, min,..., max, max]

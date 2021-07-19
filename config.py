@@ -3,6 +3,7 @@ import re
 
 DATA_ROOT = "data"
 UMASS_ROOT = "UMass"
+REFIT_ROOT = "refit"
 
 PROCESSED_FILENAME = "processed.json"
 SIM_FILENAME = "sim_processed.json"
@@ -10,13 +11,14 @@ PROCESSED_TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 PROJ_LOGGING_LEVEL = logging.DEBUG
 
+DEVICE_SKIP_STATE = "#SKIP"
 CATEGORICAL_CTX_SUFFIX = "#CAT"
 NUMERIC_CTX_SUFFIX = "#NUM"
 
 TIME_CTX = "min_of_day" + NUMERIC_CTX_SUFFIX
 WEEKDAY_CTX = "day_of_week" + NUMERIC_CTX_SUFFIX
 TEST_RATIO = 0.3
-DEFAULT_TIME_INTERVAL_MIN = 10
+DEFAULT_TIME_INTERVAL_MIN = 20
 
 DEFAULT_ALPHA = 20e-6
 MIN_OBS_GRID = 10
@@ -47,5 +49,6 @@ device_state_map = {
     "HomeOffice": on_off_states,
     "WashingMachine": on_off_states,
     "Window": window_state,
+    "TV": on_off_states,
 }
 

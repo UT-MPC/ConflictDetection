@@ -4,10 +4,11 @@ import os
 
 from config import *
 from UmassProcessor import UmassProccessor
+from RefitProcessor import RefitProcessor
 
 logging.basicConfig(level=PROJ_LOGGING_LEVEL)
 
-def prepare_data():
+def prepare_umass_data():
     test_project = "HomeG/2016"
     project_path = os.path.join(DATA_ROOT, UMASS_ROOT, test_project)
     """
@@ -136,6 +137,24 @@ def prepare_data():
     ctx_evts, device_evts = umass_processor.preprocess(output_file=PROCESSED_FILENAME)
 
 
+def prepare_refit_data():
+    test_project = "refit"
+    project_path = os.path.join(DATA_ROOT, test_project)
+    """
+        The device dictionary consists of the informaiton of the deivces that will be used in this experiment. 
+        For each table of UMass dataset, we have a list of device consisting of the name of the column in the table, the threshold 
+        in kW to indicate that the device is turned on, and the minimal time that we use to remove noise. 
+    """
+
+    device_list = {"House1.csv": [
+                        {"name": "Appliance 8", 
+                        "onThreshold": 19, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "TV"},
+                    ],
+    }
+    refit_processor = RefitProcessor(project_path, {}, device_list)
+    ctx_evts, device_evts = refit_processor.preprocess(output_file="p")
 
 if __name__ == "__main__":
-    prepare_data()
+    prepare_refit_data()

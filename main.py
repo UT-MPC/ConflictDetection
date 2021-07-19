@@ -23,12 +23,15 @@ def compile_casas_device():
         # Compile the regex for future use
         val[0] = re.compile(val[0])
 
-def load_processed(project, is_sim = False):
-    project_path = os.path.join(DATA_ROOT, UMASS_ROOT, project)
-    if is_sim:
-        input_file = os.path.join(project_path, SIM_FILENAME)
+def load_processed(project, is_sim = False, is_umass=True):
+    if is_umass:
+        project_path = os.path.join(DATA_ROOT, UMASS_ROOT, project)
+        if is_sim:
+            input_file = os.path.join(project_path, SIM_FILENAME)
+        else:
+            input_file = os.path.join(project_path, PROCESSED_FILENAME)
     else:
-        input_file = os.path.join(project_path, PROCESSED_FILENAME)
+        input_file = os.path.join(DATA_ROOT, REFIT_ROOT, "p_" + project + ".csv")
     with open(input_file) as f:
         json_str = f.read()
         (ctx_evts, device_evts) = json.loads(json_str, object_hook=json_datetime_hook)
@@ -49,11 +52,11 @@ def extract_train_data(ctx_evts, device_evts, train_ratio):
     }
     return ctx_evts, device_evts
 
-def generate_test_date(test_projects, test_ratio = TEST_RATIO, true_random = True, is_sim = False):
+def generate_test_date(test_projects, test_ratio = TEST_RATIO, true_random = True, is_sim = False, is_umass=True):
     start_time = []
     end_time = []
     for project in test_projects:
-        ctx_evts, device_evts = load_processed(project, is_sim)
+        ctx_evts, device_evts = load_processed(project, is_sim, is_umass)
         start_time.append(min([ctx_evts[x][0][1] for x in ctx_evts]))
         end_time.append(max([ctx_evts[x][-1][1] for x in ctx_evts]))
     s = min(start_time)
@@ -66,8 +69,8 @@ def generate_test_date(test_projects, test_ratio = TEST_RATIO, true_random = Tru
     return set([(s + timedelta(days=x)).date() for x in sel])
 
 def test_umass(test_project="HomeF/2016", ctx_info=None, train_ratio=1-TEST_RATIO, 
-                ccp_alpha=DEFAULT_ALPHA, test_dates=set(), is_sim = False):
-    ctx_evts, device_evts = load_processed(test_project, is_sim)
+                ccp_alpha=DEFAULT_ALPHA, test_dates=set(), is_sim = False, is_umass=True):
+    ctx_evts, device_evts = load_processed(test_project, is_sim, is_umass)
     if len(test_dates) == 0:
         ctx_evts, device_evts = extract_train_data(ctx_evts, device_evts, train_ratio)
     logging.debug("The number of device events from processed file: {}".format(

@@ -93,11 +93,12 @@ class GridPatternBuilder():
                             c_evt_idx[c] += 1
                     # Add additional contextes
                     self.ctx_accessor.update_time_ctx(ctx_snapshot, cur_time)
-                    cell = self.process_snapshot(space_mat, 
-                                cur_time, ctx_snapshot, 
-                                self.device_state_mapping[d][d_state])  
-                    if cell:
-                        cell_to_process.append(cell)
+                    if d_state != DEVICE_SKIP_STATE:
+                        cell = self.process_snapshot(space_mat, 
+                                    cur_time, ctx_snapshot, 
+                                    self.device_state_mapping[d][d_state])  
+                        if cell:
+                            cell_to_process.append(cell)
                 
                 # Proceed to the next timestamp
                 if d_evts[cur_evt_idx + 1][1] <= cur_time + self.time_delta():
@@ -156,6 +157,14 @@ class GridPatternBuilder():
                 boxes[-1]["box"] = bounding_box(points["coors"])
                 boxes[-1]["dis"] = points["tot_dis"] / points["cnt"] 
             
+            # Crazy test
+            boxes = []
+            for i, x in enumerate(reg_x):
+                b = {
+                    "box": bounding_box([x]),
+                    "dis": reg_y[i]
+                }
+                boxes.append(b)
             # These habit boxes are the mined habit pattern for each users
             habit_group[device] = boxes
         return habit_group
