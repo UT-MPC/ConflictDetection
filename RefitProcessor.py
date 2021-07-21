@@ -25,7 +25,6 @@ class RefitProcessor():
 
     def evt_time_filter(self, evts: Dict[str, List], 
                         filter_dur: Dict[str, timedelta]) -> Dict[str, List[Tuple[str, datetime]]]:
-        print(filter_dur)
         evt_filtered = {}
         for d, states in evts.items():
             evt_filtered[d] = []

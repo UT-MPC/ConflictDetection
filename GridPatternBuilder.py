@@ -158,13 +158,13 @@ class GridPatternBuilder():
                 boxes[-1]["dis"] = points["tot_dis"] / points["cnt"] 
             
             # Crazy test
-            boxes = []
-            for i, x in enumerate(reg_x):
-                b = {
-                    "box": bounding_box([x]),
-                    "dis": reg_y[i]
-                }
-                boxes.append(b)
+            # boxes = []
+            # for i, x in enumerate(reg_x):
+            #     b = {
+            #         "box": bounding_box([x]),
+            #         "dis": reg_y[i]
+            #     }
+            #     boxes.append(b)
             # These habit boxes are the mined habit pattern for each users
             habit_group[device] = boxes
         return habit_group

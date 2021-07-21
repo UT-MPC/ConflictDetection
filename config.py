@@ -50,5 +50,6 @@ device_state_map = {
     "WashingMachine": on_off_states,
     "Window": window_state,
     "TV": on_off_states,
+    "PC": on_off_states
 }
 
