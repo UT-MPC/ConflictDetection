@@ -11,7 +11,8 @@ all_ctx = {
     "humidity" : {}
 }
 CAT_CTX_ORDER = {
-    "summary#CAT": ["Clear", "Breezy", "Cloudy", "Rain", "Snow", "Foggy"]
+    "summary#CAT": ["Clear", "Breezy", "Cloudy", "Rain", "Snow", "Foggy"],
+    "weatherDesc#CAT": ["Clear", "Fog", "Cloudy", "Rain", "HeavyRain", "Snow", "HeavySnow"]
 }
 
 class ContextAccessor():

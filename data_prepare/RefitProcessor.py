@@ -11,13 +11,47 @@ from config import *
 
 class RefitProcessor():
     datetime_temp = "%Y-%m-%d %H:%M:%S"
-    weather_timezone = timezone("US/Eastern")
     datetime_col = "Time"
-    weather_time_col = "time"
+    weather_time_col = "date_time"
     gap_timedelta = timedelta(minutes=50)
     minimal_evt_duration_default = timedelta(minutes=10)
 
-
+    # The weather categories in the data set are too many. We need to reduce some of them.
+    # For those not in this list will be left unchanged. 
+    ctx_category_translate = {
+        "weatherDesc": {
+            'Mist' : 'Fog',
+            'Light snow' : 'Snow',
+            'Moderate rain' : 'Rain',
+            'Patchy light rain with thunder' : 'Rain',
+            'Patchy light snow' : 'Snow',
+            'Moderate or heavy snow showers' : 'Rain',
+            'Patchy heavy snow' : 'Snow',
+            'Patchy light rain' : 'Rain',
+            'Blowing snow' : 'HeavySnow',
+            'Blizzard' : 'HeavySnow',
+            'Moderate snow' : 'Snow',
+            'Light sleet' : 'Rain',
+            'Heavy snow' : 'HeavySnow',
+            'Sunny' : 'Clear',
+            'Partly cloudy' : 'Cloudy',
+            'Freezing fog' : 'Fog',
+            'Heavy rain' : 'HeavyRain',
+            'Patchy light drizzle' : 'Rain',
+            'Moderate or heavy sleet' : 'Rain',
+            'Patchy rain possible' : 'Cloudy',
+            'Moderate or heavy snow with thunder' : 'Snow',
+            'Light drizzle' : 'Rain',
+            'Overcast' : 'Cloudy',
+            'Light rain' : 'Rain',
+            'Moderate rain at times' : 'Rain',
+            'Light rain shower' : 'Rain',
+            'Moderate or heavy rain with thunder' : 'HeavyRain',
+            'Patchy moderate snow' : 'Snow',
+            'Thundery outbreaks possible' : 'Cloudy',
+            'Moderate or heavy rain shower' : 'HeavyRain',
+        }
+    }
     def __init__(self, project_folder:str, context_list: Dict, device_list: Dict):
         self.project_folder = project_folder
         self.ctx_list = context_list
@@ -80,13 +114,16 @@ class RefitProcessor():
                         contexts: Dict) -> Dict[str, List[Tuple[str, datetime]]]:
         ctx_evts = {c: [] for c in contexts.keys()}
         for index, row in ctx_data.iterrows():
-            time = datetime.fromtimestamp(row[self.weather_time_col], self.weather_timezone).replace(tzinfo=None)
+            time = datetime.strptime(row["date_time"], self.datetime_temp)
             if row.isnull().values.any():
                 # Skip this row if some values are Null. In the weather dataset, sometimes there are error in the data
                 logging.warning("Empty cell in weather dataset at timestamp {}".format(row[self.weather_time_col]))
                 continue
             for name, d in contexts.items():
                 state = row[d["name"]]
+                # Add optional lambda process
+                if "lambda" in d:
+                    state = d["lambda"](state)
                 # If this is a categorical context, we might need to convert it
                 if name in self.ctx_category_translate:
                     state = self.ctx_category_translate[name].get(state, state)
@@ -146,14 +183,19 @@ class RefitProcessor():
     # Generate the device interaction event and the context changing 
     # events from the data set and output it to a file for future usage.
     def preprocess(self, output_file: str = "p") -> Tuple[Dict[str, List], Dict[str, List]]:
+        raw_data = {}
+        for filename in self.ctx_list:
+            raw_data[filename] = pd.read_csv(os.path.join(self.project_folder, filename))
+            logging.info("Load ctx data file: " + os.path.join(filename))
+        ctx_evt = self.get_context(raw_data)
+        # Add context type to name
+        ctx_evt = { k + (CATEGORICAL_CTX_SUFFIX if k in self.ctx_category_translate else NUMERIC_CTX_SUFFIX) : v for k,v in ctx_evt.items()}
+
+        device_evt = {}
         for filename in self.device_list:
             raw_data = pd.read_csv(os.path.join(self.project_folder, filename))
             logging.info("Load REFIT data file: " + os.path.join(filename))
             device_evt = self.search_device(raw_data, self.device_list[filename])
-            ctx_evt = self.get_context(raw_data)
-
-            # Add context type to name
-            ctx_evt = { k + (CATEGORICAL_CTX_SUFFIX if k in self.ctx_category_translate else NUMERIC_CTX_SUFFIX) : v for k,v in ctx_evt.items()}
 
             with open(os.path.join(self.project_folder, output_file + "_" + filename), 'w') as f:
                 f.write(json.dumps((ctx_evt, device_evt), default=str))
