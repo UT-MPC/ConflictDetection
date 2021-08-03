@@ -65,6 +65,7 @@ def generate_test_date(test_projects, test_ratio = TEST_RATIO, true_random = Tru
             end_time.append(max([device_evts[x][-1][1] for x in device_evts]))
     s = max(start_time)
     e = min(end_time)
+    logging.info("Time start {}, Time end {}".format(min(start_time), max(end_time)))
     total_time_range = e - s
     days = int(total_time_range.days)
     if not true_random:
