@@ -1,9 +1,9 @@
 from datetime import datetime
 import math
 from typing import List, Dict, Tuple
+import holidays
 
-
-from config import TIME_CTX, WEEKDAY_CTX, CATEGORICAL_CTX_SUFFIX
+from config import TIME_CTX, WEEKDAY_CTX, CATEGORICAL_CTX_SUFFIX, HOLIDAY_CTX
 from utils import datetime_to_mins
 all_ctx = {
     "weather" : {},
@@ -14,6 +14,8 @@ CAT_CTX_ORDER = {
     "summary#CAT": ["Clear", "Breezy", "Cloudy", "Rain", "Snow", "Foggy"],
     "weatherDesc#CAT": ["Clear", "Fog", "Cloudy", "Rain", "HeavyRain", "Snow", "HeavySnow"]
 }
+UK_HOLIDAYS = holidays.UK()
+
 
 class ContextAccessor():
     def __init__(self, ctx_info = all_ctx):
@@ -61,6 +63,8 @@ class ContextAccessor():
             ctx_snapshot[TIME_CTX] = datetime_to_mins(cur_time)
         if self.have_ctx(WEEKDAY_CTX):
             ctx_snapshot[WEEKDAY_CTX] = cur_time.date().weekday() 
+        if self.have_ctx(HOLIDAY_CTX):
+            ctx_snapshot[HOLIDAY_CTX] = 1 if cur_time.date() in UK_HOLIDAYS else 0
 
     def get_space_area(self):
         shape = self.get_ctx_space_shape()

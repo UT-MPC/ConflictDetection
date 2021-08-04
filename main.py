@@ -1,3 +1,5 @@
+import sys
+sys.path.append("data_prepare")
 import json
 import logging
 import re
@@ -5,7 +7,6 @@ import random
 import os
 from datetime import timedelta
 
-from casas_processor import *
 from config import *
 from utils import *
 from UmassProcessor import UmassProccessor
