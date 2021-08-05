@@ -1,5 +1,4 @@
 import sys
-sys.path.append("data_prepare")
 import json
 import logging
 import re
@@ -9,7 +8,7 @@ from datetime import timedelta
 
 from config import *
 from utils import *
-from UmassProcessor import UmassProccessor
+from data_prepare.UmassProcessor import UmassProccessor
 from GridPatternBuilder import GridPatternBuilder
 from ContextAccessor import ContextAccessor
 
