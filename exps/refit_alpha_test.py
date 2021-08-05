@@ -136,7 +136,9 @@ def test_acc_alpha(ctx_info, gt_ctx_info, alpha_generator=None):
 
         con_acc = exp_result["TV"]["conf"][0] / exp_result["TV"]["conf"][2]
         non_acc = exp_result["TV"]["non_conf"][0] / exp_result["TV"]["non_conf"][1]
-        final_alpha_result[ccp_alpha] = (con_acc, non_acc)
+        overall_acc = (exp_result["TV"]["conf"][0] +  exp_result["TV"]["non_conf"][0]) / \
+                        (exp_result["TV"]["conf"][2] + exp_result["TV"]["non_conf"][1])
+        final_alpha_result[ccp_alpha] = (con_acc, non_acc, overall_acc)
         print("Finish alpha {}, result {}".format(ccp_alpha, final_alpha_result[ccp_alpha]))
     return final_alpha_result
     # for d in exp_result:
