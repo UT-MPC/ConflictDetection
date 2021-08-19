@@ -1,10 +1,13 @@
+from .sim_config import *
+
 class ContextInterval():
-    def __init__(self, interval):
+    def __init__(self, ctx, interval):
         super().__init__()
-        self.interval = interval
-        if type(interval) == set:
+        if ctx in cate_context:
+            self.interval = set(interval)
             self.type = "Cate"
-        elif type(interval) == list:
+        else:
+            self.interval = list(interval)
             self.type = "Num"
 
     def contain(self, ctx_val):
@@ -15,3 +18,6 @@ class ContextInterval():
         elif self.type == "Num":
             return ctx_val >= self.interval[0] and ctx_val <= self.interval[1]
         return False
+
+    def __repr__(self):
+        return str(self.interval)

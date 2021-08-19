@@ -22,3 +22,6 @@ class Applet():
         trigger = Trigger(trigger_cfg)
         action = Action(action_cfg)
         return cls(trigger, action)
+
+    def __repr__(self):
+        return "{{Trigger: {}, Action: {}}}".format(str(self.trigger), str(self.action))

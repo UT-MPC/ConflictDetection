@@ -4,6 +4,7 @@ import re
 DATA_ROOT = "data"
 UMASS_ROOT = "UMass"
 REFIT_ROOT = "refit"
+IFTTT_ROOT = "ifttt/processed"
 
 PROCESSED_FILENAME = "processed.json"
 SIM_FILENAME = "sim_processed.json"

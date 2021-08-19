@@ -2,13 +2,15 @@ import logging
 from typing import Dict
 
 from .ContextInterval import ContextInterval
+from .sim_config import *
 class Trigger():
     def __init__(self, config: Dict[str, str]):
         super().__init__()
         self.prev_state = None
         self.ctx_interval = {}
         for ctx in config:
-            self.ctx_interval[ctx] = ContextInterval(config[ctx])
+            full_ctx = context_short.get(ctx, ctx)
+            self.ctx_interval[full_ctx] = ContextInterval(full_ctx, config[ctx])
 
     def does_trigger(self, state: Dict) -> bool:
         flag = True
@@ -26,5 +28,8 @@ class Trigger():
                 break
         self.prev_state = state
         return flag
+
+    def __repr__(self):
+        return str(self.ctx_interval)
 
     
