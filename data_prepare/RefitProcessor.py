@@ -182,7 +182,7 @@ class RefitProcessor():
 
     # Generate the device interaction event and the context changing 
     # events from the data set and output it to a file for future usage.
-    def preprocess(self, output_file: str = "p") -> Tuple[Dict[str, List], Dict[str, List]]:
+    def preprocess(self, output_file: str = "processed") -> Tuple[Dict[str, List], Dict[str, List]]:
         raw_data = {}
         for filename in self.ctx_list:
             raw_data[filename] = pd.read_csv(os.path.join(self.project_folder, filename))
@@ -197,7 +197,7 @@ class RefitProcessor():
             logging.info("Load REFIT data file: " + os.path.join(filename))
             device_evt = self.search_device(raw_data, self.device_list[filename])
 
-            with open(os.path.join(self.project_folder, output_file + "_" + filename), 'w') as f:
+            with open(os.path.join(self.project_folder, output_file, filename), 'w') as f:
                 f.write(json.dumps((ctx_evt, device_evt), default=str))
         return (ctx_evt, device_evt)
 
