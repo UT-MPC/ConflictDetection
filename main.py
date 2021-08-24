@@ -75,7 +75,7 @@ def generate_test_date(root_folder, test_projects, test_ratio = TEST_RATIO, true
     return set([(s + timedelta(days=x)).date() for x in sel])
 
 def test_umass(root_folder, test_project="HomeF/2016", ctx_info=None, train_ratio=1-TEST_RATIO, 
-                ccp_alpha=DEFAULT_ALPHA, test_dates=set(), is_sim = False, is_umass=True):
+                ccp_alpha=DEFAULT_ALPHA, test_dates=set(), is_sim = False, is_umass=True, d_mapping=None):
     ctx_evts, device_evts = load_processed(root_folder, test_project, is_sim, is_umass)
     logging.debug("The number of device events from processed file: {}".format(
         {x: len(device_evts[x]) for x in device_evts}))
@@ -101,7 +101,8 @@ def test_umass(root_folder, test_project="HomeF/2016", ctx_info=None, train_rati
         "time_delta" : timedelta(minutes=10),
         "context_info" : ctx_info,
         "alpha": ccp_alpha,
-        "test_dates": test_dates
+        "test_dates": test_dates,
+        "device_state_map": d_mapping if d_mapping is not None else device_state_map
     }
     p_builder = GridPatternBuilder(grid_pattern_cfg)
     return p_builder.mine_patterns(ctx_evts, device_evts)

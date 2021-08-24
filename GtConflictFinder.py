@@ -67,13 +67,25 @@ class GtConflictFinder():
         # Check device_state_conflict
         com = combinations(device_states.keys(), 2)
         conflicts = []
+        coor = self.ctx_accessor.get_coor_by_ctx(ctx_snapshot)
         for c in com:
-            if device_states[c[1]] == "off" or device_states[c[0]] == "off":
-                continue
-
+            u_pair = frozenset(c)
             if device_states[c[1]] == DEVICE_SKIP_STATE or device_states[c[0]] == DEVICE_SKIP_STATE:
                 continue
+
+            # If this state is not skipped by any user, we need to count this instance
+            if coor != self.prev_state[u_pair]:
+                self.prev_state[u_pair] = coor
+                self.state_cnt[device][u_pair][coor] += 1
+                self.conflict_flag[u_pair] = False
+            # Next we need to find the conflict
+            if device_states[c[1]] == "off" or device_states[c[0]] == "off":
+                continue
+            
+            if self.conflict_flag[u_pair]:
+                continue
             if device_states[c[0]] != device_states[c[1]]:
+                self.conflict_flag[u_pair] = True
                 conflicts.append({
                     "type": "state_diff",
                     "device_states": {c[0]:device_states[c[0]], c[1]:device_states[c[1]]},
@@ -82,6 +94,7 @@ class GtConflictFinder():
                     "device": device,
                 })
             elif capacity == 1:
+                self.conflict_flag[u_pair] = True
                 # Unshareable devices
                 conflicts.append({
                     "type": "capacity",
@@ -109,12 +122,16 @@ class GtConflictFinder():
                     
     def get_Gt_conflict(self, ctx_evts: Dict, 
                         device_evts: Dict, test_dates=set()):
-        state_cnt = {
-            d: np.zeros(list(self.ctx_accessor.get_ctx_space_shape()))
-            for d in self.capacity
-        }
+        # 
+        u_pair_com = [frozenset(c) for c in combinations(device_evts.keys(), 2)]
+        self.state_cnt = {}
+        for d in self.capacity:
+            self.state_cnt[d] = {
+                u_pair: np.zeros(list(self.ctx_accessor.get_ctx_space_shape()))
+                for u_pair in u_pair_com
+            }
+
         self.conflicts = []
-        new_conflict_set = {}
         for d, cap in self.capacity.items():
             device_states = {}
             cur_time = datetime.min
@@ -137,8 +154,14 @@ class GtConflictFinder():
                 while evt_lst[d_evt_idx_per_u[u] + 1][1] <= cur_time:
                     device_states[u] = evt_lst[d_evt_idx_per_u[u] + 1][0]
                     d_evt_idx_per_u[u] += 1
-
-            prev_state_coor = None
+            self.prev_state = {
+                u_pair: None
+                for u_pair in u_pair_com
+            }
+            self.conflict_flag = {
+                u_pair: False
+                for u_pair in u_pair_com
+            }
             while cur_time < end_time:
                 if len(test_dates) == 0 or cur_time.date() in test_dates:
                     for c, c_evts in ctx_evts.items():
@@ -149,20 +172,16 @@ class GtConflictFinder():
                             c_evt_idx[c] += 1
                     self.ctx_accessor.update_time_ctx(ctx_snapshot, cur_time)
 
+                    new_conflicts = self.find_conflict_pairwise(
+                                        ctx_snapshot, 
+                                        device_states, 
+                                        cap, 
+                                        cur_time, 
+                                        d,
+                                    )
                     coor = self.ctx_accessor.get_coor_by_ctx(ctx_snapshot)
-                    # if coor == (61,4):
-                    #     print(cur_time)
-                    #     print(device_states)
-                    if coor != prev_state_coor:
-                        state_cnt[d][coor] += 1
-                        prev_state_coor = coor
-                        new_conflict_set = {}
-                    new_conflicts = self.find_conflict_pairwise(ctx_snapshot, device_states, cap, cur_time, d)
-                    new_conflicts = self.conflict_dedup(new_conflicts, new_conflict_set)
+                    # new_conflicts = self.conflict_dedup(new_conflicts, new_conflict_set)
                     self.conflicts.extend(new_conflicts)
-                    # if coor == (61,4):
-                    #     print(state_cnt[coor])
-                    #     print("~~~~~~~~~~~~~~~~")
                 # Find the next device state change event
                 min_evt_t = datetime.max
                 min_evt_u = []
@@ -182,10 +201,11 @@ class GtConflictFinder():
                         cur_time = min_evt_t
                         for u in min_evt_u:
                             d_evt_idx_per_u[u] += 1
-                            device_states[u] = device_evts[u][d][d_evt_idx_per_u[u]][0]
+                            next_state = device_evts[u][d][d_evt_idx_per_u[u]]
+                            device_states[u] = get_d_state_str(next_state)
                     else:
                         cur_time += self.time_delta()
-        return self.conflicts, state_cnt
+        return self.conflicts, self.state_cnt
 
 
  

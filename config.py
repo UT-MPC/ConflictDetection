@@ -4,6 +4,7 @@ import re
 DATA_ROOT = "data"
 UMASS_ROOT = "UMass"
 REFIT_ROOT = "refit"
+THERMO_ROOT = "Thermostat Dataset"
 IFTTT_ROOT = "ifttt/processed"
 
 PROCESSED_FILENAME = "processed.json"
@@ -15,6 +16,7 @@ PROJ_LOGGING_LEVEL = logging.DEBUG
 DEVICE_SKIP_STATE = "#SKIP"
 CATEGORICAL_CTX_SUFFIX = "#CAT"
 NUMERIC_CTX_SUFFIX = "#NUM"
+DEVICE_MULTI_STATE_SUFFIX = "#SEC"
 
 TIME_CTX = "min_of_day" + NUMERIC_CTX_SUFFIX
 WEEKDAY_CTX = "day_of_week" + NUMERIC_CTX_SUFFIX
@@ -44,6 +46,15 @@ window_state = {
     2           : "open_full",  
 }
 
+thermo_state = {
+    "off"   :   0,
+    0       :   "off",
+    "auto"  :   1,
+    1       :   "auto",
+}
+
+
+
 device_state_map = {
     "Range" : on_off_states,
     "Microwave": on_off_states,
@@ -52,6 +63,7 @@ device_state_map = {
     "WashingMachine": on_off_states,
     "Window": window_state,
     "TV": on_off_states,
-    "PC": on_off_states
+    "PC": on_off_states,
+    # "thermostat": thermo_state, 
 }
 

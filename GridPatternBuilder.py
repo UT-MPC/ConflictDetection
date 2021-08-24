@@ -76,7 +76,8 @@ class GridPatternBuilder():
                 for c in self.ctx_accessor.get_all_ctx_ordered()
             }
             cur_evt_idx = 0
-            d_state = d_evts[0][0]
+
+            d_state = get_d_state_str(d_evts[0])
             tmp = list(self.ctx_accessor.get_ctx_space_shape())
             tmp.append(int(len(self.device_state_mapping[d])/2))
             space_mat= np.zeros(tmp)
@@ -91,6 +92,7 @@ class GridPatternBuilder():
                         while c_evt_idx[c] < len(c_evts) and c_evts[c_evt_idx[c]][1] <= cur_time:
                             ctx_snapshot[c] = c_evts[c_evt_idx[c]][0]
                             c_evt_idx[c] += 1
+
                     # Add additional contextes
                     self.ctx_accessor.update_time_ctx(ctx_snapshot, cur_time)
                     if d_state != DEVICE_SKIP_STATE:
@@ -104,7 +106,7 @@ class GridPatternBuilder():
                 if d_evts[cur_evt_idx + 1][1] <= cur_time + self.time_delta():
                     cur_time = d_evts[cur_evt_idx + 1][1]
                     cur_evt_idx += 1
-                    d_state = d_evts[cur_evt_idx][0]
+                    d_state = get_d_state_str(d_evts[cur_evt_idx])
                 else:
                     cur_time += self.time_delta()
             for cell in cell_to_process:
@@ -130,7 +132,6 @@ class GridPatternBuilder():
                     x / cnt
                     for x in dis["distribution"][1:]
                 ])
-
             # TODO: we need to find a better value for ccp_alpha
             regressor = DecisionTreeRegressor(ccp_alpha=self.cfg.get("alpha",DEFAULT_ALPHA))
 
@@ -173,6 +174,7 @@ class GridPatternBuilder():
     def mine_patterns(self, ctx_evts: Dict, device_evts: Dict):
         self.preprocess(ctx_evts, device_evts)
         device_patterns = self.build_device_pattern_mat(ctx_evts, device_evts)
+        print("Mined pattern" + str({x: len(device_patterns[x]) for x in device_patterns}))
         habit_groups =  self.build_habit_groups(device_patterns)
 
         return habit_groups, device_patterns

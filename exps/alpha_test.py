@@ -15,7 +15,7 @@ from ConflictDetector import ConflictDetector
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-test_projects = [
+test_projects_refit = [
     "HomeA/2016",
     "HomeB/2016",
     "HomeC/2016",

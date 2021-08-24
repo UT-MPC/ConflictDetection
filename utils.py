@@ -2,7 +2,7 @@ from collections.abc import Iterable
 from datetime import datetime
 import re
 
-from config import PROCESSED_TIME_FORMAT
+from config import PROCESSED_TIME_FORMAT, DEVICE_MULTI_STATE_SUFFIX
 
 def datetime_parser(s):
     time_reg = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,3})?$")
@@ -90,3 +90,10 @@ def compute_area(box):
 
 def match_user_groups(user_group_1, user_group_2):
     return set(user_group_1) == set(user_group_2)
+
+def get_d_state_str(d_evt):
+    state = d_evt[0]
+    if DEVICE_MULTI_STATE_SUFFIX not in state:
+        return state
+    else:
+        return state + str(d_evt[2])
