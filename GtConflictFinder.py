@@ -74,16 +74,17 @@ class GtConflictFinder():
                 continue
 
             # If this state is not skipped by any user, we need to count this instance
-            if coor != self.prev_state[u_pair]:
-                self.prev_state[u_pair] = coor
-                self.state_cnt[device][u_pair][coor] += 1
-                self.conflict_flag[u_pair] = False
+            # if coor != self.prev_state[u_pair]:
+            #     self.prev_state[u_pair] = coor
+            #     self.state_cnt[device][u_pair][coor] += 1
+            #     self.conflict_flag[u_pair] = False
+            self.state_cnt[device][u_pair][coor] += 1
             # Next we need to find the conflict
             if device_states[c[1]] == "off" or device_states[c[0]] == "off":
                 continue
             
-            if self.conflict_flag[u_pair]:
-                continue
+            # if self.conflict_flag[u_pair]:
+            #     continue
             if device_states[c[0]] != device_states[c[1]]:
                 self.conflict_flag[u_pair] = True
                 conflicts.append({

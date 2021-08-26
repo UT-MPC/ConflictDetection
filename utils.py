@@ -97,3 +97,16 @@ def get_d_state_str(d_evt):
         return state
     else:
         return state + str(d_evt[2])
+
+
+def check_HS_thermo_mode(time):
+    # Since Health Science building change the heating mode and the default setpoint, 
+    # we need this information as a context
+    day = time.day
+    month = time.month
+    if month < 5 or month > 9:
+        return "heating"
+    
+    if month == 5 and day < 13:
+        return "heating"
+    return "cooling"

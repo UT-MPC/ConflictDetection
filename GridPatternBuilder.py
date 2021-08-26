@@ -174,7 +174,7 @@ class GridPatternBuilder():
     def mine_patterns(self, ctx_evts: Dict, device_evts: Dict):
         self.preprocess(ctx_evts, device_evts)
         device_patterns = self.build_device_pattern_mat(ctx_evts, device_evts)
-        print("Mined pattern" + str({x: len(device_patterns[x]) for x in device_patterns}))
+        # print("Mined pattern" + str({x: len(device_patterns[x]) for x in device_patterns}))
         habit_groups =  self.build_habit_groups(device_patterns)
 
         return habit_groups, device_patterns

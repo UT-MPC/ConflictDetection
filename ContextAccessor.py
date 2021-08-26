@@ -3,8 +3,8 @@ import math
 from typing import List, Dict, Tuple
 import holidays
 
-from config import TIME_CTX, WEEKDAY_CTX, CATEGORICAL_CTX_SUFFIX, HOLIDAY_CTX
-from utils import datetime_to_mins
+from config import  *
+from utils import datetime_to_mins, check_HS_thermo_mode
 all_ctx = {
     "weather" : {},
     "temperature" : {},
@@ -12,7 +12,8 @@ all_ctx = {
 }
 CAT_CTX_ORDER = {
     "summary#CAT": ["Clear", "Breezy", "Cloudy", "Rain", "Snow", "Foggy"],
-    "weatherDesc#CAT": ["Clear", "Fog", "Cloudy", "Rain", "HeavyRain", "Snow", "HeavySnow"]
+    "weatherDesc#CAT": ["Clear", "Fog", "Cloudy", "Rain", "HeavyRain", "Snow", "HeavySnow"],
+    THERMO_MODE_CTX: ["cooling", "heating"],
 }
 UK_HOLIDAYS = holidays.UK()
 
@@ -65,6 +66,8 @@ class ContextAccessor():
             ctx_snapshot[WEEKDAY_CTX] = cur_time.date().weekday() 
         if self.have_ctx(HOLIDAY_CTX):
             ctx_snapshot[HOLIDAY_CTX] = 1 if cur_time.date() in UK_HOLIDAYS else 0
+        if self.have_ctx(THERMO_MODE_CTX):
+            ctx_snapshot[THERMO_MODE_CTX] = check_HS_thermo_mode(cur_time)
 
     def get_space_area(self):
         shape = self.get_ctx_space_shape()
