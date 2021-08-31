@@ -1,19 +1,31 @@
 from typing import Dict, List, Tuple
 from rtree import index
 from itertools import combinations
+from scipy.stats import norm
+import math
 import heapq
 
 from ContextAccessor import ContextAccessor
 from utils import *
+from config import *
 
-def device_state_conflict(dis_i, dis_j, shareable_flag = True):
-    total_j = sum(dis_j)
-    total_i = sum(dis_i)
-    if not shareable_flag:
-        return total_i * total_j
-    prob = 0
-    for idx, p in enumerate(dis_i):
-        prob += p * (total_j -  dis_j[idx])
+def device_state_conflict(dis_i, dis_j, device, shareable_flag = True):
+    if GRID_MODE.get(device, GRID_MODE["default"]) == "All":
+        total_j = sum(dis_j)
+        total_i = sum(dis_i)
+        if not shareable_flag:
+            return total_i * total_j
+        prob = 0
+        for idx, p in enumerate(dis_i):
+            prob += p * (total_j -  dis_j[idx])
+    else:
+        mean0 = dis_i[0] - dis_j[0]
+        mean1 = dis_j[0] - dis_i[0]
+        var = dis_j[1] + dis_i[1]
+        if var < 1e-6:
+            return 1.0 if abs(dis_j[0] - dis_i[0])>=1 else 0.0
+        prob = norm.sf(SOFT_VAL_THRESHOLD.get(device, 1), mean0, math.sqrt(var))
+        prob += norm.sf(SOFT_VAL_THRESHOLD.get(device, 1), mean1, math.sqrt(var))
     return prob
 
 def device_capacity_conflict(dis, capacity):
@@ -103,9 +115,9 @@ class ConflictDetector:
                             box_j = g_j["box"][0] + g_j["box"][1]
                             if does_intersect(box_i, box_j):
                                 dis = [g_i["dis"], g_j["dis"]]
-                                prob = device_state_conflict(dis[0], dis[1])
+                                prob = device_state_conflict(dis[0], dis[1], d)
                                 if self.capacity[d] == 1:
-                                    prob = device_state_conflict(dis[0], dis[1], False)
+                                    prob = device_state_conflict(dis[0], dis[1], d, False)
                                 
                                 if prob > min_conflict_prob:
                                     final_conflicts[d].append({
@@ -160,9 +172,9 @@ class ConflictDetector:
                                 habit_groups[x[0]][device][x[1]]["dis"]
                                 for x in ints.object
                             ]
-                            prob = device_state_conflict(dis[0], dis[1])
+                            prob = device_state_conflict(dis[0], dis[1], device)
                             if self.capacity[device] == 1:
-                                prob = device_state_conflict(dis[0], dis[1], False)
+                                prob = device_state_conflict(dis[0], dis[1], device, False)
                             
                             if prob > min_conflict_prob:
                                 final_conflicts[device].append({

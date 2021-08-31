@@ -85,25 +85,38 @@ class GtConflictFinder():
             
             # if self.conflict_flag[u_pair]:
             #     continue
-            if device_states[c[0]] != device_states[c[1]]:
-                self.conflict_flag[u_pair] = True
-                conflicts.append({
-                    "type": "state_diff",
-                    "device_states": {c[0]:device_states[c[0]], c[1]:device_states[c[1]]},
-                    "ctx": copy.deepcopy(ctx_snapshot),
-                    "cur_time": cur_time,
-                    "device": device,
-                })
-            elif capacity == 1:
-                self.conflict_flag[u_pair] = True
-                # Unshareable devices
-                conflicts.append({
-                    "type": "capacity",
-                    "device_states": {c[0]:device_states[c[0]], c[1]:device_states[c[1]]},
-                    "ctx": copy.deepcopy(ctx_snapshot),
-                    "cur_time": cur_time,
-                    "device": device,
-                })
+            if GRID_MODE[device] != "All":
+                val0 = float(device_states[c[0]].split("#")[-1])
+                val1 = float(device_states[c[1]].split("#")[-1])
+                if abs(val0 - val1) > SOFT_VAL_THRESHOLD[device]:
+                    self.conflict_flag[u_pair] = True
+                    conflicts.append({
+                        "type": "state_diff",
+                        "device_states": {c[0]:device_states[c[0]], c[1]:device_states[c[1]]},
+                        "ctx": copy.deepcopy(ctx_snapshot),
+                        "cur_time": cur_time,
+                        "device": device,
+                    })
+            else:
+                if device_states[c[0]] != device_states[c[1]]:
+                    self.conflict_flag[u_pair] = True
+                    conflicts.append({
+                        "type": "state_diff",
+                        "device_states": {c[0]:device_states[c[0]], c[1]:device_states[c[1]]},
+                        "ctx": copy.deepcopy(ctx_snapshot),
+                        "cur_time": cur_time,
+                        "device": device,
+                    })
+                elif capacity == 1:
+                    self.conflict_flag[u_pair] = True
+                    # Unshareable devices
+                    conflicts.append({
+                        "type": "capacity",
+                        "device_states": {c[0]:device_states[c[0]], c[1]:device_states[c[1]]},
+                        "ctx": copy.deepcopy(ctx_snapshot),
+                        "cur_time": cur_time,
+                        "device": device,
+                    })
         return conflicts
 
     def conflict_dedup(self, new_c, conflict_dups):

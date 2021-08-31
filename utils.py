@@ -96,7 +96,7 @@ def get_d_state_str(d_evt):
     if DEVICE_MULTI_STATE_SUFFIX not in state:
         return state
     else:
-        return state + str(d_evt[2])
+        return state + "#" + str(d_evt[2])
 
 
 def check_HS_thermo_mode(time):

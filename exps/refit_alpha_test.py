@@ -44,6 +44,8 @@ test_projects = [
     "HS3301",
     "HS3309",
     "HS5309",
+    # "HS5314",
+    # "HS3313",
 ]
 
 capacity = {

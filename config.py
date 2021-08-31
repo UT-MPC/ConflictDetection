@@ -31,6 +31,15 @@ MIN_OBS_GRID = 10
 
 EXP_RANDOM_SEED = 42
 
+GRID_MODE = {
+    "thermostat"    : "Gaussian",
+    "default"       : "All", 
+}
+
+SOFT_VAL_THRESHOLD = {
+    "thermostat"    : 1,
+}
+
 
 on_off_states = {
     "off"   : 0,
@@ -51,8 +60,8 @@ window_state = {
 thermo_state = {
     "off"   :   0,
     0       :   "off",
-    "auto"  :   1,
-    1       :   "auto",
+    "auto" + DEVICE_MULTI_STATE_SUFFIX  :   1,
+    1       :   "auto" + DEVICE_MULTI_STATE_SUFFIX,
 }
 
 

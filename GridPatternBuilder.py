@@ -50,9 +50,17 @@ class GridPatternBuilder():
         #         self.device_state_mapping[d][s] = i
         #         self.device_state_mapping[d][i] = s
 
-    def process_snapshot(self, space_mat, cur_time, ctx_snapshot, d_state : int):
+    def process_snapshot(self, space_mat, cur_time, ctx_snapshot, d_state, device, d_val_rec):
         cell_idx = self.ctx_accessor.get_coor_by_ctx(ctx_snapshot)
-        space_mat[cell_idx][d_state] += 1
+        mode = GRID_MODE.get(device, GRID_MODE["default"])
+        if mode == "All":
+            d_coor = self.device_state_mapping[device][get_d_state_str(d_state)]
+        else:
+            d_coor = self.device_state_mapping[device][d_state[0]]
+            if cell_idx not in d_val_rec:
+                d_val_rec[cell_idx] = []
+            d_val_rec[cell_idx].append(d_state[2])   
+        space_mat[cell_idx][d_coor] += 1
 
         # If this cell has enough observations, we want to add it to the watch list
         if sum(space_mat[cell_idx]) == self.cfg.get("min_obs", MIN_OBS_GRID):
@@ -77,13 +85,15 @@ class GridPatternBuilder():
             }
             cur_evt_idx = 0
 
-            d_state = get_d_state_str(d_evts[0])
+            d_state = d_evts[0]
             tmp = list(self.ctx_accessor.get_ctx_space_shape())
             tmp.append(int(len(self.device_state_mapping[d])/2))
             space_mat= np.zeros(tmp)
+            device_val_rec = {}
             cell_to_process = []
             while cur_time < end_time:
                 if self.verify_train(cur_time):
+
                     # We randomly select some dates as test dates that we need to exclude 
                     # from the training process
                     for c, c_evts in ctx_evts.items():
@@ -94,11 +104,14 @@ class GridPatternBuilder():
                             c_evt_idx[c] += 1
 
                     # Add additional contextes
-                    self.ctx_accessor.update_time_ctx(ctx_snapshot, cur_time)
-                    if d_state != DEVICE_SKIP_STATE:
+                    self.ctx_accessor.update_time_ctx(ctx_snapshot, cur_time)                        
+                    if d_state[0] != DEVICE_SKIP_STATE:
                         cell = self.process_snapshot(space_mat, 
-                                    cur_time, ctx_snapshot, 
-                                    self.device_state_mapping[d][d_state])  
+                                                    cur_time, 
+                                                    ctx_snapshot, 
+                                                    d_state, 
+                                                    d, 
+                                                    device_val_rec)  
                         if cell:
                             cell_to_process.append(cell)
                 
@@ -106,14 +119,26 @@ class GridPatternBuilder():
                 if d_evts[cur_evt_idx + 1][1] <= cur_time + self.time_delta():
                     cur_time = d_evts[cur_evt_idx + 1][1]
                     cur_evt_idx += 1
-                    d_state = get_d_state_str(d_evts[cur_evt_idx])
+                    d_state = d_evts[cur_evt_idx]
                 else:
                     cur_time += self.time_delta()
             for cell in cell_to_process:
-                device_patterns[d].append(
-                    {"coor": cell,
-                     "distribution": space_mat[cell]}
-                )
+                mode = GRID_MODE.get(d, GRID_MODE["default"])
+                if mode == "All":
+                    device_patterns[d].append(
+                        {"coor": cell,
+                        "distribution": space_mat[cell]}
+                    )
+                else:
+                    var = np.var(device_val_rec[cell])
+                    mean = sum(device_val_rec[cell]) / len(device_val_rec[cell])
+                    dis = list(space_mat[cell])
+                    dis.append(mean)
+                    dis.append(var)
+                    device_patterns[d].append(
+                        {"coor": cell,
+                        "distribution": dis}
+                    )
         return device_patterns
 
     def build_habit_groups(self, deivce_patterns: List) -> Dict[str, List]:
@@ -124,14 +149,24 @@ class GridPatternBuilder():
             weight = []
             for dis in data:
                 # Weigh the samples based on the number of occurance in this unit
-                cnt = sum(dis["distribution"])
-                weight.append(cnt)
-                reg_x.append(dis["coor"])
-                # The data that we want to learn by Decision Tree is the prob. distribution of the states
-                reg_y.append([
-                    x / cnt
-                    for x in dis["distribution"][1:]
-                ])
+                mode = GRID_MODE.get(device, GRID_MODE["default"])
+                if mode == "All":
+                    cnt = sum(dis["distribution"])
+                    weight.append(cnt)
+                    reg_x.append(dis["coor"])
+                    # The data that we want to learn by Decision Tree is the prob. distribution of the states
+                    reg_y.append([
+                        x / cnt
+                        for x in dis["distribution"][1:]
+                    ])
+                else:
+                    distribution = dis["distribution"]
+                    cnt = distribution[1]
+                    weight.append(cnt)
+                    reg_x.append(dis["coor"])
+                    reg_y.append([
+                        distribution[-2], distribution[-1]
+                    ])
             # TODO: we need to find a better value for ccp_alpha
             regressor = DecisionTreeRegressor(ccp_alpha=self.cfg.get("alpha",DEFAULT_ALPHA))
 
