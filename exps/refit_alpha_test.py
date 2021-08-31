@@ -42,9 +42,8 @@ from plotly.subplots import make_subplots
 
 test_projects = [
     "HS3301",
-    "HS3313",
+    "HS3309",
     "HS5309",
-    "HS5314",
 ]
 
 capacity = {
@@ -152,7 +151,10 @@ def test_acc_alpha(ctx_info, gt_ctx_info, root_folder, alpha_generator=None, dev
                     exp_result[d]["non_conf"][1] += 1
 
         con_acc = exp_result[d]["conf"][0] / exp_result[d]["conf"][2]
-        non_acc = exp_result[d]["non_conf"][0] / exp_result[d]["non_conf"][1]
+        if exp_result[d]["non_conf"][1] != 0:
+            non_acc = exp_result[d]["non_conf"][0] / exp_result[d]["non_conf"][1]
+        else:
+            non_acc = 0
         overall_acc = (exp_result[d]["conf"][0] +  exp_result[d]["non_conf"][0]) / \
                         (exp_result[d]["conf"][2] + exp_result[d]["non_conf"][1])
         final_alpha_result[ccp_alpha] = (con_acc, non_acc, overall_acc)
