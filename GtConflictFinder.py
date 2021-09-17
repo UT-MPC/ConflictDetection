@@ -85,7 +85,7 @@ class GtConflictFinder():
             
             # if self.conflict_flag[u_pair]:
             #     continue
-            if GRID_MODE[device] != "All":
+            if GRID_MODE.get(device, GRID_MODE["default"]) != "All":
                 val0 = float(device_states[c[0]].split("#")[-1])
                 val1 = float(device_states[c[1]].split("#")[-1])
                 if abs(val0 - val1) > SOFT_VAL_THRESHOLD[device]:

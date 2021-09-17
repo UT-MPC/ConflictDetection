@@ -11,7 +11,7 @@ from utils import *
 class GridPatternBuilder():
 
     # The default step size to sample the event sequence
-    default_time_delta = timedelta(minutes=DEFAULT_TIME_INTERVAL_MIN)
+    default_time_delta = timedelta(minutes=60)
 
     # To avoid runtime error, we have a default context interval of 1
     default_ctx_interval = 1
