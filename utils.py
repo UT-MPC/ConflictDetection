@@ -1,5 +1,6 @@
 from collections.abc import Iterable
 from datetime import datetime
+from itertools import product
 import re
 
 from config import PROCESSED_TIME_FORMAT, DEVICE_MULTI_STATE_SUFFIX
@@ -110,3 +111,25 @@ def check_HS_thermo_mode(time):
     if month == 5 and day < 13:
         return "heating"
     return "cooling"
+
+def get_coor_neighbor(nd_coor, e_idx = {}):
+    x = [-1,0,1]
+    d = len(nd_coor)
+    res = []
+    for delta in product(x, repeat=d-len(e_idx)):
+        new_idx = []
+        d_i = 0
+        for i in range(d):
+            if i in e_idx:
+                new_idx.append(nd_coor[i])
+            else:
+                new_idx.append(nd_coor[i] + delta[d_i])
+                d_i += 1
+        res.append(tuple(new_idx))
+    return res
+
+def euclidean_dist(p1, p2):
+    dist = 0
+    for i, d in enumerate(p1):
+        dist += abs(d - p2[i])
+    return dist

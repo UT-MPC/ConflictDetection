@@ -4,6 +4,7 @@ from itertools import combinations
 from scipy.stats import norm
 import math
 import heapq
+import copy
 
 from ContextAccessor import ContextAccessor
 from utils import *
@@ -140,6 +141,7 @@ class ConflictDetector:
         for user_i in range(len(users)):
         # for user_i in [0]:
             for device, groups in habit_groups[users[user_i]].items():
+                inst_pair = []
                 r_tree = index.Index(properties=p)
                 for i in range(len(groups)):
                     bound = groups[i]["box"][0] + groups[i]["box"][1] 
@@ -156,83 +158,103 @@ class ConflictDetector:
                         for intersect in intersects:
                             intersect_box = compute_intersection_area(intersect.bbox, bbox)
                             dis = intersect.object.union({(users[user_j], j)})
-                            r_tree.insert(id=tree_id, coordinates=intersect_box, obj=dis)
-                            tree_id += 1
+                            inst_pair.append({"coor": intersect_box, "dis": copy.deepcopy(dis)})
+                            # r_tree.insert(id=tree_id, coordinates=intersect_box, obj=dis)
+                            # tree_id += 1
+                for pair in inst_pair:
+                    dis = [
+                        habit_groups[x[0]][device][x[1]]["dis"]
+                        for x in pair["dis"]
+                    ]
+                    prob = device_state_conflict(dis[0], dis[1], device)
+                    if self.capacity[device] == 1:
+                        prob = device_state_conflict(dis[0], dis[1], device, False)
+                    
+                    if prob > min_conflict_prob:
+                        final_conflicts[device].append({
+                            "users": pair["dis"],
+                            "box": pair["coor"],
+                            "prob": prob,
+                            "type": "DiffState",
+                        })
+
+
+
                 # Use the original box to intersect all
-                for i in range(len(groups)):
-                    bound = groups[i]["box"][0] + groups[i]["box"][1] 
-                    intersects = get_true_intersection(r_tree, bound)
-                    # intersects = sorted(intersects, key = lambda x: len(x.object))
+                # for i in range(len(groups)):
+                #     bound = groups[i]["box"][0] + groups[i]["box"][1] 
+                #     intersects = get_true_intersection(r_tree, bound)
+                #     # intersects = sorted(intersects, key = lambda x: len(x.object))
 
-                    # First we calculate conflicts between two users
-                    for ints in intersects:
-                        if len(ints.object) == 2:
-                            # compute conflict between two users
-                            dis = [
-                                habit_groups[x[0]][device][x[1]]["dis"]
-                                for x in ints.object
-                            ]
-                            prob = device_state_conflict(dis[0], dis[1], device)
-                            if self.capacity[device] == 1:
-                                prob = device_state_conflict(dis[0], dis[1], device, False)
+                #     # First we calculate conflicts between two users
+                #     for ints in intersects:
+                #         if len(ints.object) == 2:
+                #             # compute conflict between two users
+                #             dis = [
+                #                 habit_groups[x[0]][device][x[1]]["dis"]
+                #                 for x in ints.object
+                #             ]
+                #             prob = device_state_conflict(dis[0], dis[1], device)
+                #             if self.capacity[device] == 1:
+                #                 prob = device_state_conflict(dis[0], dis[1], device, False)
                             
-                            if prob > min_conflict_prob:
-                                final_conflicts[device].append({
-                                    "users": ints.object,
-                                    "box": ints.bbox,
-                                    "prob": prob,
-                                    "type": "DiffState",
-                                })
-                            continue
-                        if len(ints.object) > self.capacity[device] and self.capacity[device] != 0 and self.capacity[device] != 1:
-                            # Put capacity conflicts into a R-tree for further analysis
-                            cap_box = ints.bbox
-                            cap_ints = get_true_intersection(capacity_conflict_tree[device], cap_box)
-                            box_to_insert = ints.bbox
-                            obj_to_insert = ints.object
-                            is_included = False
-                            for inter_box in cap_ints:
-                                if (not is_included) and does_contain(cap_box, inter_box.bbox):
-                                    capacity_conflict_tree[device].delete(inter_box.id, inter_box.bbox)
-                                    dis_union = inter_box.object.union(ints.object)
-                                    box_to_insert = inter_box.bbox
-                                    obj_to_insert = dis_union
-                                    is_included = True
-                                if does_contain(inter_box.bbox, cap_box):
-                                    capacity_conflict_tree[device].delete(inter_box.id, inter_box.bbox)
-                                    dis_union = inter_box.object.union(ints.object)
-                                    box_to_insert = cap_box
-                                    obj_to_insert = dis_union
-                                # capacity_conflict_tree[device].delete(inter_box.id, inter_box.bbox)
-                                # dis_union = inter_box.object.union(ints)
-                                # box_to_insert = compute_union_area(inter_box.bbox, cap_box)
-                                # obj_to_insert = dis_union
+                #             if prob > min_conflict_prob:
+                #                 final_conflicts[device].append({
+                #                     "users": ints.object,
+                #                     "box": ints.bbox,
+                #                     "prob": prob,
+                #                     "type": "DiffState",
+                #                 })
+                #             continue
+                        # if len(ints.object) > self.capacity[device] and self.capacity[device] != 0 and self.capacity[device] != 1:
+                        #     # Put capacity conflicts into a R-tree for further analysis
+                        #     cap_box = ints.bbox
+                        #     cap_ints = get_true_intersection(capacity_conflict_tree[device], cap_box)
+                        #     box_to_insert = ints.bbox
+                        #     obj_to_insert = ints.object
+                        #     is_included = False
+                        #     for inter_box in cap_ints:
+                        #         if (not is_included) and does_contain(cap_box, inter_box.bbox):
+                        #             capacity_conflict_tree[device].delete(inter_box.id, inter_box.bbox)
+                        #             dis_union = inter_box.object.union(ints.object)
+                        #             box_to_insert = inter_box.bbox
+                        #             obj_to_insert = dis_union
+                        #             is_included = True
+                        #         if does_contain(inter_box.bbox, cap_box):
+                        #             capacity_conflict_tree[device].delete(inter_box.id, inter_box.bbox)
+                        #             dis_union = inter_box.object.union(ints.object)
+                        #             box_to_insert = cap_box
+                        #             obj_to_insert = dis_union
+                        #         # capacity_conflict_tree[device].delete(inter_box.id, inter_box.bbox)
+                        #         # dis_union = inter_box.object.union(ints)
+                        #         # box_to_insert = compute_union_area(inter_box.bbox, cap_box)
+                        #         # obj_to_insert = dis_union
 
-                            capacity_conflict_tree[device].insert(
-                                id=capacity_conflict_id[device],
-                                coordinates=box_to_insert, 
-                                obj = obj_to_insert,
-                            )
-                            capacity_conflict_id[device] += 1
+                        #     capacity_conflict_tree[device].insert(
+                        #         id=capacity_conflict_id[device],
+                        #         coordinates=box_to_insert, 
+                        #         obj = obj_to_insert,
+                        #     )
+                        #     capacity_conflict_id[device] += 1
         
         # print(capacity_conflict_id)
-        max_box = [0]*len(self.ctx_info.get_ctx_space_shape()) + [
-            x - 1
-            for x in self.ctx_info.get_ctx_space_shape()
-        ]
-        for d, tree in capacity_conflict_tree.items():
-            conflicts = get_true_intersection(tree, max_box)
-            for c in conflicts:
-                dis = [ 
-                    habit_groups[x[0]][d][x[1]]["dis"]
-                    for x in c.object
-                ]
-                prob = device_capacity_conflict(dis, self.capacity[d])
-                if prob > min_conflict_prob:
-                    final_conflicts[d].append({
-                        "users": c.object,
-                        "box": c.bbox,
-                        "prob": prob,
-                        "type": "Capacity"
-                    })
+        # max_box = [0]*len(self.ctx_info.get_ctx_space_shape()) + [
+        #     x - 1
+        #     for x in self.ctx_info.get_ctx_space_shape()
+        # ]
+        # for d, tree in capacity_conflict_tree.items():
+        #     conflicts = get_true_intersection(tree, max_box)
+        #     for c in conflicts:
+        #         dis = [ 
+        #             habit_groups[x[0]][d][x[1]]["dis"]
+        #             for x in c.object
+        #         ]
+        #         prob = device_capacity_conflict(dis, self.capacity[d])
+        #         if prob > min_conflict_prob:
+        #             final_conflicts[d].append({
+        #                 "users": c.object,
+        #                 "box": c.bbox,
+        #                 "prob": prob,
+        #                 "type": "Capacity"
+        #             })
         return final_conflicts

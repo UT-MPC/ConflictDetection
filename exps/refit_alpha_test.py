@@ -17,6 +17,7 @@ from utils import *
 from main import *
 from GtConflictFinder import GtConflictFinder
 from ConflictDetector import ConflictDetector, ConflictPredicator
+from GridPatternBuilder import build_habit_groups
 
 
 import plotly.graph_objects as go
@@ -96,18 +97,22 @@ def test_acc_alpha(ctx_info, gt_ctx_info, root_folder, alpha_generator=None, dev
         conflict_state_device[d][s][users] = conflict_state_device[d][s].get(users, 0) + 1
 
     final_alpha_result = {}
+    grid_data = {}
+    for p in test_projects:
+        grid_data[p] = test_umass(root_folder=root_folder,
+                                test_project=p, 
+                                ctx_info=ctx_info, 
+                                ccp_alpha=0, 
+                                test_dates=test_dates, 
+                                is_sim=BOOL_SIM, 
+                                is_umass=BOOL_UMASS,
+                                d_mapping=device_mapping)
+
     # Then run prediction
     for ccp_alpha in alpha_generator:
         habit_groups = {}
         for p in test_projects:
-            habit_groups[p], grid_data = test_umass(root_folder=root_folder,
-                                                    test_project=p, 
-                                                    ctx_info=ctx_info, 
-                                                    ccp_alpha=ccp_alpha, 
-                                                    test_dates=test_dates, 
-                                                    is_sim=BOOL_SIM, 
-                                                    is_umass=BOOL_UMASS,
-                                                    d_mapping=device_mapping)
+            habit_groups[p] = build_habit_groups(grid_data[p], ccp_alpha)
         
         c_detector = ConflictDetector(ctx_info, capacity)
         final_conflicts = c_detector.predict_conflict_scenarios(habit_groups)
@@ -124,6 +129,7 @@ def test_acc_alpha(ctx_info, gt_ctx_info, root_folder, alpha_generator=None, dev
         }
         all_state_cnt = 0
         d = "thermostat"
+        # d = "TV"
         for u_pair in user_pairs:
             u_pair_set = frozenset(u_pair)
             it = np.nditer(test_state_cnt[d][u_pair_set], flags=['multi_index'])

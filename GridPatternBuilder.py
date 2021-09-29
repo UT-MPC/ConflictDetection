@@ -4,9 +4,76 @@ import numpy as np
 import math
 from typing import Dict, List, Tuple
 from sklearn.tree import DecisionTreeRegressor
+import copy
+from collections import Counter
+from rtree import index
 
 from config import *
 from utils import *
+
+def build_habit_groups(deivce_patterns: List, alpha=DEFAULT_ALPHA) -> Dict[str, List]:
+    habit_group = {}
+    for device, data in deivce_patterns.items():
+        reg_x = []
+        reg_y = []
+        weight = []
+        for dis in data:
+            # Weigh the samples based on the number of occurance in this unit
+            mode = GRID_MODE.get(device, GRID_MODE["default"])
+            if mode == "All":
+                cnt = sum(dis["distribution"])
+                weight.append(cnt)
+                reg_x.append(dis["coor"])
+                # The data that we want to learn by Decision Tree is the prob. distribution of the states
+                reg_y.append([
+                    x / cnt
+                    for x in dis["distribution"][1:]
+                ])
+            else:
+                distribution = dis["distribution"]
+                cnt = distribution[1]
+                weight.append(cnt)
+                reg_x.append(dis["coor"])
+                reg_y.append([
+                    distribution[-2], distribution[-1]
+                ])
+        # TODO: we need to find a better value for ccp_alpha
+        regressor = DecisionTreeRegressor(ccp_alpha=alpha)
+
+        # Train the Decision Tree Regressor model
+        regressor.fit(reg_x, reg_y, sample_weight = weight)
+
+        # Find the No. of leaf for each input
+        leaves = regressor.apply(reg_x)
+
+        groups = {}
+        boxes = []
+
+        # Group the input points based on the trained tree model
+        for i,l in enumerate(leaves):
+            if l not in groups:
+                groups[l] = {"coors": [reg_x[i]], "tot_dis": np.array(reg_y[i]), "cnt": 1}
+            else:
+                groups[l]["coors"].append(reg_x[i])
+                groups[l]["tot_dis"] += reg_y[i]
+                groups[l]["cnt"] += 1
+        # Compute the bounding box of the found groups of points with its prob. distribution
+        for g, points in groups.items():
+            boxes.append({})
+            boxes[-1]["box"] = bounding_box(points["coors"])
+            boxes[-1]["dis"] = points["tot_dis"] / points["cnt"] 
+        
+        # Crazy test
+        # boxes = []
+        # for i, x in enumerate(reg_x):
+        #     b = {
+        #         "box": bounding_box([x]),
+        #         "dis": reg_y[i]
+        #     }
+        #     boxes.append(b)
+        # These habit boxes are the mined habit pattern for each users
+        habit_group[device] = boxes
+    return habit_group
 
 class GridPatternBuilder():
 
@@ -141,76 +208,116 @@ class GridPatternBuilder():
                     )
         return device_patterns
 
-    def build_habit_groups(self, deivce_patterns: List) -> Dict[str, List]:
-        habit_group = {}
-        for device, data in deivce_patterns.items():
-            reg_x = []
-            reg_y = []
-            weight = []
-            for dis in data:
-                # Weigh the samples based on the number of occurance in this unit
-                mode = GRID_MODE.get(device, GRID_MODE["default"])
-                if mode == "All":
-                    cnt = sum(dis["distribution"])
-                    weight.append(cnt)
-                    reg_x.append(dis["coor"])
-                    # The data that we want to learn by Decision Tree is the prob. distribution of the states
-                    reg_y.append([
-                        x / cnt
-                        for x in dis["distribution"][1:]
-                    ])
+
+    def build_device_pattern_range(self, ctx_evts:Dict, device_evts:Dict):
+        device_patterns = {
+            d : []
+            for d in device_evts
+        }  
+        for d, d_evts in device_evts.items():
+            cur_time = d_evts[0][1]
+            end_time = d_evts[-1][1]
+            c_evt_idx = {c: 0 for c in ctx_evts}
+            ctx_snapshot = {
+                c: ctx_evts.get(c, [[0]])[0][0]
+                for c in self.ctx_accessor.get_all_ctx_ordered()
+            }
+            cur_evt_idx = 0
+
+            d_state = d_evts[0]
+            # p = index.Property()
+            # p.dimension = len(self.ctx_accessor.get_all_ctx_ordered())
+            # r_tree = index.Index(properties=p)
+            state_set = {}
+            total_points = 0
+            d_mode = GRID_MODE.get(d, GRID_MODE["default"])
+
+            while cur_time < end_time:
+                if self.verify_train(cur_time):
+
+                    # We randomly select some dates as test dates that we need to exclude 
+                    # from the training process
+                    for c, c_evts in ctx_evts.items():
+                        if not self.ctx_accessor.have_ctx(c):
+                            continue
+                        while c_evt_idx[c] < len(c_evts) and c_evts[c_evt_idx[c]][1] <= cur_time:
+                            ctx_snapshot[c] = c_evts[c_evt_idx[c]][0]
+                            c_evt_idx[c] += 1
+
+                    # Add additional contextes
+                    self.ctx_accessor.update_time_ctx(ctx_snapshot, cur_time)                        
+                    if d_state[0] != DEVICE_SKIP_STATE:
+                        coor_f = self.ctx_accessor.get_coor_float(ctx_snapshot)
+                        coor_i = self.ctx_accessor.get_coor_by_ctx(ctx_snapshot)
+                        if coor_i not in state_set:
+                            state_set[coor_i] = []
+
+                        if d_mode == "All":
+                            d_coor = self.device_state_mapping[d][get_d_state_str(d_state)]
+                            d_val = 0
+                        else:
+                            d_coor = self.device_state_mapping[d][d_state[0]]
+                            d_val = d_state[2]
+                        
+                        state_set[coor_i].append([coor_f, d_coor, d_val])
+                        total_points += 1
+                        # r_tree.insert(id=total_points, coordinates=coor*2, obj=d_state)
+                
+                # Proceed to the next timestamp
+                if d_evts[cur_evt_idx + 1][1] <= cur_time + self.time_delta():
+                    cur_time = d_evts[cur_evt_idx + 1][1]
+                    cur_evt_idx += 1
+                    d_state = d_evts[cur_evt_idx]
                 else:
-                    distribution = dis["distribution"]
-                    cnt = distribution[1]
-                    weight.append(cnt)
-                    reg_x.append(dis["coor"])
-                    reg_y.append([
-                        distribution[-2], distribution[-1]
-                    ])
-            # TODO: we need to find a better value for ccp_alpha
-            regressor = DecisionTreeRegressor(ccp_alpha=self.cfg.get("alpha",DEFAULT_ALPHA))
+                    cur_time += self.time_delta()
 
-            # Train the Decision Tree Regressor model
-            regressor.fit(reg_x, reg_y, sample_weight=weight)
-
-            # Find the No. of leaf for each input
-            leaves = regressor.apply(reg_x)
-
-            groups = {}
-            boxes = []
-
-            # Group the input points based on the trained tree model
-            for i,l in enumerate(leaves):
-                if l not in groups:
-                    groups[l] = {"coors": [reg_x[i]], "tot_dis": np.array(reg_y[i]), "cnt": 1}
-                else:
-                    groups[l]["coors"].append(reg_x[i])
-                    groups[l]["tot_dis"] += reg_y[i]
-                    groups[l]["cnt"] += 1
-            # Compute the bounding box of the found groups of points with its prob. distribution
-            for g, points in groups.items():
-                boxes.append({})
-                boxes[-1]["box"] = bounding_box(points["coors"])
-                boxes[-1]["dis"] = points["tot_dis"] / points["cnt"] 
-            
-            # Crazy test
-            # boxes = []
-            # for i, x in enumerate(reg_x):
-            #     b = {
-            #         "box": bounding_box([x]),
-            #         "dis": reg_y[i]
-            #     }
-            #     boxes.append(b)
-            # These habit boxes are the mined habit pattern for each users
-            habit_group[device] = boxes
-        return habit_group
-
+            neighbors = []
+            tot_slots = 0
+            for coor_i, close_set in state_set.items():
+                coor_pool = get_coor_neighbor(coor_i, set(self.ctx_accessor.get_cate_ctx_idx()))
+                flag = False
+                for p_i in close_set:
+                    d_cnt= np.zeros(int(len(self.device_state_mapping[d])/2))
+                    d_vals = []
+                    num_neighbors = 0
+                    for coor_j in coor_pool:
+                        for p_j in state_set.get(coor_j, []):
+                            if euclidean_dist(p_i[0], p_j[0]) < 1:
+                                num_neighbors += 1 
+                                d_cnt[p_j[1]] += 1
+                                d_vals.append(p_j[2])
+                    if num_neighbors > 20:
+                        flag = True
+                        if d_mode == "All":
+                            device_patterns[d].append(
+                                {"coor": p_i[0],
+                                "distribution": d_cnt}
+                            )
+                        else:
+                            var = np.var(d_vals)
+                            mean = sum(d_vals) / len(d_vals)
+                            dis = list(d_cnt)
+                            dis.append(mean)
+                            dis.append(var)
+                            device_patterns[d].append(
+                                {"coor": p_i[0],
+                                "distribution": dis}
+                            )
+                    # d_cnt[p_i[1]] += 1
+                    # device_patterns[d].append(
+                    #     {"coor": p_i[0],
+                    #     "distribution": d_cnt}
+                    # )
+                if flag:
+                    tot_slots += 1
+        # print(total_points)
+        # print(tot_slots)
+        return device_patterns
 
     def mine_patterns(self, ctx_evts: Dict, device_evts: Dict):
         self.preprocess(ctx_evts, device_evts)
-        device_patterns = self.build_device_pattern_mat(ctx_evts, device_evts)
+        device_patterns = self.build_device_pattern_range(ctx_evts, device_evts)
         # print("Mined pattern" + str({x: len(device_patterns[x]) for x in device_patterns}))
-        habit_groups =  self.build_habit_groups(device_patterns)
+        # habit_groups =  build_habit_groups(device_patterns, self.cfg.get("alpha", DEFAULT_ALPHA))
 
-        return habit_groups, device_patterns
-
+        return device_patterns

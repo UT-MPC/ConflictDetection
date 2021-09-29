@@ -36,6 +36,13 @@ class ContextAccessor():
     def get_all_ctx_ordered(self) -> List[str]:
         return list(self.ctx_info.keys())
 
+    def get_cate_ctx_idx(self):
+        res = []
+        for i, ctx_name in enumerate(list(self.ctx_info.keys())):
+            if CATEGORICAL_CTX_SUFFIX in ctx_name:
+                res.append(i)
+        return res
+
     def have_ctx(self, ctx_name: str):
         return ctx_name in self.ctx_info
 
@@ -50,7 +57,7 @@ class ContextAccessor():
         if CATEGORICAL_CTX_SUFFIX in ctx_name:
             return CAT_CTX_ORDER[ctx_name].index(ctx_val)
         r = self.get_ctx_range(ctx_name)
-        return int((ctx_val - r[0]) / self. get_ctx_interval(ctx_name))
+        return int((ctx_val - r[0]) / self.get_ctx_interval(ctx_name))
 
     def get_coor_by_ctx(self, ctx_val: Dict) -> Tuple[int]:
         cell_idx = tuple([
@@ -58,6 +65,19 @@ class ContextAccessor():
             for k in self.ctx_info
         ])
         return cell_idx
+
+    def get_ctx_float(self, ctx_name, ctx_val) -> float:
+        if CATEGORICAL_CTX_SUFFIX in ctx_name:
+            return float(CAT_CTX_ORDER[ctx_name].index(ctx_val))
+        r = self.get_ctx_range(ctx_name)
+        return float(ctx_val - r[0]) / self.get_ctx_interval(ctx_name)
+
+    def get_coor_float(self, ctx_val: Dict) -> List[float]:
+        cell = [
+            self.get_ctx_float(k, ctx_val[k])
+            for k in self.ctx_info
+        ]
+        return cell
     
     def update_time_ctx(self, ctx_snapshot: Dict, cur_time: datetime):
         if self.have_ctx(TIME_CTX):
@@ -102,3 +122,19 @@ class ContextAccessor():
             else:
                 box_str[ctx] = [r[0] + box[idx] * interval, r[0] + box[ctx_len + idx] * interval]
         return box_str
+
+
+    def ctx_distance(self, snap0, snap1):
+        dis = 0
+        for ctx_name in snap0:
+            if ctx_name not in snap1:
+                continue
+            val0 = snap0[ctx_name]
+            val1 = snap1[ctx_name]
+            if CATEGORICAL_CTX_SUFFIX in ctx_name:
+                if val0 != val1:
+                    dis += 1
+            else:
+                dis += abs(val0-val1) / float(self.get_ctx_interval(ctx_name))
+        return dis
+

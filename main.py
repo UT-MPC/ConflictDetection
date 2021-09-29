@@ -98,7 +98,7 @@ def test_umass(root_folder, test_project="HomeF/2016", ctx_info=None, train_rati
             },
         })
     grid_pattern_cfg = {
-        "time_delta" : timedelta(minutes=10),
+        # "time_delta" : timedelta(minutes=10),
         "context_info" : ctx_info,
         "alpha": ccp_alpha,
         "test_dates": test_dates,
