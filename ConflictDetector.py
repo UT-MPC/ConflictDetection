@@ -10,7 +10,27 @@ from ContextAccessor import ContextAccessor
 from utils import *
 from config import *
 
-def device_state_conflict(dis_i, dis_j, device, shareable_flag = True):
+def det_conflict(dis_i, dis_j, device, shareale_flag = True):
+    if GRID_MODE.get(device, GRID_MODE["default"]) == "All":
+        dis_i = list(dis_i)
+        dis_j = list(dis_j)
+        dis_i.insert(0, 1-sum(dis_i))
+        dis_j.insert(0, 1-sum(dis_j))
+        max_i = dis_i.index(max(dis_i))
+        max_j = dis_j.index(max(dis_j))
+        if max_i == 0 or max_j == 0:
+            return 0.
+        if not shareale_flag:
+            return 1.0
+        else:
+            return 1.0 if max_i != max_j else 0.
+    else:
+        threshold = SOFT_VAL_THRESHOLD.get(device, 1)
+        return 1.0 if abs(dis_j[0] - dis_i[0])>=threshold else 0.0
+
+def device_state_conflict(dis_i, dis_j, device, shareable_flag = True, det_flag = False):
+    if det_flag:
+        return det_conflict(dis_i, dis_j, device, shareable_flag)
     if GRID_MODE.get(device, GRID_MODE["default"]) == "All":
         total_j = sum(dis_j)
         total_i = sum(dis_i)
@@ -23,10 +43,11 @@ def device_state_conflict(dis_i, dis_j, device, shareable_flag = True):
         mean0 = dis_i[0] - dis_j[0]
         mean1 = dis_j[0] - dis_i[0]
         var = dis_j[1] + dis_i[1]
+        threshold = SOFT_VAL_THRESHOLD.get(device, 1)
         if var < 1e-6:
-            return 1.0 if abs(dis_j[0] - dis_i[0])>=1 else 0.0
-        prob = norm.sf(SOFT_VAL_THRESHOLD.get(device, 1), mean0, math.sqrt(var))
-        prob += norm.sf(SOFT_VAL_THRESHOLD.get(device, 1), mean1, math.sqrt(var))
+            return 1.0 if abs(dis_j[0] - dis_i[0])>=threshold else 0.0
+        prob = norm.sf(threshold, mean0, math.sqrt(var))
+        prob += norm.sf(threshold, mean1, math.sqrt(var))
     return prob
 
 def device_capacity_conflict(dis, capacity):
@@ -98,6 +119,7 @@ class ConflictDetector:
         super().__init__()
         self.ctx_info = ctx_info
         self.capacity = device_capacity
+        self.det_flag = DET_FLAG
                 
     def predict_conflict_1d(self, habit_groups):
         final_conflicts = {x: [] for  x in self.capacity}
@@ -116,9 +138,11 @@ class ConflictDetector:
                             box_j = g_j["box"][0] + g_j["box"][1]
                             if does_intersect(box_i, box_j):
                                 dis = [g_i["dis"], g_j["dis"]]
-                                prob = device_state_conflict(dis[0], dis[1], d)
+                                prob = device_state_conflict(
+                                    dis[0], dis[1], d, det_flag = self.det_flag)
                                 if self.capacity[d] == 1:
-                                    prob = device_state_conflict(dis[0], dis[1], d, False)
+                                    prob = device_state_conflict(
+                                            dis[0], dis[1], d, shareable_flag = False, det_flag = self.det_flag)
                                 
                                 if prob > min_conflict_prob:
                                     final_conflicts[d].append({
@@ -166,9 +190,11 @@ class ConflictDetector:
                         habit_groups[x[0]][device][x[1]]["dis"]
                         for x in pair["dis"]
                     ]
-                    prob = device_state_conflict(dis[0], dis[1], device)
+                    prob = device_state_conflict(
+                            dis[0], dis[1], device, det_flag = self.det_flag)
                     if self.capacity[device] == 1:
-                        prob = device_state_conflict(dis[0], dis[1], device, False)
+                        prob = device_state_conflict(
+                                dis[0], dis[1], device, shareable_flag = False, det_flag = self.det_flag)
                     
                     if prob > min_conflict_prob:
                         final_conflicts[device].append({

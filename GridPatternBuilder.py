@@ -14,6 +14,8 @@ from utils import *
 def build_habit_groups(deivce_patterns: List, alpha=DEFAULT_ALPHA) -> Dict[str, List]:
     habit_group = {}
     for device, data in deivce_patterns.items():
+        if len(data) == 0:
+            continue
         reg_x = []
         reg_y = []
         weight = []
@@ -316,7 +318,7 @@ class GridPatternBuilder():
 
     def mine_patterns(self, ctx_evts: Dict, device_evts: Dict):
         self.preprocess(ctx_evts, device_evts)
-        device_patterns = self.build_device_pattern_range(ctx_evts, device_evts)
+        device_patterns = self.build_device_pattern_mat(ctx_evts, device_evts)
         # print("Mined pattern" + str({x: len(device_patterns[x]) for x in device_patterns}))
         # habit_groups =  build_habit_groups(device_patterns, self.cfg.get("alpha", DEFAULT_ALPHA))
 

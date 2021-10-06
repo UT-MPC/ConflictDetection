@@ -31,6 +31,8 @@ MIN_OBS_GRID = 10
 
 EXP_RANDOM_SEED = 42
 
+DET_FLAG = False
+
 GRID_MODE = {
     "thermostat"    : "Gaussian",
     "default"       : "All", 
