@@ -56,7 +56,7 @@ capacity = {
 BOOL_SIM = False
 BOOL_UMASS= False
 
-def test_acc_alpha(ctx_info, gt_ctx_info, root_folder, alpha_generator=None, device_mapping=None):
+def test_acc_alpha(ctx_info, gt_ctx_info, root_folder, alpha_generator=None, device_mapping=None, time_step = 60):
     # First find gt conflict
     device_events = {}
     for p in test_projects:
@@ -98,15 +98,21 @@ def test_acc_alpha(ctx_info, gt_ctx_info, root_folder, alpha_generator=None, dev
 
     final_alpha_result = {}
     grid_data = {}
+    grid_pattern_cfg = {
+        # "time_delta" : timedelta(minutes=10),
+        "context_info" : ctx_info,
+        "alpha": 0,
+        "test_dates": test_dates,
+        "device_state_map": device_mapping,
+        "time_delta": timedelta(minutes=time_step),
+    }
     for p in test_projects:
         grid_data[p] = test_umass(root_folder=root_folder,
                                 test_project=p, 
                                 ctx_info=ctx_info, 
-                                ccp_alpha=0, 
-                                test_dates=test_dates, 
+                                grid_cfg=grid_pattern_cfg,
                                 is_sim=BOOL_SIM, 
-                                is_umass=BOOL_UMASS,
-                                d_mapping=device_mapping)
+                                is_umass=BOOL_UMASS)
 
     # Then run prediction
     for ccp_alpha in alpha_generator:
