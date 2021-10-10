@@ -115,6 +115,8 @@ def test_acc_alpha(ctx_info, gt_ctx_info, root_folder, alpha_generator=None, dev
                                 is_umass=BOOL_UMASS)
 
     # Then run prediction
+    best_acc = 10.0
+    best_ccp = 0.
     for ccp_alpha in alpha_generator:
         habit_groups = {}
         for p in test_projects:
@@ -172,7 +174,11 @@ def test_acc_alpha(ctx_info, gt_ctx_info, root_folder, alpha_generator=None, dev
         overall_acc = (exp_result[d]["conf"][0] +  exp_result[d]["non_conf"][0]) / \
                         (exp_result[d]["conf"][2] + exp_result[d]["non_conf"][1])
         final_alpha_result[ccp_alpha] = (con_acc, non_acc, overall_acc)
+        if overall_acc < best_acc:
+            best_acc = overall_acc
+            best_ccp = ccp_alpha
         print("Finish alpha {}, result {}".format(ccp_alpha, final_alpha_result[ccp_alpha]))
+    print("Best ccp_alpha {}".format(best_ccp))
     return final_alpha_result
     # for d in exp_result:
     #     # exp_result[d].append((exp_result[d][0] + exp_result[d][2]) / (exp_result[d][1] + exp_result[d][3]))

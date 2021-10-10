@@ -52,7 +52,7 @@ def val_conflict(dis_i, dis_j, device):
     
 def device_state_conflict(dis_i, dis_j, device, shareable_flag = True, det_flag = False):
     if det_flag:
-        prob_cate = det_conflict(dis_i[0:-2], dis_j[0:-2], device, shareable_flag)
+        prob_cate = det_conflict(dis_i[0:-2], dis_j[0:-2], None, shareable_flag)
         prob_val = det_conflict(dis_i[-2:], dis_j[-2:], device, shareable_flag)
     else:
         prob_cate = categorical_conflict(dis_i[0:-2], dis_j[0:-2], shareable_flag)
