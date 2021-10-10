@@ -8,7 +8,6 @@ from datetime import timedelta
 
 from config import *
 from utils import *
-from data_prepare.UmassProcessor import UmassProccessor
 from GridPatternBuilder import GridPatternBuilder
 from ContextAccessor import ContextAccessor
 
@@ -31,7 +30,7 @@ def load_processed(root_folder, project, is_sim = False, is_umass=True):
         else:
             input_file = os.path.join(project_path, PROCESSED_FILENAME)
     else:
-        input_file = os.path.join(root_folder, "processed",  project + ".csv")
+        input_file = os.path.join(root_folder, "processed",  project + ".json")
     
     with open(input_file) as f:
         json_str = f.read()

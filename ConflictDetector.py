@@ -28,27 +28,36 @@ def det_conflict(dis_i, dis_j, device, shareale_flag = True):
         threshold = SOFT_VAL_THRESHOLD.get(device, 1)
         return 1.0 if abs(dis_j[0] - dis_i[0])>=threshold else 0.0
 
+def categorical_conflict(dis_i, dis_j, shareable_flag = True):
+    prob = 0.
+    total_j = sum(dis_j)
+    total_i = sum(dis_i)
+    if not shareable_flag:
+        return total_i * total_j
+    prob = 0
+    for idx, p in enumerate(dis_i):
+        prob += p * (total_j -  dis_j[idx])
+    return prob
+
+def val_conflict(dis_i, dis_j, device):
+    mean0 = dis_i[0] - dis_j[0]
+    mean1 = dis_j[0] - dis_i[0]
+    var = dis_j[1] + dis_i[1]
+    threshold = SOFT_VAL_THRESHOLD.get(device, 1)
+    if var < 1e-6:
+        return 1.0 if abs(dis_j[0] - dis_i[0])>=threshold else 0.0
+    prob = norm.sf(threshold, mean0, math.sqrt(var))
+    prob += norm.sf(threshold, mean1, math.sqrt(var))
+    return prob
+    
 def device_state_conflict(dis_i, dis_j, device, shareable_flag = True, det_flag = False):
     if det_flag:
-        return det_conflict(dis_i, dis_j, device, shareable_flag)
-    if GRID_MODE.get(device, GRID_MODE["default"]) == "All":
-        total_j = sum(dis_j)
-        total_i = sum(dis_i)
-        if not shareable_flag:
-            return total_i * total_j
-        prob = 0
-        for idx, p in enumerate(dis_i):
-            prob += p * (total_j -  dis_j[idx])
+        prob_cate = det_conflict(dis_i[0:-2], dis_j[0:-2], device, shareable_flag)
+        prob_val = det_conflict(dis_i[-2:], dis_j[-2:], device, shareable_flag)
     else:
-        mean0 = dis_i[0] - dis_j[0]
-        mean1 = dis_j[0] - dis_i[0]
-        var = dis_j[1] + dis_i[1]
-        threshold = SOFT_VAL_THRESHOLD.get(device, 1)
-        if var < 1e-6:
-            return 1.0 if abs(dis_j[0] - dis_i[0])>=threshold else 0.0
-        prob = norm.sf(threshold, mean0, math.sqrt(var))
-        prob += norm.sf(threshold, mean1, math.sqrt(var))
-    return prob
+        prob_cate = categorical_conflict(dis_i[0:-2], dis_j[0:-2], shareable_flag)
+        prob_val = val_conflict(dis_i[-2:], dis_j[-2:], device)
+    return prob_cate + prob_val - prob_cate * prob_val
 
 def device_capacity_conflict(dis, capacity):
     probs = [sum(x) for x in dis]

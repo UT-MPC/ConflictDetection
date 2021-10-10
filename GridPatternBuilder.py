@@ -22,23 +22,38 @@ def build_habit_groups(deivce_patterns: List, alpha=DEFAULT_ALPHA) -> Dict[str, 
         for dis in data:
             # Weigh the samples based on the number of occurance in this unit
             mode = GRID_MODE.get(device, GRID_MODE["default"])
-            if mode == "All":
-                cnt = sum(dis["distribution"])
-                weight.append(cnt)
-                reg_x.append(dis["coor"])
-                # The data that we want to learn by Decision Tree is the prob. distribution of the states
-                reg_y.append([
-                    x / cnt
-                    for x in dis["distribution"][1:]
-                ])
-            else:
-                distribution = dis["distribution"]
-                cnt = distribution[1]
-                weight.append(cnt)
-                reg_x.append(dis["coor"])
-                reg_y.append([
-                    distribution[-2], distribution[-1]
-                ])
+            # create sample
+            distribution = dis["distribution"]
+            cnt = sum(distribution[0:-2])
+            weight.append(cnt)
+            reg_x.append(dis["coor"])
+            y = [
+                x / cnt
+                for x in distribution[1:-2]
+            ]
+            y.extend(distribution[-2:])
+            reg_y.append(y)
+            # if mode == "All":
+            #     cnt = sum(dis["distribution"])
+            #     weight.append(cnt)
+            #     reg_x.append(dis["coor"])
+            #     # The data that we want to learn by Decision Tree is the prob. distribution of the states
+            #     reg_y.append([
+            #         x / cnt
+            #         for x in dis["distribution"][1:]
+            #     ])
+            # else:
+            #     distribution = dis["distribution"]
+            #     cnt = distribution[0:-2]
+            #     weight.append(cnt)
+            #     reg_x.append(dis["coor"])
+            #     y = [
+            #         x / cnt
+            #         for x in dis["distribution"][1:]
+            #     ]
+            #     reg_y.append([
+            #         distribution[-2], distribution[-1]
+            #     ])
         # TODO: we need to find a better value for ccp_alpha
         regressor = DecisionTreeRegressor(ccp_alpha=alpha)
 
@@ -194,9 +209,12 @@ class GridPatternBuilder():
             for cell in cell_to_process:
                 mode = GRID_MODE.get(d, GRID_MODE["default"])
                 if mode == "All":
+                    dis = list(space_mat[cell])
+                    dis.append(0)
+                    dis.append(0)
                     device_patterns[d].append(
                         {"coor": cell,
-                        "distribution": space_mat[cell]}
+                        "distribution": dis}
                     )
                 else:
                     var = np.var(device_val_rec[cell])
