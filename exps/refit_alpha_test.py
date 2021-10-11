@@ -41,7 +41,7 @@ from plotly.subplots import make_subplots
 #     "PC": 1,
 # }
 
-test_projects = [
+default_test = [
     "HS3301",
     "HS3309",
     "HS5309",
@@ -49,14 +49,22 @@ test_projects = [
     # "HS3313",
 ]
 
-capacity = {
+default_cap = {
     "thermostat": 0
 }
 
 BOOL_SIM = False
 BOOL_UMASS= False
 
-def test_acc_alpha(ctx_info, gt_ctx_info, root_folder, alpha_generator=None, device_mapping=None, time_step = 60):
+def test_acc_alpha(ctx_info, 
+                    gt_ctx_info, 
+                    root_folder, 
+                    alpha_generator=None, 
+                    device_mapping=None, 
+                    time_step = 60,
+                    test_projects = default_test,
+                    capacity = default_cap,
+                    acc_device = "thermostat"):
     # First find gt conflict
     device_events = {}
     for p in test_projects:
@@ -136,8 +144,7 @@ def test_acc_alpha(ctx_info, gt_ctx_info, root_folder, alpha_generator=None, dev
             for d in all_devices
         }
         all_state_cnt = 0
-        d = "thermostat"
-        # d = "TV"
+        d = acc_device
         for u_pair in user_pairs:
             u_pair_set = frozenset(u_pair)
             it = np.nditer(test_state_cnt[d][u_pair_set], flags=['multi_index'])

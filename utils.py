@@ -133,3 +133,7 @@ def euclidean_dist(p1, p2):
     for i, d in enumerate(p1):
         dist += abs(d - p2[i])
     return dist
+
+def normalize(val, minV, maxV):
+    r = float(maxV - minV)
+    return (val - minV) / r

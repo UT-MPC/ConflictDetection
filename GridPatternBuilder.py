@@ -114,8 +114,15 @@ class GridPatternBuilder():
         return self.cfg.get("time_delta", self.default_time_delta)
 
     def preprocess(self, ctx_evts: Dict, device_evts:Dict):
-        pass
-
+        for d, evts in device_evts.items():
+            val_range = device_nonfunctional_range.get(d, [0,1])
+            mode = GRID_MODE.get(d, GRID_MODE["default"])
+            if mode == "All":
+                continue
+            for e in evts:
+                if e[0] == DEVICE_SKIP_STATE:
+                    continue
+                e[2] = normalize(e[2], val_range[0], val_range[1])
         # Change device state string to a number and create a map to record it. 
         # self.device_state_mapping = {
         #     d : {}

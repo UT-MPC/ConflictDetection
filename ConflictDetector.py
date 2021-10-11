@@ -10,6 +10,12 @@ from ContextAccessor import ContextAccessor
 from utils import *
 from config import *
 
+def get_soft_threshold(device):
+    threshold = SOFT_VAL_THRESHOLD.get(device, 1)
+    val_range = device_nonfunctional_range.get(device, [0,1])
+    threshold = threshold / (val_range[1]-val_range[0])
+    return threshold
+
 def det_conflict(dis_i, dis_j, device, shareale_flag = True):
     if GRID_MODE.get(device, GRID_MODE["default"]) == "All":
         dis_i = list(dis_i)
@@ -25,7 +31,7 @@ def det_conflict(dis_i, dis_j, device, shareale_flag = True):
         else:
             return 1.0 if max_i != max_j else 0.
     else:
-        threshold = SOFT_VAL_THRESHOLD.get(device, 1)
+        threshold = get_soft_threshold(device)
         return 1.0 if abs(dis_j[0] - dis_i[0])>=threshold else 0.0
 
 def categorical_conflict(dis_i, dis_j, shareable_flag = True):
@@ -43,7 +49,7 @@ def val_conflict(dis_i, dis_j, device):
     mean0 = dis_i[0] - dis_j[0]
     mean1 = dis_j[0] - dis_i[0]
     var = dis_j[1] + dis_i[1]
-    threshold = SOFT_VAL_THRESHOLD.get(device, 1)
+    threshold = get_soft_threshold(device)
     if var < 1e-6:
         return 1.0 if abs(dis_j[0] - dis_i[0])>=threshold else 0.0
     prob = norm.sf(threshold, mean0, math.sqrt(var))

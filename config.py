@@ -31,7 +31,7 @@ MIN_OBS_GRID = 10
 
 EXP_RANDOM_SEED = 42
 
-DET_FLAG = True
+DET_FLAG = False
 
 GRID_MODE = {
     "thermostat"    : "Gaussian",
@@ -64,6 +64,10 @@ thermo_state = {
     0       :   "off",
     "auto" + DEVICE_MULTI_STATE_SUFFIX  :   1,
     1       :   "auto" + DEVICE_MULTI_STATE_SUFFIX,
+}
+
+device_nonfunctional_range = {
+    "thermostat": [18.0, 24.5]
 }
 
 

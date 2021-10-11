@@ -61,7 +61,7 @@ gt_ctx_info = ContextAccessor({
         # },
 })
 
-ccp_alpha = 0.005
+ccp_alpha = 5e-5  # Prob.
 capacity = {
     "thermostat":0
 }
