@@ -134,3 +134,8 @@ Finish alpha 0.0009000000000000002, result (0.2565291070245309, 0.0, 0.114242727
 Finish alpha 0.0010000000000000002, result (0.2565291070245309, 0.0, 0.11424272712056666)
 Finish alpha 0.002, result (0.2723387592117882, 0.0, 0.12128340099048031)
 Best ccp_alpha 0.00039999999999999996
+
+
+time_step 1, gt_ctx[min, weather, weekday], train[min, ]
+time_interval 60, temp_interval 5 
+Run for TV
