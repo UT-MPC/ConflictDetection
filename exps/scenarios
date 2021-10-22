@@ -1,0 +1,232 @@
+We choose
+House9 House3 conflicts 0.2541510376850296 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House9 House3 conflicts 0.7126828463402904 at {'min_of_day#NUM': [1200, 1320.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+HS3301 HS3309 conflicts 0.9946313342997292 at {'min_of_day#NUM': [720.0, 1020.0], 'OutTemp#NUM': [30.0, 35.0], 'thermo_mode#CAT': {'cooling'}}
+HS3301 HS3309 conflicts 0.5095968743094046 at {'min_of_day#NUM': [840.0, 1200], 'OutTemp#NUM': [15.0, 20.0], 'thermo_mode#CAT': {'cooling'}}
+
+
+
+
+
+HS3301 HS3309 conflicts 0.4391069215658487 at {'min_of_day#NUM': [0.0, 900.0], 'OutTemp#NUM': [5.0, 15.0], 'thermo_mode#CAT': {'cooling'}}
+HS3301 HS3309 conflicts 0.5095968743094046 at {'min_of_day#NUM': [840.0, 1200], 'OutTemp#NUM': [15.0, 20.0], 'thermo_mode#CAT': {'cooling'}}
+HS3301 HS3309 conflicts 0.5194357879641405 at {'min_of_day#NUM': [120, 1440.0], 'OutTemp#NUM': [-10.0, 15.0], 'thermo_mode#CAT': {'heating'}}
+HS3301 HS3309 conflicts 0.8287591101452771 at {'min_of_day#NUM': [120, 1440.0], 'OutTemp#NUM': [-25.0, -10.0], 'thermo_mode#CAT': {'heating'}}
+HS3301 HS3309 conflicts 0.9907380282764642 at {'min_of_day#NUM': [900.0, 1140.0], 'OutTemp#NUM': [10.0, 15.0], 'thermo_mode#CAT': {'cooling'}}
+HS3301 HS3309 conflicts 0.9946313342997292 at {'min_of_day#NUM': [720.0, 1020.0], 'OutTemp#NUM': [30.0, 35.0], 'thermo_mode#CAT': {'cooling'}}
+
+
+House8 House9 conflicts 0.00016006952921831591 at {'min_of_day#NUM': [0.0, 840.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House8 House15 conflicts 0.0001731224883961324 at {'min_of_day#NUM': [0.0, 540], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House15 conflicts 0.00025203067389237515 at {'min_of_day#NUM': [0.0, 540], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5.0]}
+House9 House8 conflicts 0.000326904593158823 at {'min_of_day#NUM': [0.0, 660], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House9 House15 conflicts 0.0005147137329301486 at {'min_of_day#NUM': [0.0, 540], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House4 House8 conflicts 0.0005282144296182517 at {'min_of_day#NUM': [120.0, 420.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House8 House4 conflicts 0.0006658444480792052 at {'min_of_day#NUM': [600.0, 720.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House9 conflicts 0.0007689713791067399 at {'min_of_day#NUM': [120.0, 420.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House4 House15 conflicts 0.0008316775797771984 at {'min_of_day#NUM': [120.0, 420.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House9 conflicts 0.0009693323294482385 at {'min_of_day#NUM': [600.0, 720.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House8 House3 conflicts 0.0010303915376416626 at {'min_of_day#NUM': [0.0, 420.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House8 conflicts 0.0013509738192227082 at {'min_of_day#NUM': [540, 780], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House9 conflicts 0.0015000377825589893 at {'min_of_day#NUM': [0.0, 420.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House4 House9 conflicts 0.001570444275467412 at {'min_of_day#NUM': [120.0, 420.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House3 House15 conflicts 0.001622359201485762 at {'min_of_day#NUM': [0.0, 420.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House8 conflicts 0.0016837082565896912 at {'min_of_day#NUM': [720.0, 840], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House9 conflicts 0.001966739533517827 at {'min_of_day#NUM': [540, 780], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5.0]}
+House9 House4 conflicts 0.0019796346771394874 at {'min_of_day#NUM': [600.0, 660], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House4 House8 conflicts 0.002081388726140658 at {'min_of_day#NUM': [0.0, 120.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House8 House3 conflicts 0.002263755767964765 at {'min_of_day#NUM': [1380.0, 1440.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House9 conflicts 0.002451132319537153 at {'min_of_day#NUM': [720.0, 840], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House3 House8 conflicts 0.002568366198058616 at {'min_of_day#NUM': [420.0, 480.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House8 House9 conflicts 0.0027417023714922896 at {'min_of_day#NUM': [660, 840.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [5, 7.0]}
+House4 House9 conflicts 0.0030300731472904436 at {'min_of_day#NUM': [0.0, 120.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House9 House3 conflicts 0.003063476499399856 at {'min_of_day#NUM': [0.0, 420.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House4 House15 conflicts 0.0032771621547394297 at {'min_of_day#NUM': [0.0, 120.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House8 conflicts 0.003520596514697472 at {'min_of_day#NUM': [420.0, 600.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House8 House3 conflicts 0.0035386404440559765 at {'min_of_day#NUM': [480.0, 780.0], 'weatherDesc#CAT': {'Clear', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House8 conflicts 0.0037372268134853582 at {'min_of_day#NUM': [780, 840.0], 'weatherDesc#CAT': {'HeavyRain', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 4]}
+House3 House9 conflicts 0.003739012012223198 at {'min_of_day#NUM': [420.0, 480.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House15 House8 conflicts 0.003981664319921094 at {'min_of_day#NUM': [780, 840.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [4, 7.0]}
+House9 House15 conflicts 0.004016605722486568 at {'min_of_day#NUM': [540, 660.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House3 House15 conflicts 0.004043911835439087 at {'min_of_day#NUM': [420.0, 480.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House8 House15 conflicts 0.004212146832596743 at {'min_of_day#NUM': [1380.0, 1440.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House8 House9 conflicts 0.004428814748811621 at {'min_of_day#NUM': [1380.0, 1440.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House8 conflicts 0.004764207817044436 at {'min_of_day#NUM': [780.0, 840], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House8 House3 conflicts 0.004853437243939974 at {'min_of_day#NUM': [480.0, 780.0], 'weatherDesc#CAT': {'Snow', 'HeavySnow', 'Rain', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House3 conflicts 0.004949983957531126 at {'min_of_day#NUM': [120, 420.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House9 conflicts 0.005125263160913377 at {'min_of_day#NUM': [420.0, 600.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House3 House9 conflicts 0.0051515314043866604 at {'min_of_day#NUM': [480.0, 780.0], 'weatherDesc#CAT': {'Clear', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 5]}
+House15 House9 conflicts 0.005440632242624412 at {'min_of_day#NUM': [780, 840.0], 'weatherDesc#CAT': {'HeavyRain', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 4]}
+House4 House15 conflicts 0.0055432056084339515 at {'min_of_day#NUM': [420.0, 540], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House15 conflicts 0.005571615910495176 at {'min_of_day#NUM': [480.0, 540], 'weatherDesc#CAT': {'Clear', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House9 conflicts 0.005796482889425458 at {'min_of_day#NUM': [780, 840.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [4, 5.0]}
+House9 House4 conflicts 0.006188216047699314 at {'min_of_day#NUM': [0.0, 120.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House8 House9 conflicts 0.006386838161512202 at {'min_of_day#NUM': [840.0, 1020.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House3 House9 conflicts 0.006935704990246981 at {'min_of_day#NUM': [780.0, 840], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House8 House4 conflicts 0.006947827737480465 at {'min_of_day#NUM': [1380, 1440.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House9 conflicts 0.00706560465146289 at {'min_of_day#NUM': [480.0, 780.0], 'weatherDesc#CAT': {'Snow', 'HeavySnow', 'Rain', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 5]}
+House3 House9 conflicts 0.007636057947073136 at {'min_of_day#NUM': [420.0, 480.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House3 House15 conflicts 0.007641773329739871 at {'min_of_day#NUM': [480.0, 540], 'weatherDesc#CAT': {'Snow', 'HeavySnow', 'Rain', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House4 conflicts 0.008181086091811202 at {'min_of_day#NUM': [600.0, 720.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House8 House4 conflicts 0.010425560563156903 at {'min_of_day#NUM': [1380, 1440.0], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House4 conflicts 0.010467151847277222 at {'min_of_day#NUM': [420.0, 600.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House9 House3 conflicts 0.01052079859371026 at {'min_of_day#NUM': [480.0, 660], 'weatherDesc#CAT': {'Clear', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [5, 7.0]}
+House4 House9 conflicts 0.011478239961027346 at {'min_of_day#NUM': [840, 1020.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House4 House8 conflicts 0.014346155773210132 at {'min_of_day#NUM': [840, 1020.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House3 conflicts 0.014429845738206043 at {'min_of_day#NUM': [480.0, 660], 'weatherDesc#CAT': {'Snow', 'HeavySnow', 'Rain', 'HeavyRain'}, 'day_of_week#NUM': [5, 7.0]}
+House4 House9 conflicts 0.01660291474205375 at {'min_of_day#NUM': [660, 720.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [5, 7.0]}
+House4 House3 conflicts 0.01950503474740063 at {'min_of_day#NUM': [0.0, 120], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House15 conflicts 0.020687357595891624 at {'min_of_day#NUM': [720.0, 780], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House4 conflicts 0.02142892905018951 at {'min_of_day#NUM': [600, 720], 'weatherDesc#CAT': {'Clear', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House8 conflicts 0.023137734096974436 at {'min_of_day#NUM': [1020.0, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House3 House15 conflicts 0.023206134707372154 at {'min_of_day#NUM': [1380.0, 1440.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House9 conflicts 0.02439983118811624 at {'min_of_day#NUM': [1380.0, 1440.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House9 conflicts 0.025477564765796712 at {'min_of_day#NUM': [840.0, 1020], 'weatherDesc#CAT': {'HeavyRain', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 4]}
+House9 House15 conflicts 0.027143953431032247 at {'min_of_day#NUM': [840.0, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [4, 5.0]}
+House3 House4 conflicts 0.029390938128409587 at {'min_of_day#NUM': [600, 720], 'weatherDesc#CAT': {'Snow', 'HeavySnow', 'Rain', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House4 conflicts 0.030343309563214935 at {'min_of_day#NUM': [1020.0, 1080.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 5]}
+House9 House15 conflicts 0.030828064476559773 at {'min_of_day#NUM': [1020, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 4]}
+House15 House8 conflicts 0.031843306473221304 at {'min_of_day#NUM': [840.0, 1020.0], 'weatherDesc#CAT': {'HeavyRain', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 4]}
+House8 House9 conflicts 0.03224775704363059 at {'min_of_day#NUM': [840.0, 1020.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House3 House9 conflicts 0.03247873872104234 at {'min_of_day#NUM': [840, 900.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House15 House9 conflicts 0.03368670145708447 at {'min_of_day#NUM': [660.0, 780], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [5.0, 7.0]}
+House8 House15 conflicts 0.03392605360617469 at {'min_of_day#NUM': [840.0, 1020.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [4, 7.0]}
+House4 House3 conflicts 0.03827792164125258 at {'min_of_day#NUM': [1380.0, 1440.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House9 conflicts 0.0401022928550752 at {'min_of_day#NUM': [900.0, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 5]}
+House3 House8 conflicts 0.04059377104778363 at {'min_of_day#NUM': [840, 900.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House9 conflicts 0.04198347634390022 at {'min_of_day#NUM': [720.0, 840], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [5, 7.0]}
+House4 House15 conflicts 0.0432568045950641 at {'min_of_day#NUM': [540, 600.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House3 conflicts 0.04347850643539983 at {'min_of_day#NUM': [540, 780.0], 'weatherDesc#CAT': {'Clear', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House9 conflicts 0.04464359797562603 at {'min_of_day#NUM': [900.0, 1080.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House9 House15 conflicts 0.04540051232970232 at {'min_of_day#NUM': [1380.0, 1440.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House8 House3 conflicts 0.05012212169419638 at {'min_of_day#NUM': [900.0, 1020], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 7.0]}
+House15 House8 conflicts 0.050356870664574574 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5.0]}
+House4 House3 conflicts 0.05418692740588398 at {'min_of_day#NUM': [720, 780.0], 'weatherDesc#CAT': {'Clear', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House8 conflicts 0.05579810258449899 at {'min_of_day#NUM': [900.0, 1020], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House4 House15 conflicts 0.05722786512029443 at {'min_of_day#NUM': [780, 1020.0], 'weatherDesc#CAT': {'HeavyRain', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 4]}
+House4 House3 conflicts 0.05743792238109949 at {'min_of_day#NUM': [1380.0, 1440.0], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House8 conflicts 0.05770554336132898 at {'min_of_day#NUM': [1320.0, 1380], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 5]}
+House4 House9 conflicts 0.057954731933282995 at {'min_of_day#NUM': [840, 1020.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House15 House3 conflicts 0.05963312910157743 at {'min_of_day#NUM': [540, 780.0], 'weatherDesc#CAT': {'Snow', 'HeavySnow', 'Rain', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House15 conflicts 0.060970917749096354 at {'min_of_day#NUM': [780, 1020.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [4, 7.0]}
+House3 House8 conflicts 0.06235381116034828 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5]}
+House4 House15 conflicts 0.07122333101531735 at {'min_of_day#NUM': [1380, 1440.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House4 conflicts 0.07295394579078295 at {'min_of_day#NUM': [780.0, 900.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House3 conflicts 0.07432030910293545 at {'min_of_day#NUM': [720, 780.0], 'weatherDesc#CAT': {'Snow', 'HeavySnow', 'Rain', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House9 conflicts 0.07488697602349902 at {'min_of_day#NUM': [1380, 1440.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House4 conflicts 0.08223646763333355 at {'min_of_day#NUM': [420.0, 480.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House8 conflicts 0.08659003358675364 at {'min_of_day#NUM': [1320.0, 1380], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 5]}
+House3 House9 conflicts 0.08823644285828125 at {'min_of_day#NUM': [660, 780.0], 'weatherDesc#CAT': {'Clear', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [5, 7.0]}
+House4 House3 conflicts 0.09007802070650626 at {'min_of_day#NUM': [900.0, 1020], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 7.0]}
+House15 House9 conflicts 0.09928329871313069 at {'min_of_day#NUM': [780, 840.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [5.0, 7.0]}
+House3 House4 conflicts 0.10027872863514956 at {'min_of_day#NUM': [900.0, 1020], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House4 House15 conflicts 0.1025200998262013 at {'min_of_day#NUM': [1320.0, 1380], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House15 conflicts 0.10687414528202387 at {'min_of_day#NUM': [1380, 1440.0], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House8 conflicts 0.10879374516388425 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House3 House15 conflicts 0.11077824715514106 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House8 conflicts 0.11117361478268879 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5.0]}
+House4 House9 conflicts 0.11237162656076331 at {'min_of_day#NUM': [1380, 1440.0], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House3 conflicts 0.11330365995455799 at {'min_of_day#NUM': [480.0, 600], 'weatherDesc#CAT': {'Clear', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House8 conflicts 0.11682463354022055 at {'min_of_day#NUM': [1020.0, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House3 House9 conflicts 0.11879611886529617 at {'min_of_day#NUM': [780.0, 840], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [5, 7.0]}
+House3 House9 conflicts 0.12102106580523478 at {'min_of_day#NUM': [660, 780.0], 'weatherDesc#CAT': {'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House15 House8 conflicts 0.1229046341004379 at {'min_of_day#NUM': [1020.0, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [4, 7.0]}
+House4 House8 conflicts 0.12467022068971399 at {'min_of_day#NUM': [1320.0, 1380], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [5, 7.0]}
+House3 House4 conflicts 0.1269443247830741 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House8 conflicts 0.13471259337304578 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House9 House15 conflicts 0.13705241831903564 at {'min_of_day#NUM': [840.0, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House4 House8 conflicts 0.1373909430230491 at {'min_of_day#NUM': [1020.0, 1080.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House8 conflicts 0.1395858563544625 at {'min_of_day#NUM': [1020.0, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 4]}
+House9 House4 conflicts 0.15277301571825763 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 5]}
+House9 House4 conflicts 0.15320627358162917 at {'min_of_day#NUM': [1020.0, 1080.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [5, 7.0]}
+House4 House15 conflicts 0.1538365011430968 at {'min_of_day#NUM': [1320.0, 1380], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House3 conflicts 0.15540211326694006 at {'min_of_day#NUM': [480.0, 600], 'weatherDesc#CAT': {'Snow', 'HeavySnow', 'Rain', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House4 conflicts 0.16117971377979098 at {'min_of_day#NUM': [1020.0, 1080.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [4, 7.0]}
+House3 House15 conflicts 0.16193152304848096 at {'min_of_day#NUM': [780.0, 900.0], 'weatherDesc#CAT': {'HeavyRain', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 4]}
+House3 House9 conflicts 0.16398825974192952 at {'min_of_day#NUM': [840, 900.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House3 House15 conflicts 0.1725228357203488 at {'min_of_day#NUM': [780.0, 900.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [4, 7.0]}
+House3 House8 conflicts 0.18157847354346088 at {'min_of_day#NUM': [1020, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 7.0]}
+House4 House15 conflicts 0.18305581835533996 at {'min_of_day#NUM': [1020.0, 1080.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 4]}
+House4 House8 conflicts 0.18707385751824773 at {'min_of_day#NUM': [1320.0, 1380], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [5, 7.0]}
+House9 House8 conflicts 0.18984674734485046 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5.0]}
+House3 House4 conflicts 0.1904862636469072 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House4 conflicts 0.19221340202616546 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 5]}
+House9 House15 conflicts 0.1975118753183579 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House3 conflicts 0.19994081098818414 at {'min_of_day#NUM': [900.0, 1020], 'weatherDesc#CAT': {'HeavyRain', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 4]}
+House3 House8 conflicts 0.2021409699240229 at {'min_of_day#NUM': [1020, 1080.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House3 House9 conflicts 0.2024803140740295 at {'min_of_day#NUM': [900.0, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House9 House15 conflicts 0.20980555047174157 at {'min_of_day#NUM': [1080.0, 1140.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5.0]}
+House3 House15 conflicts 0.21301816371837912 at {'min_of_day#NUM': [900.0, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [4, 7.0]}
+House8 House4 conflicts 0.22211036636612677 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [5, 7.0]}
+House3 House15 conflicts 0.22258271408407693 at {'min_of_day#NUM': [900.0, 1020], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House9 House3 conflicts 0.2259891573652614 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 5]}
+House9 House4 conflicts 0.22633515417348846 at {'min_of_day#NUM': [1320.0, 1380], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House4 conflicts 0.23812581688652612 at {'min_of_day#NUM': [1020, 1080.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [1.0, 7.0]}
+House9 House8 conflicts 0.24018557459974085 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House3 House15 conflicts 0.2419300380275824 at {'min_of_day#NUM': [1020, 1080.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 4]}
+House15 House4 conflicts 0.2425063415983128 at {'min_of_day#NUM': [1260, 1320.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House3 conflicts 0.24456678925823375 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House3 conflicts 0.2541510376850296 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House3 House4 conflicts 0.26509190572015434 at {'min_of_day#NUM': [1020, 1080.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House3 House15 conflicts 0.26932692838694927 at {'min_of_day#NUM': [1020, 1080.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House9 House8 conflicts 0.26981839762924964 at {'min_of_day#NUM': [1080.0, 1140.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House8 House4 conflicts 0.27945111212077167 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [5, 7.0]}
+House8 House15 conflicts 0.2815633536189583 at {'min_of_day#NUM': [1260, 1320.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House8 House15 conflicts 0.30135583791736886 at {'min_of_day#NUM': [1260, 1320.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5.0]}
+House8 House4 conflicts 0.3031854331308875 at {'min_of_day#NUM': [1140, 1320.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [5, 7.0]}
+House15 House8 conflicts 0.3050276088472628 at {'min_of_day#NUM': [1080.0, 1140.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House15 House4 conflicts 0.3051125796815732 at {'min_of_day#NUM': [1260, 1320.0], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House4 conflicts 0.3172181531538046 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [5, 7.0]}
+House8 House4 conflicts 0.3244978406143941 at {'min_of_day#NUM': [1080.0, 1320.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 5]}
+House8 House3 conflicts 0.3285562852914988 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House9 House4 conflicts 0.33962713909525644 at {'min_of_day#NUM': [1320.0, 1380], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House4 House9 conflicts 0.3443593043532892 at {'min_of_day#NUM': [1140, 1200], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House4 conflicts 0.35861266536911834 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House3 conflicts 0.35872698811289777 at {'min_of_day#NUM': [1260, 1320.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 7.0]}
+House8 House4 conflicts 0.3814567858916717 at {'min_of_day#NUM': [1140, 1320.0], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [5, 7.0]}
+House3 House4 conflicts 0.3862746904696071 at {'min_of_day#NUM': [1080.0, 1320.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [1.0, 7.0]}
+House9 House15 conflicts 0.3978495472845384 at {'min_of_day#NUM': [1260, 1320.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House4 conflicts 0.39911223926217965 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [5, 7.0]}
+House8 House9 conflicts 0.3998203096239288 at {'min_of_day#NUM': [1140.0, 1200], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House3 House15 conflicts 0.40343013504475705 at {'min_of_day#NUM': [1260, 1320.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House8 House4 conflicts 0.4082712748805353 at {'min_of_day#NUM': [1080.0, 1320.0], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 5]}
+House15 House4 conflicts 0.40850268533702094 at {'min_of_day#NUM': [1140, 1260], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House8 House9 conflicts 0.427925661754116 at {'min_of_day#NUM': [1140, 1200], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5.0]}
+House9 House4 conflicts 0.42840158622925467 at {'min_of_day#NUM': [1200, 1320.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House4 conflicts 0.4332602396955836 at {'min_of_day#NUM': [1140, 1200], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House3 House4 conflicts 0.43441072376601153 at {'min_of_day#NUM': [1080.0, 1320.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 1.0]}
+House9 House15 conflicts 0.4356406066160376 at {'min_of_day#NUM': [1080.0, 1140.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House8 House15 conflicts 0.44563791424101684 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5.0]}
+House8 House3 conflicts 0.44848640472626855 at {'min_of_day#NUM': [1140, 1320.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House15 House4 conflicts 0.45119329546645437 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House3 conflicts 0.4692442758634727 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House15 House8 conflicts 0.4742943433469449 at {'min_of_day#NUM': [1140.0, 1260], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House8 House3 conflicts 0.480012737999057 at {'min_of_day#NUM': [1080.0, 1320.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 5]}
+House3 House4 conflicts 0.48599664032745854 at {'min_of_day#NUM': [1080.0, 1320.0], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [1.0, 7.0]}
+House8 House9 conflicts 0.4973980742911405 at {'min_of_day#NUM': [1200, 1320.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5.0, 7.0]}
+House15 House8 conflicts 0.5076348445977699 at {'min_of_day#NUM': [1140, 1260], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5.0]}
+House3 House9 conflicts 0.509392765835067 at {'min_of_day#NUM': [1140, 1200], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 7.0]}
+House15 House4 conflicts 0.5139630877632092 at {'min_of_day#NUM': [1140, 1260], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House3 conflicts 0.5304770196900176 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 7.0]}
+House8 House9 conflicts 0.532362651353218 at {'min_of_day#NUM': [1200, 1320.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 5.0]}
+House15 House9 conflicts 0.538705532277813 at {'min_of_day#NUM': [1140.0, 1200.0], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House4 conflicts 0.5389991546307472 at {'min_of_day#NUM': [1200, 1320.0], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy', 'HeavyRain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House8 House3 conflicts 0.5398300382496383 at {'min_of_day#NUM': [1080.0, 1320.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House3 House4 conflicts 0.5465596309606331 at {'min_of_day#NUM': [1080.0, 1320.0], 'weatherDesc#CAT': {'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House3 House9 conflicts 0.5728712896476791 at {'min_of_day#NUM': [1140, 1200], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House15 House3 conflicts 0.5965829803257823 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House15 House3 conflicts 0.6042767252235842 at {'min_of_day#NUM': [1140, 1260], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 7.0]}
+House9 House3 conflicts 0.6337121318887505 at {'min_of_day#NUM': [1200, 1320.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 7.0]}
+House15 House9 conflicts 0.6701787976128651 at {'min_of_day#NUM': [1200.0, 1260], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House15 House3 conflicts 0.6795793150211246 at {'min_of_day#NUM': [1140, 1260], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House9 House3 conflicts 0.7126828463402904 at {'min_of_day#NUM': [1200, 1320.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+
+House9 House3 conflicts 0.003063476499399856 at {'min_of_day#NUM': [0.0, 420.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House9 House3 conflicts 0.01052079859371026 at {'min_of_day#NUM': [480.0, 660], 'weatherDesc#CAT': {'Clear', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [5, 7.0]}
+House9 House3 conflicts 0.014429845738206043 at {'min_of_day#NUM': [480.0, 660], 'weatherDesc#CAT': {'Snow', 'HeavySnow', 'Rain', 'HeavyRain'}, 'day_of_week#NUM': [5, 7.0]}
+House9 House3 conflicts 0.2259891573652614 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 5]}
+House9 House3 conflicts 0.24456678925823375 at {'min_of_day#NUM': [1320.0, 1380.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [0.0, 7.0]}
+House9 House3 conflicts 0.2541510376850296 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}
+House9 House3 conflicts 0.4692442758634727 at {'min_of_day#NUM': [1080.0, 1140], 'weatherDesc#CAT': {'HeavyRain', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [5, 7.0]}
+House9 House3 conflicts 0.6337121318887505 at {'min_of_day#NUM': [1200, 1320.0], 'weatherDesc#CAT': {'HeavyRain', 'HeavySnow', 'Snow', 'Fog', 'Cloudy', 'Clear', 'Rain'}, 'day_of_week#NUM': [1.0, 7.0]}
+House9 House3 conflicts 0.7126828463402904 at {'min_of_day#NUM': [1200, 1320.0], 'weatherDesc#CAT': {'Clear', 'Rain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 1.0]}

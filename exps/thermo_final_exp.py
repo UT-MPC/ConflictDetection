@@ -30,7 +30,7 @@ setpoint_mapping = {
     "thermostat": thermo_state
 }
 time_step = 1
-ctx_info = ContextAccessor({
+default_train_ctx = ContextAccessor({
         TIME_CTX: {
             "range" : (0, 24*60),
             "interval" : 60,
@@ -68,8 +68,8 @@ capacity = {
 BOOL_SIM = False
 BOOL_UMASS= False
 
-def full_test():
-    test_dates = generate_test_date(root_folder, test_projects, test_ratio = 0.4, true_random=False, is_sim=BOOL_SIM, is_umass=BOOL_UMASS)
+def full_test(ctx_info=default_train_ctx):
+    test_dates = generate_test_date(root_folder, test_projects, test_ratio = 0.4, true_random=True, is_sim=BOOL_SIM, is_umass=BOOL_UMASS)
     grid_pattern_cfg = {
         # "time_delta" : timedelta(minutes=10),
         "context_info" : ctx_info,
@@ -198,7 +198,7 @@ def full_test():
                     o_static[1][1] += 1
             avg_error = str(sum(errors) / len(errors))
             gt_probs = []
-            print("Optimal single prediction for users: {} is : {}".format(u_pair, str(sum(errors) / len(errors))))
+            # print("Optimal single prediction for users: {} is : {}".format(u_pair, str(sum(errors) / len(errors))))
 
 
     o_acc = [[0., 0.], [0., 0.]]
@@ -223,20 +223,65 @@ def full_test():
             #     r[2] = r[2] / r[3]
             # print(u_pair, r[0], r[2])
         
-    print("The no. conf {}, no. non-conf {}".format(o_acc[0][1], o_acc[1][1]))
-    print("The overall accuracy for conf is {}".format(o_acc[0][0] / o_acc[0][1]))
-    print("The overall accuracy for non-conf is {}".format(o_acc[1][0] / o_acc[1][1]))
-    print("The overall acc is {}".format((o_acc[0][0] + o_acc[1][0])/(o_acc[0][1] + o_acc[1][1])))
+    # print("The no. conf {}, no. non-conf {}".format(o_acc[0][1], o_acc[1][1]))
+    # print("The overall accuracy for conf is {}".format(o_acc[0][0] / o_acc[0][1]))
+    # print("The overall accuracy for non-conf is {}".format(o_acc[1][0] / o_acc[1][1]))
+    # print("The overall acc is {}".format((o_acc[0][0] + o_acc[1][0])/(o_acc[0][1] + o_acc[1][1])))
     
-    print("The overall zero for conf is {}".format(o_zero / o_acc[0][1]))
-    print("The overall zero for all is {}".format(o_zero / (o_acc[0][1] + o_acc[1][1])))
+    # print("The overall zero for conf is {}".format(o_zero / o_acc[0][1]))
+    # print("The overall zero for all is {}".format(o_zero / (o_acc[0][1] + o_acc[1][1])))
 
-    print("The no. conf {}, no. non-conf {}".format(o_static[0][1], o_static[1][1]))
-    print("Baseline, optimal single prediction for conf is {}".format(o_static[0][0] / o_static[0][1]))
-    print("Baseline, optimal single prediction for non-conf is {}".format(o_static[1][0] / o_static[1][1]))
-    print("The overall baseline is {}".format((o_static[0][0] + o_static[1][0])/(o_static[0][1] + o_static[1][1])))
+    # print("The no. conf {}, no. non-conf {}".format(o_static[0][1], o_static[1][1]))
+    # print("Baseline, optimal single prediction for conf is {}".format(o_static[0][0] / o_static[0][1]))
+    # print("Baseline, optimal single prediction for non-conf is {}".format(o_static[1][0] / o_static[1][1]))
+    # print("The overall baseline is {}".format((o_static[0][0] + o_static[1][0])/(o_static[0][1] + o_static[1][1])))
 
         # print("Baseline approach, optimal single prediction: " + str(sum(errors) / len(errors)))
+    o_acc[0][1] = max(0.0000001, o_acc[0][1])
+    o_acc[1][1] = max(0.0000001, o_acc[1][1])
+    o_static[0][1] = max(0.0000001, o_static[0][1])
+    o_static[1][1] = max(0.0000001, o_static[1][1])
+    final_result = {
+        "conf cont.": [o_acc[0][1], o_acc[1][1]],
+        "our": [o_acc[0][0] / o_acc[0][1], o_acc[1][0] / o_acc[1][1], (o_acc[0][0] + o_acc[1][0])/(o_acc[0][1] + o_acc[1][1])],
+        "zero": [o_zero / o_acc[0][1], o_zero / (o_acc[0][1] + o_acc[1][1])],
+        "static": [o_static[0][0] / o_static[0][1], o_static[1][0] / o_static[1][1], (o_static[0][0] + o_static[1][0])/(o_static[0][1] + o_static[1][1])],
 
 
+    }
+    return final_result
     # print("Baseline approach, optimal single prediction: " + str(sum(errors) / len(errors)))
+
+def context_step_exp():
+    time_steps = [5,10,30,60,120,240]
+    temp_steps = [5, 10, 20, 30, 40]
+    time_range = 24*60
+    temp_range = 25 + 35
+    results = {"time":{}, "temp":{}}
+    ctx_info = {
+            TIME_CTX: {
+                "range" : (0, 24*60),
+                "interval" : 60,
+            },
+            "OutTemp#NUM": {
+                "range": (-25, 35),
+                "interval": 5,
+            },
+            THERMO_MODE_CTX: {},
+            # WEEKDAY_CTX: {
+            #     "range": (0, 6),
+            #     "interval": 1,
+            # },
+    }
+    for ts in time_steps:
+        ctx_info[TIME_CTX]["interval"] = ts
+        r = full_test(ContextAccessor(ctx_info))["our"][-1]
+        print(ts, r)
+        results["time"][ts] = r
+    ctx_info[TIME_CTX]["interval"] = 60
+    for ts in temp_steps:
+        ctx_info["OutTemp#NUM"]["interval"] = ts
+        r = full_test(ContextAccessor(ctx_info))["our"][-1]
+        print(ts, r)
+        results["temp"][ts] = r
+    return results

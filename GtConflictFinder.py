@@ -160,13 +160,13 @@ class GtConflictFinder():
             for u, d_evts in device_evts.items():
                 if d in d_evts:
                     d_evt_idx_per_u[u] = 0
-                    device_states[u] = d_evts[d][0][0]
+                    device_states[u] = get_d_state_str(d_evts[d][0])
                     cur_time = max(d_evts[d][0][1], cur_time)
                     end_time = max(d_evts[d][-1][1], end_time)
             for u in d_evt_idx_per_u:
                 evt_lst = device_evts[u][d]
                 while evt_lst[d_evt_idx_per_u[u] + 1][1] <= cur_time:
-                    device_states[u] = evt_lst[d_evt_idx_per_u[u] + 1][0]
+                    device_states[u] = get_d_state_str(evt_lst[d_evt_idx_per_u[u] + 1])
                     d_evt_idx_per_u[u] += 1
             self.prev_state = {
                 u_pair: None

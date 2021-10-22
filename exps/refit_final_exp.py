@@ -35,7 +35,7 @@ test_projects = [
     # "House20",
 ]
 time_step = 1
-ctx_info = ContextAccessor({
+default_train_ctx = ContextAccessor({
             TIME_CTX: {
                 "range" : (0, 24*60),
                 "interval" : 60,
@@ -98,10 +98,10 @@ capacity = {
 BOOL_SIM = False
 BOOL_UMASS= False
 ccp_alpha = 9e-5    # Normal
-ccp_alpha = 0.0003  # Det.
+# ccp_alpha = 0.0003  # Det.
 
-def full_test():
-    test_dates = generate_test_date(root_folder, test_projects, test_ratio = 0.4, true_random=False, is_sim=BOOL_SIM, is_umass=BOOL_UMASS)
+def full_test(ctx_info = default_train_ctx):
+    test_dates = generate_test_date(root_folder, test_projects, test_ratio = 0.4, true_random=True, is_sim=BOOL_SIM, is_umass=BOOL_UMASS)
     grid_pattern_cfg = {
         # "time_delta" : timedelta(minutes=10),
         "context_info" : ctx_info,
@@ -181,6 +181,7 @@ def full_test():
     exp_result = {d:[0,0,0,0,0] for d in all_devices}
     max_p = 0
     all_state_cnt = 0
+    final_res = {}
     for d in all_devices:
         gt_probs = []
         o_static = [[0,0], [0,0]]
@@ -229,29 +230,60 @@ def full_test():
                     o_static[1][0] += e
                     o_static[1][1] += 1
             gt_probs = []
-        print("Baseline for {}".format(d))
-        print("Baseline, optimal single prediction for conf is {}".format(o_static[0][0] / o_static[0][1]))
-        print("Baseline, optimal single prediction for non-conf is {}".format(o_static[1][0] / o_static[1][1]))
-        print("The overall baseline is {}".format((o_static[0][0] + o_static[1][0])/(o_static[0][1] + o_static[1][1])))
+        final_res[d] = {
+            "static": [o_static[0][0] / o_static[0][1], o_static[1][0] / o_static[1][1], (o_static[0][0] + o_static[1][0])/(o_static[0][1] + o_static[1][1])]
+        }
+        # print("Baseline for {}".format(d))
+        # print("Baseline, optimal single prediction for conf is {}".format(o_static[0][0] / o_static[0][1]))
+        # print("Baseline, optimal single prediction for non-conf is {}".format(o_static[1][0] / o_static[1][1]))
+        # print("The overall baseline is {}".format((o_static[0][0] + o_static[1][0])/(o_static[0][1] + o_static[1][1])))
 
     for d in exp_result:
         r = exp_result[d]
         o_acc = [[0., 0.], [0., 0.]]
         o_zero = 0.
-        print("Device!! {}".format(d))
-        print("The no. conf {}, no. non-conf {}".format(r[1], r[3]))
-        print("The overall accuracy for conf is {}".format(r[0] / r[1]))
-        print("The overall accuracy for non-conf is {}".format(r[2] / r[3]))
-        print("The overall acc is {}".format((r[0] + r[2])/(r[1] + r[3])))
+        # print("Device!! {}".format(d))
+        # print("The no. conf {}, no. non-conf {}".format(r[1], r[3]))
+        # print("The overall accuracy for conf is {}".format(r[0] / r[1]))
+        # print("The overall accuracy for non-conf is {}".format(r[2] / r[3]))
+        # print("The overall acc is {}".format((r[0] + r[2])/(r[1] + r[3])))
 
-        print("The overall zero for conf is {}".format(r[4] / r[1]))
-        print("The overall zero for all is {}".format(r[4] / (r[1] + r[3])))
-        r.append((r[0] + r[2]) / (r[1] + r[3]))
-        if r[1] > 0:
-            r[0] = r[0] / r[1]
-            r[4] = r[4] / r[1]
-        if r[3] > 0:
-            r[2] = r[2] / r[3]
-        
-    print(max_p)
-    print(exp_result)
+        # print("The overall zero for conf is {}".format(r[4] / r[1]))
+        # print("The overall zero for all is {}".format(r[4] / (r[1] + r[3])))
+        r[1] = max(0.000001, r[1])
+        r[3] = max(0.000001, r[3])
+        final_res[d].update({
+            "conf cont.": [r[1], r[3]],
+            "our": [r[0] / r[1], r[2] / r[3], (r[0] + r[2])/(r[1] + r[3])],
+            "zero": [r[4] / r[1], r[4] / (r[1] + r[3])], 
+        })
+        # r.append((r[0] + r[2]) / (r[1] + r[3]))
+        # if r[1] > 0:
+        #     r[0] = r[0] / r[1]
+        #     r[4] = r[4] / r[1]
+        # if r[3] > 0:
+        #     r[2] = r[2] / r[3]
+    return final_res
+
+
+def context_step_exp():
+    time_steps = [5,10,30,60,120,240]
+    time_range = 24*60
+    results = {"time":{}}
+    ctx_info = {
+            TIME_CTX: {
+                "range" : (0, 24*60),
+                "interval" : 60,
+            },
+            "weatherDesc#CAT": {},
+            WEEKDAY_CTX: {
+                "range": (0, 6),
+                "interval": 1,
+            },
+        }
+    for ts in time_steps:
+        ctx_info[TIME_CTX]["interval"] = ts
+        r = full_test(ContextAccessor(ctx_info))
+        print(ts, r["TV"]["our"][-1])
+        results["time"][ts] = r["TV"]["our"][-1]
+    return results
