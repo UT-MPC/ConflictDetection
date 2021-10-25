@@ -9,6 +9,7 @@ from typing import Dict, List, Tuple
 import copy
 from itertools import combinations
 from collections import Counter
+from statistics import median
 
 import logging
 from datetime import timedelta
@@ -52,11 +53,11 @@ default_train_ctx = ContextAccessor({
             #     "range" : (-10., 40),
             #     "interval" : 5,
             # },
-            "weatherDesc#CAT": {},
-            WEEKDAY_CTX: {
-                "range": (0, 6),
-                "interval": 1,
-            },
+            # "weatherDesc#CAT": {},
+            # WEEKDAY_CTX: {
+            #     "range": (0, 6),
+            #     "interval": 1,
+            # },
             # HOLIDAY_CTX: {
             #     "range": (0,1),
             #     "interval": 1,
@@ -125,8 +126,6 @@ def full_test(ctx_info = default_train_ctx):
 
     c_detector = ConflictDetector(ctx_info, capacity)
     final_conflicts = c_detector.predict_conflict_scenarios(habit_groups)
-    # print({x:len(final_conflicts[x]) for x in final_conflicts})
-
 
     # Make ground truth:
     device_events = {}
@@ -220,8 +219,8 @@ def full_test(ctx_info = default_train_ctx):
                     exp_result[d][3] += 1
             if len(gt_probs) == 0:
                 continue
-            avg_gt = sum(gt_probs) / len(gt_probs)
-            errors = [abs(x-avg_gt) for x in gt_probs]
+            median_gt = median(gt_probs)
+            errors = [abs(x-median_gt) for x in gt_probs]
             for i, e in enumerate(errors):
                 if gt_probs[i] > 0.:
                     o_static[0][0] += e

@@ -8,6 +8,7 @@ from typing import Dict, List, Tuple
 import copy
 from itertools import combinations
 from collections import Counter
+from statistics  import median
 
 import logging
 from datetime import timedelta
@@ -69,7 +70,7 @@ BOOL_SIM = False
 BOOL_UMASS= False
 
 def full_test(ctx_info=default_train_ctx):
-    test_dates = generate_test_date(root_folder, test_projects, test_ratio = 0.4, true_random=True, is_sim=BOOL_SIM, is_umass=BOOL_UMASS)
+    test_dates = generate_test_date(root_folder, test_projects, test_ratio = 0.4, true_random=False, is_sim=BOOL_SIM, is_umass=BOOL_UMASS)
     grid_pattern_cfg = {
         # "time_delta" : timedelta(minutes=10),
         "context_info" : ctx_info,
@@ -187,7 +188,8 @@ def full_test(ctx_info=default_train_ctx):
                     exp_result[d][u_pair_set][2] += pred_prob - gt_prob
                     exp_result[d][u_pair_set][3] += 1
                     # print(pred_prob, gt_prob, gt_ctx_snapshot, count, u_pair)
-            avg_gt = sum(gt_probs) / len(gt_probs)
+            # avg_gt = sum(gt_probs) / len(gt_probs)
+            avg_gt = median(gt_probs)
             errors = [abs(x-avg_gt) for x in gt_probs]
             for i, e in enumerate(errors):
                 if gt_probs[i] > 0.:
