@@ -254,6 +254,42 @@ def full_test(ctx_info=default_train_ctx):
     return final_result
     # print("Baseline approach, optimal single prediction: " + str(sum(errors) / len(errors)))
 
+def context_step_perc():
+    # step_perc = [1, 2, 3, 6, 8, 10, 20, 30, 40, 60, 80, 100]
+    step_perc = [0.1, 0.2, 0.4, 0.6, 0.8]
+    time_range = 24*60
+    temp_range = 25 + 35
+    results = {"time":{}, "temp":{}}
+    ctx_info = {
+            TIME_CTX: {
+                "range" : (0, 24*60),
+                "interval" : 60,
+            },
+            "OutTemp#NUM": {
+                "range": (-25, 35),
+                "interval": 5,
+            },
+            THERMO_MODE_CTX: {},
+            # WEEKDAY_CTX: {
+            #     "range": (0, 6),
+            #     "interval": 1,
+            # },
+    }
+    for p in step_perc:
+        ts = p / 100. * time_range
+        ctx_info[TIME_CTX]["interval"] = ts
+        r = full_test(ContextAccessor(ctx_info))["our"][-1]
+        print("time", p, ts, r)
+        results["time"][p] = r
+    ctx_info[TIME_CTX]["interval"] = 60
+    for p in step_perc:
+        ts  = p / 100. * temp_range
+        ctx_info["OutTemp#NUM"]["interval"] = ts
+        r = full_test(ContextAccessor(ctx_info))["our"][-1]
+        print("temp", p, ts, r)
+        results["temp"][p] = r
+    return results
+
 def context_step_exp():
     time_steps = [5,10,30,60,120,240]
     temp_steps = [5, 10, 20, 30, 40]

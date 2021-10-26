@@ -102,7 +102,7 @@ ccp_alpha = 9e-5    # Normal
 # ccp_alpha = 0.0003  # Det.
 
 def full_test(ctx_info = default_train_ctx):
-    test_dates = generate_test_date(root_folder, test_projects, test_ratio = 0.4, true_random=True, is_sim=BOOL_SIM, is_umass=BOOL_UMASS)
+    test_dates = generate_test_date(root_folder, test_projects, test_ratio = 0.4, true_random=False, is_sim=BOOL_SIM, is_umass=BOOL_UMASS)
     grid_pattern_cfg = {
         # "time_delta" : timedelta(minutes=10),
         "context_info" : ctx_info,
@@ -263,6 +263,29 @@ def full_test(ctx_info = default_train_ctx):
         # if r[3] > 0:
         #     r[2] = r[2] / r[3]
     return final_res
+def context_step_perc():
+    # step_perc = [1, 2, 3, 6, 8, 10, 20, 30, 40, 60, 80, 100]
+    step_perc = [0.1, 0.2, 0.4, 0.6, 0.8]
+    time_range = 24*60
+    results = {"time":{}}
+    ctx_info = {
+            TIME_CTX: {
+                "range" : (0, 24*60),
+                "interval" : 60,
+            },
+            "weatherDesc#CAT": {},
+            WEEKDAY_CTX: {
+                "range": (0, 6),
+                "interval": 1,
+            },
+        }
+    for p in step_perc:
+        ts = p / 100. * time_range
+        ctx_info[TIME_CTX]["interval"] = ts
+        r = full_test(ContextAccessor(ctx_info))
+        print(p, ts, r["TV"]["our"][-1])
+        results["time"][p] = r["TV"]["our"][-1]
+    return results
 
 
 def context_step_exp():
