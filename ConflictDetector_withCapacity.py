@@ -1,3 +1,4 @@
+# Deprecated code
 from typing import Dict, List, Tuple
 from rtree import index
 from itertools import combinations

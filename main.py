@@ -8,7 +8,8 @@ from datetime import timedelta
 
 from config import *
 from utils import *
-from GridPatternBuilder import GridPatternBuilder
+from GridPatternBuilder import GridPatternBuilder, build_habit_groups
+from ConflictDetector import ConflictDetector
 from ContextAccessor import ContextAccessor
 
 
@@ -106,10 +107,79 @@ def test_umass(root_folder = "", test_project="HomeF/2016", ctx_info=None, grid_
     return p_builder.mine_patterns(ctx_evts, device_evts)
 
 
+def example_run():
+    root_folder = os.path.join(DATA_ROOT, REFIT_ROOT)
+    test_projects = [
+        "House3",
+        "House4",
+    ]
+    time_step = 1
+    ctx_info = ContextAccessor({
+                TIME_CTX: {
+                    "range" : (0, 24*60),
+                    "interval" : 60,
+                },
+                "weatherDesc#CAT": {},
+                WEEKDAY_CTX: {
+                    "range": (0, 6),
+                    "interval": 1,
+                },
+            })
+    capacity = {
+        "TV":1,
+        "WashingMachine":1,
+        "PC": 1,
+    }
+    capacity = {
+        "TV":1,
+        "WashingMachine":1,
+        "PC": 1,
+    }
+    BOOL_SIM = False
+    BOOL_UMASS= False
+    ccp_alpha = 4e-4
+    grid_pattern_cfg = {
+        "context_info" : ctx_info,
+        "alpha": ccp_alpha,
+        "test_dates": set(),
+        "device_state_map": device_state_map,
+        "time_delta": timedelta(minutes=time_step),
+    }
+    habit_groups = {}
+    grid_data = {}
+
+    # Generate habit patterns 
+    for p in test_projects:
+        grid_data[p] = test_umass(
+                    root_folder = root_folder, 
+                    test_project=p, 
+                    ctx_info=ctx_info, 
+                    grid_cfg = grid_pattern_cfg,
+                    is_sim=BOOL_SIM, 
+                    is_umass=BOOL_UMASS)
+    for p in test_projects:
+        habit_groups[p] = build_habit_groups(grid_data[p], 1e-4)
+
+    # Predict conflict from mined habit patterns
+    c_detector = ConflictDetector(ctx_info, capacity)
+    final_conflicts = c_detector.predict_conflict_scenarios(habit_groups)
+    print("The number of conflicts we found for the devices are:")
+    print({x:len(final_conflicts[x]) for x in final_conflicts})
+
+    # Outputing 5 example conflict scenarios with the highest probability for TV
+    probs_i = [(x["prob"], i) for i, x in enumerate(final_conflicts["TV"])]
+    for x in sorted(probs_i, reverse=True)[0:10]:
+        c = final_conflicts["TV"][x[1]]
+        ctx_str = ctx_info.coor_box_to_range(c["box"])
+        p = c["prob"]
+        us = list(c["users"])
+        users = us[0][0] + " and " + us[1][0]
+        print("{} have {:.2f}% to have conflicts over TV at {}".format(users, p*100, ctx_str))        
+
 def main():
     logging.basicConfig(level=PROJ_LOGGING_LEVEL)
 
-    test_umass()
+    example_run()
 
 if __name__ == "__main__":
     main()
