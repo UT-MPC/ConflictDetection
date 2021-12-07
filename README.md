@@ -2,7 +2,6 @@
 This project proposes a data-driven approach to predict conflicts of IoT devices among multiple user based on their previous interaction histories. Here, a conflict is a situation when two users' preferences over the state of an IoT device differ. For example, a user wants to turn off the light while another user wants to maintain illumination with the same light.
 
 ## Getting started
----
 ### **Python version**
 This project is tested with python3 only
 
