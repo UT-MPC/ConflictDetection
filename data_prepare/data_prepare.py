@@ -1,6 +1,10 @@
+import sys
+import os
+# Add parent folder to path because I did not make a package. 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from datetime import timedelta
 import logging
-import os
 
 from config import *
 from UmassProcessor import UmassProccessor
@@ -140,21 +144,125 @@ def prepare_umass_data():
 def prepare_refit_data():
     test_project = "refit"
     project_path = os.path.join(DATA_ROOT, test_project)
-    """
-        The device dictionary consists of the informaiton of the deivces that will be used in this experiment. 
-        For each table of UMass dataset, we have a list of device consisting of the name of the column in the table, the threshold 
-        in kW to indicate that the device is turned on, and the minimal time that we use to remove noise. 
-    """
 
-    device_list = {"House1.csv": [
-                        {"name": "Appliance 8", 
-                        "onThreshold": 19, 
+    device_list = {
+                    "House1.csv": [
+                        {"name": "Appliance7", 
+                        "onThreshold": 20, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "PC"},
+                        {"name": "Appliance5", 
+                        "onThreshold": 0, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "WashingMachine"},
+                        {"name": "Appliance8", 
+                        "onThreshold": 20, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "TV"},
+                    ],
+                    "House3.csv": [
+                        {"name": "Appliance6", 
+                        "onThreshold": 0, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "WashingMachine"},
+                        {"name": "Appliance7", 
+                        "onThreshold": 20, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "TV"},
+                    ],
+                    "House4.csv": [
+                        {"name": "Appliance5", 
+                        "onThreshold": 9, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "PC"},
+                        {"name": "Appliance4", 
+                        "onThreshold": 5, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "WashingMachine"},
+                        {"name": "Appliance7", 
+                        "onThreshold": 30, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "TV"},
+                    ],
+                    "House8.csv": [
+                        {"name": "Appliance6", 
+                        "onThreshold": 60, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "PC"},
+                        {"name": "Appliance4", 
+                        "onThreshold": 5, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "WashingMachine"},
+                        {"name": "Appliance7", 
+                        "onThreshold": 30, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "TV"},
+                    ],
+                    "House9.csv": [
+                        {"name": "Appliance3", 
+                        "onThreshold": 1, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "WashingMachine"},
+                        {"name": "Appliance5", 
+                        "onThreshold": 60, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "TV"},
+                    ],
+                    "House15.csv": [
+                        {"name": "Appliance6", 
+                        "onThreshold": 89, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "PC"},
+                        {"name": "Appliance3", 
+                        "onThreshold": 0, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "WashingMachine"},
+                        {"name": "Appliance6", 
+                        "onThreshold": 60, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "TV"},
+                    ],
+                    "House18.csv": [
+                        {"name": "Appliance7", 
+                        "onThreshold": 50, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "PC"},
+                        {"name": "Appliance5", 
+                        "onThreshold": 0, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "WashingMachine"},
+                        {"name": "Appliance8", 
+                        "onThreshold": 50, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "TV"},
+                    ],
+                    "House20.csv": [
+                        {"name": "Appliance6", 
+                        "onThreshold": 70, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "PC"},
+                        {"name": "Appliance4", 
+                        "onThreshold": 0, 
+                        "minStateTime": timedelta(minutes= 5),
+                        "deviceName": "WashingMachine"},
+                        {"name": "Appliance7", 
+                        "onThreshold": 50, 
                         "minStateTime": timedelta(minutes= 5),
                         "deviceName": "TV"},
                     ],
     }
-    refit_processor = RefitProcessor(project_path, {}, device_list)
-    ctx_evts, device_evts = refit_processor.preprocess(output_file="p")
+    context_list = {
+        "Weather.csv": [
+            {"name": "FeelsLikeC"},
+            {"name": "cloudcover"},
+            {"name": "humidity"},
+            {"name": "weatherDesc", "lambda": lambda x: x.split("'")[-2]},
+            {"name": "tempC"},
+        ]
+    }
+    refit_processor = RefitProcessor(project_path, context_list, device_list)
+    ctx_evts, device_evts = refit_processor.preprocess(output_folder="processed")
+
 
 if __name__ == "__main__":
     prepare_refit_data()

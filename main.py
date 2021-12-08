@@ -167,6 +167,7 @@ def example_run():
     print({x:len(final_conflicts[x]) for x in final_conflicts})
 
     # Outputing 5 example conflict scenarios with the highest probability for TV
+    print("Top 5 conflict scenarios with the highest probability for TV")
     probs_i = [(x["prob"], i) for i, x in enumerate(final_conflicts["TV"])]
     for x in sorted(probs_i, reverse=True)[0:10]:
         c = final_conflicts["TV"][x[1]]

@@ -11,8 +11,22 @@ All the required packages are listed in the requirements.txt. The most simple wa
 `pip install -r requirements.txt`
 
 ### **Prepare the data**
-TBD
-
+10.15129/9ab14b0e-19ac-4279-938f-27f643078cec
+- Find the REFIT dataset from this [DOI](https://doi.org/10.15129/9ab14b0e-19ac-4279-938f-27f643078cec). Download and unzip **CLEAN_REFIT_081116.7z** in the listed files.
+- Create folders `./data/refit` under the root directory of this project. And put all files from the downloaded dataset to `./data/refit`. Expected file structure:
+```
+ConflictDetection
+│   README.md
+│   main.py    
+│
+└───data
+│   └───refit
+│       │   CLEAN_House1.csv
+│       │   CLEAN_House2.csv
+│       │   ...
+```
+- run `data_prepare.py` from the root directory: `python3 data_prepare/data_prepare.py`
+ 
 ### **Run example**
 To verify the project is set up correctly and to see some real conflict scenarios, run:
 
@@ -22,6 +36,7 @@ Other than the debug messages (starts with `DEBUG`) the expected results is:
 ```
 The number of conflicts we found for the devices are:
 {'TV': 21, 'WashingMachine': 4, 'PC': 0}
+Top 5 conflict scenarios with the highest probability for TV
 House4 and House3 have 53.32% to have conflicts over TV at {'min_of_day#NUM': [1140.0, 1320.0], 'weatherDesc#CAT': {'Rain', 'HeavyRain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 7.0]}
 House4 and House3 have 44.29% to have conflicts over TV at {'min_of_day#NUM': [1080, 1140.0], 'weatherDesc#CAT': {'Rain', 'HeavyRain', 'Fog', 'Cloudy'}, 'day_of_week#NUM': [0.0, 7.0]}
 House4 and House3 have 38.02% to have conflicts over TV at {'min_of_day#NUM': [1140.0, 1320.0], 'weatherDesc#CAT': {'Clear'}, 'day_of_week#NUM': [0.0, 7.0]}
@@ -33,5 +48,3 @@ House3 and House4 have 11.14% to have conflicts over TV at {'min_of_day#NUM': [1
 House3 and House4 have 10.17% to have conflicts over TV at {'min_of_day#NUM': [420.0, 600], 'weatherDesc#CAT': {'Fog', 'Clear', 'Cloudy'}, 'day_of_week#NUM': [0.0, 7.0]}
 House3 and House4 have 8.27% to have conflicts over TV at {'min_of_day#NUM': [780.0, 1020.0], 'weatherDesc#CAT': {'Cloudy', 'HeavySnow', 'Rain', 'Snow', 'HeavyRain', 'Clear', 'Fog'}, 'day_of_week#NUM': [0.0, 7.0]}
 ```
-
-

@@ -182,7 +182,11 @@ class RefitProcessor():
 
     # Generate the device interaction event and the context changing 
     # events from the data set and output it to a file for future usage.
-    def preprocess(self, output_file: str = "processed") -> Tuple[Dict[str, List], Dict[str, List]]:
+    def preprocess(self, output_folder: str = "processed") -> Tuple[Dict[str, List], Dict[str, List]]:
+        # Create output folder 
+        out_path = os.path.join(self.project_folder, output_folder)
+        os.makedirs(out_path, exist_ok=True)
+
         raw_data = {}
         for filename in self.ctx_list:
             raw_data[filename] = pd.read_csv(os.path.join(self.project_folder, filename))
@@ -192,12 +196,15 @@ class RefitProcessor():
         ctx_evt = { k + (CATEGORICAL_CTX_SUFFIX if k in self.ctx_category_translate else NUMERIC_CTX_SUFFIX) : v for k,v in ctx_evt.items()}
 
         device_evt = {}
-        for filename in self.device_list:
+
+        all_input_files = os.listdir(self.project_folder)
+        for house_name in self.device_list:
+            filename = next(x for x in all_input_files if house_name in x)
             raw_data = pd.read_csv(os.path.join(self.project_folder, filename))
             logging.info("Load REFIT data file: " + os.path.join(filename))
-            device_evt = self.search_device(raw_data, self.device_list[filename])
-
-            with open(os.path.join(self.project_folder, output_file, filename), 'w') as f:
+            device_evt = self.search_device(raw_data, self.device_list[house_name])
+            output_filename = os.path.splitext(house_name)[0] + ".json"
+            with open(os.path.join(out_path, output_filename), 'w') as f:
                 f.write(json.dumps((ctx_evt, device_evt), default=str))
         return (ctx_evt, device_evt)
 
