@@ -11,7 +11,6 @@ All the required packages are listed in the requirements.txt. The most simple wa
 `pip install -r requirements.txt`
 
 ### **Prepare the data**
-10.15129/9ab14b0e-19ac-4279-938f-27f643078cec
 - Find the REFIT dataset from this [DOI](https://doi.org/10.15129/9ab14b0e-19ac-4279-938f-27f643078cec). Download and unzip **CLEAN_REFIT_081116.7z** in the listed files.
 - Create folders `./data/refit` under the root directory of this project. And put all files from the downloaded dataset to `./data/refit`. Expected file structure:
 ```
