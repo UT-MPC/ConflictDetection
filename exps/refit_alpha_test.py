@@ -75,7 +75,7 @@ def test_acc_alpha(ctx_info,
         "context_info": gt_ctx_info,
         "capacity": capacity
     }
-    test_dates = generate_test_date(root_folder, test_projects, test_ratio = 0.4, true_random=False, is_sim=BOOL_SIM, is_umass=BOOL_UMASS)
+    test_dates = generate_test_date(root_folder, test_projects, test_ratio = 0.4, true_random=True, is_sim=BOOL_SIM, is_umass=BOOL_UMASS)
     # test_dates = {}
 
     conflict_finder = GtConflictFinder(gtconflict_cfg)
