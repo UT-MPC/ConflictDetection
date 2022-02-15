@@ -1,4 +1,6 @@
 # Enabling probabilistic conflict prediction in smart space through context-awareness
+[![License](https://img.shields.io/badge/license-BSD-blue.svg)](LICENSE)
+
 This project proposes a data-driven approach to predict conflicts of IoT devices among multiple user based on their previous interaction histories. Here, a conflict is a situation when two users' preferences over the state of an IoT device differ. For example, a user wants to turn off the light while another user wants to maintain illumination with the same light.
 
 ## Getting started
